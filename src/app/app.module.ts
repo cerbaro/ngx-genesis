@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 
+import { CookieModule } from 'ngx-cookie';
+
 @NgModule({
     declarations: [
         AppComponent
@@ -16,7 +18,9 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
         AppRoutingModule,
 
         LeafletModule.forRoot(),
-        LeafletDrawModule.forRoot()
+        LeafletDrawModule.forRoot(),
+
+        CookieModule.forRoot()
     ],
     providers: [],
     bootstrap: [AppComponent]
