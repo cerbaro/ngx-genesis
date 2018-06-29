@@ -1,0 +1,10 @@
+<mat-toolbar id="mainToolbar" fxLayout="row">
+    <span class="ngxgMaxWidth" fxFlex fxLayout="row">
+        <span>Logotipo</span>
+        <span fxFlex="1 1 auto"></span>
+        <span>Menu</span>
+    </span>
+</mat-toolbar>
+<mat-toolbar id="mainToolbarSoul"></mat-toolbar>
+
+<router-outlet (activate)="onActivate($event)"></router-outlet>

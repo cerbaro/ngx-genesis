@@ -13,6 +13,12 @@ import { SatelliteComponent } from './tabs/satellite/satellite.component';
         CommonModule,
         FieldRoutingModule
     ],
-    declarations: [FieldComponent, WeatherComponent, ClimateComponent, PhenologyComponent, SatelliteComponent]
+    declarations: [
+        FieldComponent,
+        WeatherComponent,
+        ClimateComponent,
+        PhenologyComponent,
+        SatelliteComponent
+    ]
 })
 export class FieldModule { }
