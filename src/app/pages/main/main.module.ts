@@ -4,21 +4,14 @@ import { CommonModule } from '@angular/common';
 import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main/main.component';
 
-import { FlexLayoutModule } from '@angular/flex-layout';
-import {
-    MatToolbarModule,
-    MatIconModule
-} from '@angular/material';
-
+import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 
 @NgModule({
     imports: [
         CommonModule,
         MainRoutingModule,
 
-        FlexLayoutModule,
-        MatToolbarModule,
-        MatIconModule
+        LayoutComponentsModule
     ],
     declarations: [MainComponent]
 })
