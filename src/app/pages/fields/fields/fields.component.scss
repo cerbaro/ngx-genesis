@@ -1,4 +1,19 @@
 
-.primary {
-    background-color: rgba(91, 167, 101, 0.589)
+#filterSearch {
+    width: 100%;
+    margin-bottom: -1.25em;
+}
+
+.fieldCard {
+    margin-bottom: 20px !important;
+    border: solid 1px #EEE;
+}
+
+#mapFieldsWrapper {
+    top: 170px;
+    position: sticky;
+
+    #mapFields {
+        height: calc(100vh - 200px);
+    }
 }

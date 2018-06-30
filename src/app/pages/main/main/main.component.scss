@@ -1,12 +1,12 @@
 #mainToolbar {
+    height: 80px;
     position: fixed;
     top: 0;
     z-index: 10000;
-
-    background-color: rgba($color: #FFFFFF, $alpha: .8)
+    background-color: rgba($color: #FFFFFF, $alpha: 1)
 }
 
 #mainToolbarSoul {
-    background-color: transparent;
-    margin-bottom: 15px;
+    height: 80px;
+    background-color: #FFFFFF;
 }

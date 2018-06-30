@@ -1,6 +1,52 @@
-<div class="ngxgMaxWidth">
-    
-    <mat-card>
-        <button mat-raised-button class="primary mat-elevation-z0">Basic</button>
-    </mat-card>
+<div class="ngxgHeaderToolbar" fxLayout="row">
+    <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
+        <span fxFlex=41>
+            <!-- <mat-form-field id="filterSearch" appearance="outline">
+                <input matInput placeholder="Filtrar campos">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field> -->
+            <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Fazenda</button>
+            <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Cultura</button>
+            <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Safra</button>
+        </span>
+        <span fxFlex="1 1 auto"></span>
+        <span>
+            <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Criar Campo</button>
+            <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Criar Safra</button>
+        </span>
+    </div>
+</div>
+
+<div class="ngxgContent" fxLayout="row">
+    <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="10px">
+
+        <div fxFlex fxLayout="row wrap" fxLayoutGap="15px">
+            <mat-card fxFlex=47 class="fieldCard mat-elevation-z0 ngxgHoverTransition">
+                <mat-card-header>
+                    <div mat-card-avatar class="example-header-image"></div>
+                    <mat-card-title>Shiba Inu</mat-card-title>
+                    <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+                </mat-card-header>
+                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                <mat-card-content>
+                    <p>
+                        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan. A small, agile dog that copes
+                        very well with mountainous terrain, the Shiba Inu was originally bred for hunting.
+                    </p>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button>LIKE</button>
+                    <button mat-button>SHARE</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+
+        <div fxFlex=40>
+            <div id="mapFieldsWrapper">
+                <div id="mapFields" leaflet [leafletOptions]="options"></div>
+            </div>
+        </div>
+
+    </div>
+
 </div>

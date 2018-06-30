@@ -5,13 +5,16 @@ import { FieldsRoutingModule } from './fields-routing.module';
 import { FieldsComponent } from './fields/fields.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
     imports: [
         CommonModule,
         FieldsRoutingModule,
 
-        LayoutComponentsModule
+        LayoutComponentsModule,
+
+        LeafletModule
     ],
     declarations: [FieldsComponent]
 })
