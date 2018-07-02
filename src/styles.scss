@@ -6,7 +6,7 @@
 
 .ngxgMaxWidth {
     margin: 0 auto;
-    max-width: 1240px;
+    max-width: 2000px;
 }
 
 .ngxgHeaderToolbar {
@@ -14,7 +14,7 @@
     height: 60px;
     background-color: rgba($color: #FFFFFF, $alpha: 1);
     margin-bottom: 30px;
-    padding: 0 16px;
+    padding: 0 40px;
     position: sticky;
     top: 80px;
     z-index: 9999; 
@@ -23,16 +23,21 @@
 
     button {
         margin: 0 5px;
+
+        &:last-child {
+            margin-right: 0;
+        }
+
+        &:first-child {
+            margin-left: 0;
+        }
     }
     
-    button:last-child {
-        margin-right: 0;
-    }
 }
 
 .ngxgContent {
     width: 100%;
-    padding: 0 16px;
+    padding: 0 40px;
 }
 
 .ngxgHoverTransition {
