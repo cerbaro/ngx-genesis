@@ -7,7 +7,10 @@ import {
     MatCardModule,
     MatIconModule,
     MatFormFieldModule,
-    MatInputModule
+    MatInputModule,
+    MatProgressSpinnerModule,
+    MatListModule,
+    MatDividerModule
 } from '@angular/material';
 
 @NgModule({
@@ -18,7 +21,10 @@ import {
         MatButtonModule,
         MatCardModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        MatDividerModule
     ],
     exports: [
         FlexLayoutModule,
@@ -28,7 +34,10 @@ import {
         MatCardModule,
         MatIconModule,
         MatFormFieldModule,
-        MatInputModule
+        MatInputModule,
+        MatProgressSpinnerModule,
+        MatListModule,
+        MatDividerModule
     ],
 })
 export class LayoutComponentsModule { }

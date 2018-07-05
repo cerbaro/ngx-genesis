@@ -24,7 +24,7 @@ $ngxg-typography: mat-typography-config(
 @include mat-core($ngxg-typography);
 
 
-$my-app-primary: mat-palette($mat-indigo);
+$my-app-primary: mat-palette($mat-light-blue);
 $my-app-accent:  mat-palette($mat-amber, A200, A100, A400);
 $my-app-warn:    mat-palette($mat-red);
 

@@ -6,7 +6,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MainComponent implements OnInit {
 
-    constructor() { }
+    public loadingActive: Boolean;
+
+    constructor() {
+        this.loadingActive = false;
+    }
 
     ngOnInit() { }
 

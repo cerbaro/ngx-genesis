@@ -4,7 +4,32 @@
     top: 0;
     z-index: 10000;
     padding: 0 40px;
-    background-color: rgba($color: #FFFFFF, $alpha: 1)
+    background-color: rgba($color: #FFFFFF, $alpha: 1);
+
+    mat-list a {
+        font-size: 15px;
+        font-weight: 400;
+        color: rgba($color: #000, $alpha: .8);
+        text-decoration: none;
+
+        padding: 0 !important;
+        margin-right: 5px;
+        height: 25px;
+
+        &:last-child {
+            margin: 0 0 0 5px;
+        }
+
+        &:hover {
+            color: rgba($color: #000, $alpha: 1);
+        }
+        
+    }
+
+    .link-active {
+        color: rgba($color: #000, $alpha: 1) !important;
+        font-weight: 500 !important;
+    }
 }
 
 #mainToolbarSoul {

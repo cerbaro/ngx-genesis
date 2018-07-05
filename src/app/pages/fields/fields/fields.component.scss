@@ -1,21 +1,91 @@
-
-#filterSearch {
-    width: 100%;
-    margin-bottom: -1.25em;
-}
-
-.fieldCard {
-    //min-width: 300px;
-    //max-width: 350px;
-    margin-bottom: 20px !important;
-    border: solid 1px #EEE;
+#fieldList {
+    .fieldCard {
+        min-width: 800px;
+        max-height: 230px;
+        padding: 0;
+        margin: 0 10px 25px 0 !important;
+        border: solid 1px #DBDBDB;
+        >div {
+            overflow: hidden;
+            padding: 0 10px;
+            margin: 12px 0;
+            img {
+                max-width: 300px;
+                height: auto;
+            }
+            h2 {
+                margin-bottom: -5px;
+            }
+            h4 {
+                margin-bottom: -5px;
+                clear: both;
+            }
+            h5 {
+                font-size: .9em;
+                color: #555;
+            }
+            span {
+                float: left;
+                margin-right: 20px;
+            }
+        }
+        >div:first-child {
+            padding: 0;
+            margin: 0;
+        }
+        >div:last-child {
+            border-left: solid 1px #DBDBDB;
+        }
+    }
 }
 
 #mapFieldsWrapper {
     top: 170px;
     position: sticky;
-
     #mapFields {
         height: calc(100vh - 200px);
     }
 }
+
+.clearBoth {
+    clear: both;
+}
+
+/**
+.fieldCardLoader {
+    min-width: 800px;
+    max-height: 230px;
+    padding: 0;
+    margin: 0 10px 25px 0 !important;
+    border: solid 1px #DBDBDB;
+    > div {
+        overflow: hidden;
+        padding: 0 10px;
+        margin: 12px 0;
+        
+        .line {
+            background-color: #EEE; 
+            animation: pulse 1.5s infinite ease-in-out;
+        }
+    }
+    > div:first-child {
+        padding: 0;
+        margin: 0;
+    }
+    > div:last-child {
+        border-left: solid 1px #DBDBDB;
+    }
+}
+    
+@keyframes pulse {
+    0% {
+        background-color: rgba(238, 238, 238, 0.5)
+    }
+    50% {
+        background-color: rgba(238, 238, 238, 1)
+    }
+    100% {
+        background-color: rgba(238, 238, 238, 0.5)
+    }
+}
+*/

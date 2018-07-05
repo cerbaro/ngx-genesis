@@ -1,12 +1,25 @@
-<mat-toolbar id="mainToolbar" fxLayout="row">
-    <span class="ngxgMaxWidth mat-body-2" fxFlex fxLayout="row" fxLayoutAlign="center center">
+<mat-toolbar id="mainToolbar" fxLayout="row" class="mat-typography">
+    <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
         <span>
-            <img src="assets/img/logo.png" style="display:block; height:40px;">
+            <!-- <img src="assets/img/logo.png" style="display:block; height:40px;"> -->
         </span>
-        <span fxFlex="1 1 auto"></span>
-        <span>Menu</span>
+        <span fxFlex="2 1 auto"></span>
+        <span>
+            <mat-list fxLayout="row">
+                <a mat-list-item [routerLink]="['/fields']" routerLinkActive="link-active">Campos</a>
+                <a mat-list-item href="enso" routerLinkActive="link-active">El Niño</a>
+                <a mat-list-item href="cam" routerLinkActive="link-active">Câmeras</a>
+                <mat-divider [vertical]="true" routerLinkActive="link-active"></mat-divider>
+                <a mat-list-item href="profile" routerLinkActive="link-active">Minha Conta</a>
+            </mat-list>
+        </span>
     </span>
 </mat-toolbar>
 <mat-toolbar id="mainToolbarSoul"></mat-toolbar>
+
+<!-- Preloader -->
+<span *ngIf="!loadingActive" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
+    <mat-spinner [diameter]="60" [strokeWidth]="4"></mat-spinner>
+</span>
 
 <router-outlet (activate)="onActivate($event)"></router-outlet>
