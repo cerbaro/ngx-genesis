@@ -1,7 +1,7 @@
 <mat-toolbar id="mainToolbar" fxLayout="row" class="mat-typography">
     <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
         <span>
-            <!-- <img src="assets/img/logo.png" style="display:block; height:40px;"> -->
+            <img src="assets/img/logo.png" style="display:block; height:40px;">
         </span>
         <span fxFlex="2 1 auto"></span>
         <span>
@@ -18,7 +18,7 @@
 <mat-toolbar id="mainToolbarSoul"></mat-toolbar>
 
 <!-- Preloader -->
-<span *ngIf="!loadingActive" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
+<span *ngIf="loading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
     <mat-spinner [diameter]="60" [strokeWidth]="4"></mat-spinner>
 </span>
 

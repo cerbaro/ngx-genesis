@@ -5,6 +5,7 @@ import { MainRoutingModule } from './main-routing.module';
 import { MainComponent } from './main/main.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
+import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 
 @NgModule({
     imports: [
@@ -13,6 +14,9 @@ import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components
 
         LayoutComponentsModule
     ],
-    declarations: [MainComponent]
+    declarations: [MainComponent],
+    providers: [
+        NgxgLoadingService
+    ]
 })
 export class MainModule { }

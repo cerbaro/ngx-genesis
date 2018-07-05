@@ -1,4 +1,4 @@
-<span *ngIf="fieldsLoading">
+<span *ngIf="!fieldsLoading">
     <div class="ngxgHeaderToolbar" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span fxFlex=41>
@@ -20,28 +20,28 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of [1, 2, 3, 4, 5]" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition mat-typography">
+                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition mat-typography">
 
                     <div fxFlex="300px">
-                        <img src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+                        <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
                     </div>
 
                     <div fxFlex=28>
-                        <h2>Jaborandi {{field}}</h2>
-                        <h5>Luiz Eduardo Magalhães, Bahia</h5>
+                        <h2>{{field.name}}</h2>
+                        <!-- <h5>{{field.location.city.name}}, {{field.location.state.abbr}}</h5> -->
 
-                        <h4>113 Hectares</h4>
+                        <h4>{{field.area.size}}</h4>
                         <h5>Área</h5>
 
-                        <h4>29 - Limpo</h4>
+                        <!-- <h4>{{field.app.weather.temperature}} - {{field.app.weather.summary}}</h4> -->
                         <h5>Condição agora</h5>
 
                         <span>
-                            <h4>05:07</h4>
+                            <!-- <h4>{{field.app.weather.sunrise}}</h4> -->
                             <h5>Amanhecer</h5>
                         </span>
                         <span>
-                            <h4>19:50</h4>
+                            <!-- <h4>{{field.app.weather.sunset}}</h4> -->
                             <h5>Pôr-do-Sol</h5>
                         </span>
 

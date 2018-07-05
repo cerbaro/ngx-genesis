@@ -7,7 +7,8 @@ const routes: Routes = [
         path: '',
         component: MainComponent,
         children: [
-            { path: 'fields', loadChildren: '../fields/fields.module#FieldsModule' },
+            { path: '', redirectTo: '/fields', pathMatch: 'full' },
+            { path: 'fields', loadChildren: '../fields/fields.module#FieldsModule' }
         ]
     }
 ];

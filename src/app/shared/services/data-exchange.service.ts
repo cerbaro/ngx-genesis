@@ -15,16 +15,18 @@ export class DataExchangeService {
     constructor() {
         this.f = new Subject<Field>();
         this.s = new Subject<Season>();
+
     }
 
-    public setField(field): void {
+    public setField(field: Field): void {
         this.field = field;
         this.f.next(this.field);
     }
 
-    public setSeason(season): void {
+    public setSeason(season: Season): void {
         this.season = season;
         this.s.next(this.season);
     }
+
 
 }

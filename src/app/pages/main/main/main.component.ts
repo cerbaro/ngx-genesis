@@ -1,15 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 
+import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { takeUntil, startWith } from 'rxjs/operators';
+import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
+
 @Component({
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss']
 })
-export class MainComponent implements OnInit {
+export class MainComponent extends NgxgUnsubscribe implements OnInit {
 
-    public loadingActive: Boolean;
+    public loading: Boolean;
 
-    constructor() {
-        this.loadingActive = false;
+    constructor(private ngxgLoadingService: NgxgLoadingService) {
+        super();
+
+        this.ngxgLoadingService.getLoading().pipe(
+            startWith(true),
+            takeUntil(this.ngxgUnsubscribe)
+        ).subscribe(
+            loading => this.loading = loading
+        );
+
     }
 
     ngOnInit() { }

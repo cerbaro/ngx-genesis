@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 import * as L from 'leaflet';
 
+import { Field } from 'src/app/shared/types/field';
+import { MapBoxService } from 'src/app/shared/services/map-box.service';
+import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
+
 @Component({
     templateUrl: './fields.component.html',
     styleUrls: ['./fields.component.scss']
@@ -9,6 +13,8 @@ import * as L from 'leaflet';
 export class FieldsComponent implements OnInit {
 
     public fieldsLoading: Boolean;
+
+    public fields: Array<Field>;
 
     public options = {
         layers: [
@@ -18,11 +24,38 @@ export class FieldsComponent implements OnInit {
         center: L.latLng(46.879966, -121.726909)
     };
 
-    constructor() {
-        this.fieldsLoading = false;
+    constructor(private ngxgLoadingService: NgxgLoadingService, private mapBoxService: MapBoxService) {
+        this.fieldsLoading = true;
     }
 
     ngOnInit() {
+
+        this.fields = [];
+        for (let i = 0; i <= 5; i++) {
+
+            this.fields.push({
+                name: 'Jabotirama ' + i,
+                act: true,
+                admin: true,
+                area: { shape: { type: 'geometry', coordinates: [1, 2, 3] }, size: 1000 },
+                elev: 0,
+                farm: '',
+                weatherStations: [],
+                inclination: 0,
+                location: { geoid: 'BRRSPFB', lat: -52, lon: -28 },
+                pvt: true,
+                users: [{ admin: true, user: 'Vinicius' }],
+                app: {
+                    thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
+                }
+            });
+        }
+
+        setTimeout(() => {
+            this.fieldsLoading = false;
+            this.ngxgLoadingService.setLoading(this.fieldsLoading);
+        }, 2000);
+
     }
 
 }

@@ -4,6 +4,7 @@ import { FieldsComponent } from './fields/fields.component';
 
 const routes: Routes = [
     { path: '', component: FieldsComponent },
+    { path: '**', component: FieldsComponent },
 ];
 
 @NgModule({

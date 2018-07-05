@@ -11,10 +11,10 @@
         font-weight: 400;
         color: rgba($color: #000, $alpha: .8);
         text-decoration: none;
-
         padding: 0 !important;
+        
         margin-right: 5px;
-        height: 25px;
+        height: 35px;
 
         &:last-child {
             margin: 0 0 0 5px;
@@ -22,10 +22,9 @@
 
         &:hover {
             color: rgba($color: #000, $alpha: 1);
+            font-weight: 500;
         }
-        
     }
-
     .link-active {
         color: rgba($color: #000, $alpha: 1) !important;
         font-weight: 500 !important;
