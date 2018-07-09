@@ -10,7 +10,8 @@ import {
     MatInputModule,
     MatProgressSpinnerModule,
     MatListModule,
-    MatDividerModule
+    MatDividerModule,
+    MatSelectModule
 } from '@angular/material';
 
 @NgModule({
@@ -22,6 +23,7 @@ import {
         MatCardModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSelectModule,
         MatProgressSpinnerModule,
         MatListModule,
         MatDividerModule
@@ -35,6 +37,7 @@ import {
         MatIconModule,
         MatFormFieldModule,
         MatInputModule,
+        MatSelectModule,
         MatProgressSpinnerModule,
         MatListModule,
         MatDividerModule

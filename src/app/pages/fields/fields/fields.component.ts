@@ -47,6 +47,7 @@ export class FieldsComponent implements OnInit {
                 location: { geoid: 'BRRSPFB', lat: -52, lon: -28 },
                 pvt: true,
                 users: [{ admin: true, user: 'Vinicius' }],
+
                 app: {
                     thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
                 }

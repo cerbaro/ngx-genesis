@@ -34,6 +34,7 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
             pvt: true,
             users: [{ admin: true, user: 'Vinicius' }],
             app: {
+                season: '1',
                 thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
             }
         };
@@ -44,7 +45,7 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
         setTimeout(() => {
             this.fieldLoading = false;
             this.ngxgLoadingService.setLoading(this.fieldLoading);
-        }, 2000);
+        }, 0);
 
     }
 

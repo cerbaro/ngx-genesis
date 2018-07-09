@@ -1,72 +1,111 @@
 #fieldHeader {
     min-width: 800px;
-    height: 280px;
+    max-height: 280px;
     padding: 0;
     margin: 0 0 30px 0 !important;
+   
 
     >div {
         overflow: hidden;
-        padding: 0 10px;
+        padding: 0 20px;
         margin: 12px 0;
+
         img {
-            max-width: 300px;
+            width: 100%;
+            min-width: 300px;
+            max-width: 350px;
             height: auto;
         }
-        h2 {
+
+        h1 {
+            font-size: 2.1em;
+        }
+
+        h2, h4 {
+            font-size: 1.2em;
+        }
+        
+        h1, h2, h3, h4, h5 {
             margin-bottom: -5px;
         }
+
         h4 {
-            margin-bottom: -5px;
             clear: both;
         }
+
         h5 {
-            font-size: .9em;
             color: #555;
         }
-        span {
-            float: left;
-            margin-right: 20px;
-        }
     }
+
     >div:first-child {
         padding: 0;
         margin: 0;
     }
-    >div:last-child {
-        border-left: solid 1px #DBDBDB;
-    }
-
 }
 
 #fieldHeaderBg {
-    //border-bottom: solid 1px #DDD;
+    margin-bottom: 20px;
+}
 
-    .ngxgMaxWidth {
-        max-width: 1240px;
-    }
+.ngxgHeaderToolbar {
+    height: 0px;
+}
+
+.buttonEdit {
+    height: 30px !important;
+    line-height: 30px !important;
 }
 
 #fieldTabsList {
-    
-    border-top: solid 1px #DDD;
     border-bottom: solid 1px #DDD;
-    height: 60px;
+    height: 40px;
 
     button {
-        margin-right: 5px;
-    }
+        height: 40px; 
+        color: rgba($color: #000, $alpha: .8) !important;
+        font-weight: 400 !important;
+        background-color: transparent;
+        border: none;
+        border-bottom: solid 1px #DDD;
 
-    .ngxgMaxWidth {
-        max-width: 1240px;
+        &.link-active {
+            background-color: #FDFDFD;
+            border: solid 1px #DDD;
+            border-bottom: solid 1px #FDFDFD;
+        }
+
+        &.link-active:hover {
+            background-color: #FDFDFD;
+        }
+
+        &:hover {
+            background-color: #EFEFEF;
+        }
     }
 }
 
 #fieldTabs {
-    background-color: #F8F8F8;
+    background-color: #FDFDFD;
+    min-height: calc(100vh - 280px - 150px);
+}
 
-    min-height: calc(100vh - 280px - 200px);
+.mat-form-field {
+    width: 100%;
+    height: 20px !important;
+    margin: 0 0 -1.5em 0 !important;
 
-    .ngxgMaxWidth {
-        max-width: 1240px;
+    /deep/ .mat-form-field-wrapper {
+        margin: 0 !important;
+    }
+
+    /deep/ .mat-form-field-infix {
+        padding: 5px 0 10px !important;
+    }
+    
+    /deep/ .mat-select-arrow-wrapper {
+        vertical-align: unset !important;
     }
 }
+
+
