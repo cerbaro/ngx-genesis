@@ -26,6 +26,8 @@ export class FieldsComponent implements OnInit {
 
     constructor(private ngxgLoadingService: NgxgLoadingService, private mapBoxService: MapBoxService) {
         this.fieldsLoading = true;
+        this.ngxgLoadingService.setLoading(this.fieldsLoading);
+        console.log(1);
     }
 
     ngOnInit() {

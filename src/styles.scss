@@ -4,6 +4,10 @@
 
 @import '~@angular/material/theming';
 
+.clearBoth {
+    clear: both;
+}
+
 .ngxgMaxWidth {
     margin: 0 auto;
     max-width: 2000px;
@@ -57,3 +61,4 @@
         background-color: #DDD;
     }
 }
+

@@ -1,3 +1,99 @@
-<p>
-  field works!
-</p>
+<span *ngIf="!fieldLoading" class="mat-typography">
+    <div class="ngxgHeaderToolbar" fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
+            <span fxFlex=41>
+                <!-- <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Safra 2016/2017</button>
+                <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Safra 2017/2018</button> -->
+            </span>
+            <span fxFlex="1 1 auto"></span>
+            <span>
+                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Editar Campo</button>
+                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Criar Safra</button>
+            </span>
+        </div>
+    </div>
+
+    <div id="fieldHeaderBg" class="ngxgContent" fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+
+            <div id="fieldHeader" fxFlex fxLayout="row">
+
+                <div fxFlex="300px">
+                    <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
+                </div>
+
+                <div fxFlex=28>
+                    <h2>{{field.name}}</h2>
+                    <!-- <h5>{{field.location.city.name}}, {{field.location.state.abbr}}</h5> -->
+
+                    <h4>{{field.area.size}}</h4>
+                    <h5>Área</h5>
+
+                    <!-- <h4>{{field.app.weather.temperature}} - {{field.app.weather.summary}}</h4> -->
+                    <h5>Condição agora</h5>
+
+                    <span>
+                        <!-- <h4>{{field.app.weather.sunrise}}</h4> -->
+                        <h5>Amanhecer</h5>
+                    </span>
+                    <span>
+                        <!-- <h4>{{field.app.weather.sunset}}</h4> -->
+                        <h5>Pôr-do-Sol</h5>
+                    </span>
+
+                </div>
+
+                <div fxFlex>
+                    <h2>2017/2018 Algodão #000</h2>
+                    <h5>Safra atual</h5>
+
+                    <span>
+                        <h4>Algodão</h4>
+                        <h5>Cultura</h5>
+                    </span>
+                    <span>
+                        <h4>PHY007</h4>
+                        <h5>Variedade</h5>
+                    </span>
+                    <span class="clearBoth"></span>
+                    <span>
+                        <h4>12/10/2017</h4>
+                        <h5>Data de colheita</h5>
+                    </span>
+                    <span>
+                        <h4>02/02/2018</h4>
+                        <h5>Previsão de colheita</h5>
+                    </span>
+
+                    <h4>R8 - Maturidade plena</h4>
+                    <h5>Estádio atual</h5>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div id="fieldTabsList" class="ngxgContent" fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start center">
+            <button mat-button class="mat-elevation-z0">Tempo e Previsão</button>
+            <button mat-button class="mat-elevation-z0">Safra 2017/2018</button>
+        </div>
+    </div>
+
+    <div id="fieldTabs" class="ngxgContent" fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+            <br>a
+            <br>a
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+        </div>
+
+    </div>
+
+</span>

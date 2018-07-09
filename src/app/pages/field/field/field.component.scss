@@ -1,0 +1,72 @@
+#fieldHeader {
+    min-width: 800px;
+    height: 280px;
+    padding: 0;
+    margin: 0 0 30px 0 !important;
+
+    >div {
+        overflow: hidden;
+        padding: 0 10px;
+        margin: 12px 0;
+        img {
+            max-width: 300px;
+            height: auto;
+        }
+        h2 {
+            margin-bottom: -5px;
+        }
+        h4 {
+            margin-bottom: -5px;
+            clear: both;
+        }
+        h5 {
+            font-size: .9em;
+            color: #555;
+        }
+        span {
+            float: left;
+            margin-right: 20px;
+        }
+    }
+    >div:first-child {
+        padding: 0;
+        margin: 0;
+    }
+    >div:last-child {
+        border-left: solid 1px #DBDBDB;
+    }
+
+}
+
+#fieldHeaderBg {
+    //border-bottom: solid 1px #DDD;
+
+    .ngxgMaxWidth {
+        max-width: 1240px;
+    }
+}
+
+#fieldTabsList {
+    
+    border-top: solid 1px #DDD;
+    border-bottom: solid 1px #DDD;
+    height: 60px;
+
+    button {
+        margin-right: 5px;
+    }
+
+    .ngxgMaxWidth {
+        max-width: 1240px;
+    }
+}
+
+#fieldTabs {
+    background-color: #F8F8F8;
+
+    min-height: calc(100vh - 280px - 200px);
+
+    .ngxgMaxWidth {
+        max-width: 1240px;
+    }
+}
