@@ -126,9 +126,9 @@
                     </div>
 
                     <div fxFlex=18>
-                            <h4>2000</h4>
-                            <h5>ISSE</h5>
-                        </div>
+                        <h4>2000</h4>
+                        <h5>ISSE</h5>
+                    </div>
 
                     <div fxFlex=50></div>
 
@@ -140,25 +140,16 @@
 
     <div id="fieldTabsList" class="ngxgContent" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start start">
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['/field']" routerLinkActive="link-active">Tempo e Previsão</button>
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['/climatology']" routerLinkActive="link-active">Climatologia</button>
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['/satellite']" routerLinkActive="link-active">Satélite</button>
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['/phenology']" routerLinkActive="link-active">Guia de Fases</button>
+            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['weather']" routerLinkActive="link-active">Tempo e Previsão</button>
+            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['climate']" routerLinkActive="link-active">Climatologia</button>
+            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button>
+            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['phenology']" routerLinkActive="link-active">Guia de Fases</button>
         </div>
     </div>
 
     <div id="fieldTabs" class="ngxgContent" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
-            <br>a
-            <br>a
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
-            <br>
+            <router-outlet></router-outlet>
         </div>
 
     </div>
