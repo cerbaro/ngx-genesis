@@ -1,12 +1,12 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { NgModule, ErrorHandler } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
+import { NgxgErrHandler } from 'src/app/core/err/ngxg-err-handler';
+
 
 @NgModule({
     declarations: [
@@ -16,11 +16,10 @@ import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
         BrowserModule,
         BrowserAnimationsModule,
         AppRoutingModule,
-
-        LeafletModule.forRoot(),
-        LeafletDrawModule.forRoot()
     ],
-    providers: [],
+    providers: [
+        { provide: ErrorHandler, useClass: NgxgErrHandler }
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
