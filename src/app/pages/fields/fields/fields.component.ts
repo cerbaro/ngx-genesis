@@ -5,12 +5,13 @@ import * as L from 'leaflet';
 import { Field } from 'src/app/shared/types/field';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
+import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
 
 @Component({
     templateUrl: './fields.component.html',
     styleUrls: ['./fields.component.scss']
 })
-export class FieldsComponent implements OnInit {
+export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
 
     public fieldsLoading: Boolean;
 
@@ -28,11 +29,21 @@ export class FieldsComponent implements OnInit {
         private ngxgLoadingService: NgxgLoadingService,
         private mapBoxService: MapBoxService
     ) {
+        super();
+
         this.fieldsLoading = true;
-        this.ngxgLoadingService.setLoading(this.fieldsLoading);
     }
 
     ngOnInit() {
+
+        /**
+         * Timeout to avoid Error
+         * ExpressionChangedAfterItHasBeenCheckedError
+         */
+
+        setTimeout(() => {
+            this.ngxgLoadingService.setLoading(this.fieldsLoading);
+        });
 
         this.fields = [];
         for (let i = 0; i <= 5; i++) {

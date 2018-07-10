@@ -15,10 +15,18 @@ export class EnsoComponent extends NgxgUnsubscribe implements OnInit {
         super();
 
         this.ensoLoading = true;
-        this.ngxgLoadingService.setLoading(this.ensoLoading);
     }
 
     ngOnInit() {
+
+        /**
+         * Timeout to avoid Error
+         * ExpressionChangedAfterItHasBeenCheckedError
+         */
+
+        setTimeout(() => {
+            this.ngxgLoadingService.setLoading(this.ensoLoading);
+        });
 
         setTimeout(() => {
             this.ensoLoading = false;

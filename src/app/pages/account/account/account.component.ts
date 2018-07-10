@@ -14,10 +14,18 @@ export class AccountComponent extends NgxgUnsubscribe implements OnInit {
         super();
 
         this.accountLoading = true;
-        this.ngxgLoadingService.setLoading(this.accountLoading);
     }
 
     ngOnInit() {
+
+        /**
+         * Timeout to avoid Error
+         * ExpressionChangedAfterItHasBeenCheckedError
+         */
+
+        setTimeout(() => {
+            this.ngxgLoadingService.setLoading(this.accountLoading);
+        });
 
         setTimeout(() => {
             this.accountLoading = false;

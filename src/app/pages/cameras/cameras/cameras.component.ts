@@ -14,10 +14,18 @@ export class CamerasComponent extends NgxgUnsubscribe implements OnInit {
         super();
 
         this.camerasLoading = true;
-        this.ngxgLoadingService.setLoading(this.camerasLoading);
     }
 
     ngOnInit() {
+
+        /**
+         * Timeout to avoid Error
+         * ExpressionChangedAfterItHasBeenCheckedError
+         */
+
+        setTimeout(() => {
+            this.ngxgLoadingService.setLoading(this.camerasLoading);
+        });
 
         setTimeout(() => {
             this.camerasLoading = false;

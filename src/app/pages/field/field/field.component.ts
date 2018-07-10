@@ -1,4 +1,5 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router, NavigationStart } from '@angular/router';
 
 import { Field } from 'src/app/shared/types/field';
 
@@ -7,7 +8,8 @@ import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { TabLoadingService } from '../services/tab-loading.service';
-import { startWith, takeUntil } from 'rxjs/operators';
+import { startWith, takeUntil, filter } from 'rxjs/operators';
+
 
 @Component({
     templateUrl: './field.component.html',
@@ -21,6 +23,7 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
     public tabsLoading: Boolean;
 
     constructor(
+        private router: Router,
         private ngxgLoadingService: NgxgLoadingService,
         private tabLoadingService: TabLoadingService,
         private mapBoxService: MapBoxService,
@@ -29,7 +32,7 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
         super();
 
         this.fieldLoading = true;
-        this.ngxgLoadingService.setLoading(this.fieldLoading);
+        this.tabsLoading = true;
 
         this.field = {
             name: 'Jabotirama 1',
@@ -53,18 +56,45 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
 
     ngOnInit() {
 
+        /**
+         * Monitor tabs loading
+         */
+
+        this.router.events
+            .pipe(
+                filter(event => event instanceof NavigationStart),
+                takeUntil(this.ngxgUnsubscribe)
+            )
+            .subscribe(event => {
+                if (event instanceof NavigationStart) {
+                    this.tabsLoading = true;
+                    this.tabLoadingService.setLoading(this.tabsLoading);
+                }
+            });
+
+        this.tabLoadingService.getLoading().pipe(
+            startWith(true),
+            takeUntil(this.ngxgUnsubscribe)
+        ).subscribe(
+            loading => this.tabsLoading = loading
+        );
+
+
+        /**
+         * Timeout to avoid Error
+         * ExpressionChangedAfterItHasBeenCheckedError
+         */
+
+        setTimeout(() => {
+            this.ngxgLoadingService.setLoading(this.fieldLoading);
+        });
+
+
         setTimeout(() => {
 
             this.dataExchangeService.setField(this.field);
             this.fieldLoading = false;
             this.ngxgLoadingService.setLoading(this.fieldLoading);
-
-            this.tabLoadingService.getLoading().pipe(
-                startWith(true),
-                takeUntil(this.ngxgUnsubscribe)
-            ).subscribe(
-                loading => this.tabsLoading = loading
-            );
 
         }, 2000);
 
