@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 
 import { Field } from 'src/app/shared/types/field';
 
 import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
+import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
+import { TabLoadingService } from '../services/tab-loading.service';
+import { startWith, takeUntil } from 'rxjs/operators';
 
 @Component({
     templateUrl: './field.component.html',
@@ -15,7 +18,14 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
     public fieldLoading: Boolean;
     public field: Field;
 
-    constructor(private ngxgLoadingService: NgxgLoadingService, private mapBoxService: MapBoxService) {
+    public tabsLoading: Boolean;
+
+    constructor(
+        private ngxgLoadingService: NgxgLoadingService,
+        private tabLoadingService: TabLoadingService,
+        private mapBoxService: MapBoxService,
+        private dataExchangeService: DataExchangeService
+    ) {
         super();
 
         this.fieldLoading = true;
@@ -38,14 +48,25 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
                 thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
             }
         };
+
     }
 
     ngOnInit() {
 
+        // this.tabLoadingService.getLoading().pipe(
+        //     startWith(true),
+        //     takeUntil(this.ngxgUnsubscribe)
+        // ).subscribe(
+        //     loading => this.tabsLoading = loading
+        // );
+
         setTimeout(() => {
+
+            this.dataExchangeService.setField(this.field);
             this.fieldLoading = false;
             this.ngxgLoadingService.setLoading(this.fieldLoading);
-        }, 0);
+
+        }, 2000);
 
     }
 

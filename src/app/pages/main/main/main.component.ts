@@ -14,6 +14,9 @@ export class MainComponent extends NgxgUnsubscribe implements OnInit {
 
     constructor(private ngxgLoadingService: NgxgLoadingService) {
         super();
+    }
+
+    ngOnInit() {
 
         this.ngxgLoadingService.getLoading().pipe(
             startWith(true),
@@ -23,8 +26,6 @@ export class MainComponent extends NgxgUnsubscribe implements OnInit {
         );
 
     }
-
-    ngOnInit() { }
 
     public onActivate(event) {
         window.scroll(0, 0);

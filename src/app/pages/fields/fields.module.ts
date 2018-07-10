@@ -18,7 +18,9 @@ import { MapBoxService } from 'src/app/shared/services/map-box.service';
 
         LeafletModule
     ],
-    declarations: [FieldsComponent],
+    declarations: [
+        FieldsComponent
+    ],
     providers: [
         MapBoxService
     ]

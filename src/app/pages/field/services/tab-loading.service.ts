@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
-export class NgxgLoadingService {
+export class TabLoadingService {
 
     /**
      * Flag to show/hide global preloader

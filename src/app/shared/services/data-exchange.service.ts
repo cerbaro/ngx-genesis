@@ -1,31 +1,34 @@
 import { Injectable } from '@angular/core';
+import { Observable, BehaviorSubject } from 'rxjs';
+
 import { Field } from '../types/field';
-import { Subject } from 'rxjs';
 import { Season } from '../types/season';
 
 @Injectable()
 export class DataExchangeService {
 
-    public f: Subject<Field>;
-    public field: Field;
-
-    public s: Subject<Season>;
-    public season: Season;
+    private field: BehaviorSubject<Field>;
+    private season: BehaviorSubject<Season>;
 
     constructor() {
-        this.f = new Subject<Field>();
-        this.s = new Subject<Season>();
+        this.field = new BehaviorSubject<Field>(null);
+        this.season = new BehaviorSubject<Season>(null);
+    }
 
+    public getField(): Observable<Field> {
+        return this.field.asObservable();
     }
 
     public setField(field: Field): void {
-        this.field = field;
-        this.f.next(this.field);
+        this.field.next(field);
+    }
+
+    public getSeason(): Observable<Season> {
+        return this.season.asObservable();
     }
 
     public setSeason(season: Season): void {
-        this.season = season;
-        this.s.next(this.season);
+        this.season.next(season);
     }
 
 

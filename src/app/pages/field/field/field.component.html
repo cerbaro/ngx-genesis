@@ -148,7 +148,13 @@
     </div>
 
     <div id="fieldTabs" class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px" style="position: relative;">
+
+            <!-- Preloader -->
+            <span *ngIf="tabsLoading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
+                <mat-spinner [diameter]="60" [strokeWidth]="4"></mat-spinner>
+            </span>
+
             <router-outlet></router-outlet>
         </div>
 

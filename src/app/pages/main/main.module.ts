@@ -6,6 +6,7 @@ import { MainComponent } from './main/main.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
+import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 
 @NgModule({
     imports: [
@@ -16,7 +17,8 @@ import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
     ],
     declarations: [MainComponent],
     providers: [
-        NgxgLoadingService
+        NgxgLoadingService,
+        DataExchangeService
     ]
 })
 export class MainModule { }

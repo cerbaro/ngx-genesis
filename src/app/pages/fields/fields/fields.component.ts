@@ -24,10 +24,12 @@ export class FieldsComponent implements OnInit {
         center: L.latLng(46.879966, -121.726909)
     };
 
-    constructor(private ngxgLoadingService: NgxgLoadingService, private mapBoxService: MapBoxService) {
+    constructor(
+        private ngxgLoadingService: NgxgLoadingService,
+        private mapBoxService: MapBoxService
+    ) {
         this.fieldsLoading = true;
         this.ngxgLoadingService.setLoading(this.fieldsLoading);
-        console.log(1);
     }
 
     ngOnInit() {

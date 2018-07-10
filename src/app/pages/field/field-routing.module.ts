@@ -1,20 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FieldComponent } from './field/field.component';
-import { WeatherComponent } from './tabs/weather/weather.component';
-import { ClimateComponent } from './tabs/climate/climate.component';
-import { SatelliteComponent } from './tabs/satellite/satellite.component';
-import { PhenologyComponent } from './tabs/phenology/phenology.component';
 
 const routes: Routes = [
     {
         path: '', component: FieldComponent,
         children: [
             { path: '', redirectTo: 'weather', pathMatch: 'full' },
-            { path: 'weather', component: WeatherComponent },
-            { path: 'climate', component: ClimateComponent },
-            { path: 'satellite', component: SatelliteComponent },
-            { path: 'phenology', component: PhenologyComponent }
+            { path: 'weather', loadChildren: './tabs/weather/weather.module#WeatherModule' },
+            { path: 'climate', loadChildren: './tabs/climate/climate.module#ClimateModule' },
+            { path: 'satellite', loadChildren: './tabs/satellite/satellite.module#SatelliteModule' },
+            { path: 'phenology', loadChildren: './tabs/phenology/phenology.module#PhenologyModule' }
         ]
     },
     { path: '**', component: FieldComponent }

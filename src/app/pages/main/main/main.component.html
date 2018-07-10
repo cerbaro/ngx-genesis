@@ -8,9 +8,9 @@
             <mat-list fxLayout="row">
                 <a mat-list-item [routerLink]="['/fields']" routerLinkActive="link-active">Campos</a>
                 <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">El Niño</a>
-                <a mat-list-item href="cam" routerLinkActive="link-active">Câmeras</a>
+                <a mat-list-item [routerLink]="['/cameras']" routerLinkActive="link-active">Câmeras</a>
                 <mat-divider [vertical]="true" routerLinkActive="link-active"></mat-divider>
-                <a mat-list-item href="profile" routerLinkActive="link-active">Minha Conta</a>
+                <a mat-list-item [routerLink]="['/account']" routerLinkActive="link-active">Minha Conta</a>
             </mat-list>
         </span>
     </span>

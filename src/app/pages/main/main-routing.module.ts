@@ -11,7 +11,9 @@ const routes: Routes = [
             { path: 'fields', loadChildren: '../fields/fields.module#FieldsModule' },
             { path: 'field', loadChildren: '../field/field.module#FieldModule' },
 
-            { path: 'enso', loadChildren: '../enso/enso.module#EnsoModule' }
+            { path: 'enso', loadChildren: '../enso/enso.module#EnsoModule' },
+            { path: 'cameras', loadChildren: '../cameras/cameras.module#CamerasModule' },
+            { path: 'account', loadChildren: '../account/account.module#AccountModule' }
         ]
     }
 ];
