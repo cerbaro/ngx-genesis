@@ -53,18 +53,18 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
 
     ngOnInit() {
 
-        // this.tabLoadingService.getLoading().pipe(
-        //     startWith(true),
-        //     takeUntil(this.ngxgUnsubscribe)
-        // ).subscribe(
-        //     loading => this.tabsLoading = loading
-        // );
-
         setTimeout(() => {
 
             this.dataExchangeService.setField(this.field);
             this.fieldLoading = false;
             this.ngxgLoadingService.setLoading(this.fieldLoading);
+
+            this.tabLoadingService.getLoading().pipe(
+                startWith(true),
+                takeUntil(this.ngxgUnsubscribe)
+            ).subscribe(
+                loading => this.tabsLoading = loading
+            );
 
         }, 2000);
 

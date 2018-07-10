@@ -21,8 +21,8 @@ export class WeatherComponent extends NgxgUnsubscribe implements OnInit {
     ) {
         super();
 
-        // this.tabLoading = true;
-        // this.tabLoadingService.setLoading(true);
+        this.tabLoading = true;
+        this.tabLoadingService.setLoading(true);
     }
 
     ngOnInit() {
@@ -33,10 +33,10 @@ export class WeatherComponent extends NgxgUnsubscribe implements OnInit {
             field => {
                 this.field = field;
 
-                // setTimeout(() => {
-                //     this.tabLoading = false;
-                //     this.tabLoadingService.setLoading(false);
-                // }, 2000);
+                setTimeout(() => {
+                    this.tabLoading = false;
+                    this.tabLoadingService.setLoading(false);
+                }, 2000);
             }
         );
 
