@@ -53,7 +53,7 @@ export function highchartsFactory() {
         LeafletModule.forRoot(),
         LeafletDrawModule.forRoot(),
 
-        ChartModule.forRoot(require('highcharts'))
+        ChartModule
     ],
     declarations: [MainComponent],
     providers: [

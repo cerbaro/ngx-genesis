@@ -21,7 +21,7 @@
     padding: 0 40px;
     position: sticky;
     top: 80px;
-    z-index: 9999; 
+    z-index: 999; 
     border-bottom: solid 1px #EEE;
 
     button {
@@ -78,10 +78,16 @@
 }
 
 .ngxgCard {
-    padding: 10px 15px !important;
+    padding: 10px 10px !important;
 
     .ngxgCardTitle h3 {
         color: #757575;
+    }
+
+    chart {
+        display: block;
+        width: 100% !important;
+        height: auto !important;
     }
 }
 
@@ -93,5 +99,15 @@ router-outlet + * {
     flex: 1 1 auto; 
     display: flex;
     flex-direction: column; 
+}
+
+
+/**
+ * Fix Leaflet buttons z-index
+ */
+
+
+.leaflet-top, .leaflet-bottom {
+    z-index: 500 !important;
 }
 

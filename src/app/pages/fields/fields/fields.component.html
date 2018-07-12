@@ -2,7 +2,7 @@
     <div class="ngxgHeaderToolbar" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span fxFlex=41>
-                <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Fazenda</button>
+                <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0" (click)="openFilter($event)">Fazenda</button>
                 <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Cultura</button>
                 <button mat-raised-button class="ngxgButtonFilter mat-elevation-z0">Safra</button>
             </span>
@@ -20,7 +20,7 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"  [routerLink]="['/field']">
+                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition" [routerLink]="['/field']">
 
                     <div fxFlex="300px">
                         <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
@@ -72,7 +72,7 @@
                         <h4>R8 - Maturidade plena</h4>
                         <h5>Estádio atual</h5>
                     </div>
-                    
+
                 </mat-card>
             </div>
 

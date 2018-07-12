@@ -74,4 +74,9 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
 
     }
 
+
+    public openFilter(event) {
+        console.log('Event', event);
+    }
+
 }

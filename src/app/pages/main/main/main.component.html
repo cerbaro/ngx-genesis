@@ -1,7 +1,7 @@
 <mat-toolbar id="mainToolbar" fxLayout="row" class="mat-typography">
     <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
         <span>
-            <img src="assets/img/logo.png" style="display:block; height:40px;">
+            <!-- <img src="assets/img/logo.png" style="display:block; height:40px;"> -->
         </span>
         <span fxFlex="2 1 auto"></span>
         <span>
@@ -10,12 +10,25 @@
                 <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">El Niño</a>
                 <!-- <a mat-list-item [routerLink]="['/cameras']" routerLinkActive="link-active">Câmeras</a> -->
                 <mat-divider [vertical]="true" routerLinkActive="link-active"></mat-divider>
-                <a mat-list-item [routerLink]="['/account']" routerLinkActive="link-active">Minha Conta</a>
+                
+                <a mat-list-item [matMenuTriggerFor]="menu"><mat-icon>account_circle</mat-icon></a>
+                
             </mat-list>
         </span>
     </span>
 </mat-toolbar>
 <mat-toolbar id="mainToolbarSoul"></mat-toolbar>
+
+<mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
+    <button mat-menu-item [routerLink]="['/account']" routerLinkActive="link-active">
+        <mat-icon>account_circle</mat-icon>
+        <span>Minha conta</span>
+    </button>
+    <button mat-menu-item>
+        <mat-icon>exit_to_app</mat-icon>
+        <span>Sair</span>
+    </button>
+</mat-menu>
 
 <!-- Preloader -->
 <span *ngIf="loading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">

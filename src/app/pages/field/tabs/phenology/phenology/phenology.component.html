@@ -13,7 +13,7 @@
 
                     <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
                         <div fxFlex>
-                            Chart
+                            <chart [options]="charts.phenology.options" (load)="saveChartInstance('phenology', $event.context)"></chart>
                         </div>
                     </mat-card>
 

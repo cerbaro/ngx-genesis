@@ -2,7 +2,7 @@
     height: 80px;
     position: fixed;
     top: 0;
-    z-index: 10000;
+    z-index: 999;
     padding: 0 40px;
     background-color: rgba($color: #FFFFFF, $alpha: 1);
 
@@ -12,9 +12,9 @@
         color: rgba($color: #000, $alpha: .8);
         text-decoration: none;
         padding: 0 !important;
-        
         margin-right: 5px;
         height: 35px;
+        cursor: pointer;
 
         &:last-child {
             margin: 0 0 0 5px;
@@ -25,10 +25,12 @@
             font-weight: 500;
         }
     }
+
     .link-active {
         color: rgba($color: #000, $alpha: 1) !important;
         font-weight: 500 !important;
     }
+
 }
 
 #mainToolbarSoul {

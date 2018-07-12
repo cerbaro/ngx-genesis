@@ -8,6 +8,7 @@ import { FieldsComponent } from './fields/fields.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
+import { FilterComponent } from './filter/filter.component';
 
 @NgModule({
     imports: [
@@ -15,11 +16,11 @@ import { MapBoxService } from 'src/app/shared/services/map-box.service';
         FieldsRoutingModule,
 
         LayoutComponentsModule,
-
         LeafletModule
     ],
     declarations: [
-        FieldsComponent
+        FieldsComponent,
+        FilterComponent
     ],
     providers: [
         MapBoxService
