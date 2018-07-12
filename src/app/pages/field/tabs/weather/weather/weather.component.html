@@ -5,8 +5,8 @@
         <!-- Latest -->
         <div fxFlex fxLayout="row" fxLayoutGap="20px">
 
-            <div fxFlex=70 fxLayout="column" fxLayoutGap="20px">
-                <div fxFlex>
+            <div fxFlex=70 fxLayout="column">
+                <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Tempo Agora</h1>
                 </div>
 
@@ -15,8 +15,8 @@
                     <div fxFlex=25 fxLayout="column" fxLayoutGap="20px">
 
                         <!-- Temperature -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex fxLayout="column">
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="column">
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Temperatura</h3>
                             </div>
                             <div fxFlex>
@@ -29,8 +29,8 @@
                     <div fxFlex=35 fxLayout="column" fxLayoutGap="20px">
 
                         <!-- Humidity -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Umidade</h3>
                             </div>
                             <div fxFlex>
@@ -39,8 +39,8 @@
                         </mat-card>
 
                         <!-- Dew Point -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex fxLayout="row">
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Ponto de Olvalho</h3>
                             </div>
                             <div fxFlex>
@@ -53,8 +53,8 @@
                     <div fxFlex=40 fxLayout="column" fxLayoutGap="20px">
 
                         <!-- Wind Direction -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Direção do Vento</h3>
                             </div>
                             <div fxFlex>
@@ -63,8 +63,8 @@
                         </mat-card>
 
                         <!-- Wind Speed -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex fxLayout="row">
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Velocidade do Vento</h3>
                             </div>
                             <div fxFlex>
@@ -78,9 +78,9 @@
                 </div>
             </div>
 
-            <div fxFlex fxLayout="column" fxLayoutGap="20px">
+            <div fxFlex fxLayout="column">
 
-                <div fxFlex>
+                <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Registrado Ontem</h1>
                 </div>
 
@@ -89,8 +89,8 @@
                     <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
                         <!-- ISSE -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                            <div class="weatherCardTitle" fxFlex>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                            <div class="ngxgCardTitle" fxFlex>
                                 <h3>Índice de Severidade de Seca</h3>
                             </div>
                             <div fxFlex>
@@ -99,8 +99,8 @@
                         </mat-card>
 
                         <!-- Evapotranspiration -->
-                        <mat-card class="weatherCard mat-elevation-z1" fxFlex fxLayout="row">
-                            <div class="weatherCardTitle" fxFlex=70>
+                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
+                            <div class="ngxgCardTitle" fxFlex=70>
                                 <h3>Evapotranspiração Potencial</h3>
                             </div>
                             <div fxFlex>
@@ -122,61 +122,68 @@
         <div fxFlex fxLayout="row" fxLayoutGap="20px">
 
             <!-- Observed -->
-            <div fxFlex fxLayout="column" fxLayoutGap="20px">
+            <div fxFlex fxLayout="column">
 
-                <div fxFlex>
+                <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Observados diariamente</h1>
                 </div>
 
-                <!-- Daily observed -->
-                <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                    <div class="weatherCardTitle" fxFlex>
-                        <h3>Chuva e temperatura média diária</h3>
-                    </div>
-                    <div fxFlex>
-                        Value
-                    </div>
-                </mat-card>
+                <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
-                <!-- Daily accumulated -->
-                <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                    <div class="weatherCardTitle" fxFlex>
-                        <h3>Chuva e graus-dia acumulados</h3>
-                    </div>
-                    <div fxFlex>
-                        Value
-                    </div>
-                </mat-card>
+                    <!-- Daily observed -->
+                    <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                        <div class="ngxgCardTitle" fxFlex>
+                            <h3>Chuva e temperatura média diária</h3>
+                        </div>
+                        <div fxFlex>
+                            Value
+                        </div>
+                    </mat-card>
+
+                    <!-- Daily accumulated -->
+                    <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                        <div class="ngxgCardTitle" fxFlex>
+                            <h3>Chuva e graus-dia acumulados</h3>
+                        </div>
+                        <div fxFlex>
+                            Value
+                        </div>
+                    </mat-card>
+
+                </div>
 
             </div>
 
             <!-- Forecast -->
-            <div fxFlex fxLayout="column" fxLayoutGap="20px">
+            <div fxFlex fxLayout="column">
 
-                <div fxFlex>
+                <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Previsão</h1>
                 </div>
 
-                <!-- Rain probability -->
-                <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                    <div class="weatherCardTitle">
-                        <h3>Probabilidade de chuva</h3>
-                    </div>
-                    <div fxFlex>
-                        Chart
-                    </div>
-                </mat-card>
+                <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
-                <!-- Rainfall 7 days map -->
-                <mat-card class="weatherCard mat-elevation-z1" fxFlex>
-                    <div class="weatherCardTitle">
-                        <h3>Previsão de total de chuva para os próximos 7 dias</h3>
-                    </div>
-                    <div fxFlex>
-                        Value
-                    </div>
-                </mat-card>
+                    <!-- Rain probability -->
+                    <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                        <div class="ngxgCardTitle">
+                            <h3>Probabilidade de chuva</h3>
+                        </div>
+                        <div fxFlex>
+                            Chart
+                        </div>
+                    </mat-card>
 
+                    <!-- Rainfall 7 days map -->
+                    <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                        <div class="ngxgCardTitle">
+                            <h3>Previsão de total de chuva para os próximos 7 dias</h3>
+                        </div>
+                        <div fxFlex>
+                            Value
+                        </div>
+                    </mat-card>
+
+                </div>
             </div>
 
         </div>

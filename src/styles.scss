@@ -71,6 +71,20 @@
     }
 }
 
+
+.ngxgCardSectionTitle h1 {
+    margin-top: 20px;
+    color: #545454;
+}
+
+.ngxgCard {
+    padding: 10px 15px !important;
+
+    .ngxgCardTitle h3 {
+        color: #757575;
+    }
+}
+
 /**
  * Fix FlexLayout within router-outlet
  */
