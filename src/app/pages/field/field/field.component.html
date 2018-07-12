@@ -142,13 +142,13 @@
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start start">
             <button mat-raised-button class="mat-elevation-z0" [routerLink]="['weather']" routerLinkActive="link-active">Tempo e Previsão</button>
             <button mat-raised-button class="mat-elevation-z0" [routerLink]="['climate']" routerLinkActive="link-active">Climatologia</button>
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button>
+            <!-- <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button> -->
             <button mat-raised-button class="mat-elevation-z0" [routerLink]="['phenology']" routerLinkActive="link-active">Guia de Fases</button>
         </div>
     </div>
 
     <div id="fieldTabs" class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px" style="position: relative;">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row">
 
             <!-- Preloader -->
             <span *ngIf="tabsLoading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
@@ -156,6 +156,7 @@
             </span>
 
             <router-outlet></router-outlet>
+            
         </div>
 
     </div>

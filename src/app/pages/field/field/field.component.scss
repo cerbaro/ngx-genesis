@@ -88,6 +88,11 @@
 #fieldTabs {
     background-color: #FDFDFD;
     min-height: calc(100vh - 280px - 150px);
+
+    .ngxgMaxWidth {
+        position: relative;
+        padding: 30px 0;
+    }
 }
 
 .mat-form-field {
@@ -107,5 +112,4 @@
         vertical-align: unset !important;
     }
 }
-
 

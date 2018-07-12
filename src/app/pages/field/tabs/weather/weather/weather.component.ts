@@ -45,7 +45,6 @@ export class WeatherComponent extends NgxgUnsubscribe implements OnInit {
 
                 this.tabLoading = false;
                 this.tabLoadingService.setLoading(false);
-
             }
         );
 
