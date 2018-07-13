@@ -10,13 +10,16 @@ import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { FilterComponent } from './filter/filter.component';
 
+import { MdePopoverModule } from '@material-extended/mde';
+
 @NgModule({
     imports: [
         CommonModule,
         FieldsRoutingModule,
 
         LayoutComponentsModule,
-        LeafletModule
+        LeafletModule,
+        MdePopoverModule
     ],
     declarations: [
         FieldsComponent,

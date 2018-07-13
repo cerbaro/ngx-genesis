@@ -55,9 +55,7 @@
 
 .ngxgButtonFilter {
     border: solid 1px #DDD !important;
-    &:hover {
-        background-color: #DDD;
-    }
+    background-color: #FFF;
 }
 
 .ngxgButtonEdit {
@@ -65,10 +63,6 @@
     color: #151515;
     border: solid 1px #EEE !important;
     background-color: #FFF;
-
-    &:hover {
-        background-color: #EFEFEF;
-    }
 }
 
 

@@ -26,6 +26,7 @@
     "@asymmetrik/ngx-leaflet": "github:cerbaro/ngx-leaflet",
     "@asymmetrik/ngx-leaflet-draw": "github:cerbaro/ngx-leaflet-draw",
     "@kiwigrid/ngx-highcharts": "github:cerbaro/angular2-highcharts",
+    "@material-extended/mde": "^2.0.1",
     "core-js": "^2.5.4",
     "hammerjs": "^2.0.8",
     "leaflet": "^1.3.1",

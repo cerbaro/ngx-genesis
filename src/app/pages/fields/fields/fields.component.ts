@@ -16,6 +16,8 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
     public fieldsLoading: Boolean;
     public fields: Array<Field>;
 
+    public typesOfShoes: string[] = ['Boots', 'Clogs', 'Loafers', 'Moccasins', 'Sneakers'];
+
     public options = {
         layers: [
             L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
@@ -71,10 +73,6 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
             this.ngxgLoadingService.setLoading(this.fieldsLoading);
         }, 2000);
 
-    }
-
-    public openFilter(event) {
-        console.log('Event', event);
     }
 
 }
