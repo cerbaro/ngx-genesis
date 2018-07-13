@@ -14,7 +14,6 @@ import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
 export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
 
     public fieldsLoading: Boolean;
-
     public fields: Array<Field>;
 
     public options = {
@@ -73,7 +72,6 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
         }, 2000);
 
     }
-
 
     public openFilter(event) {
         console.log('Event', event);
