@@ -4,10 +4,10 @@ import { CommonModule } from '@angular/common';
 import { FieldRoutingModule } from './field-routing.module';
 import { FieldComponent } from './field/field.component';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { TabLoadingService } from './utils/tab-loading.service';
+import { MapModule } from 'src/app/shared/modules/map/map.module';
 
 @NgModule({
     imports: [
@@ -15,7 +15,7 @@ import { TabLoadingService } from './utils/tab-loading.service';
         FieldRoutingModule,
 
         LayoutComponentsModule,
-        LeafletModule
+        MapModule
     ],
     declarations: [
         FieldComponent

@@ -1,0 +1,29 @@
+#authWrapper {
+    height: 100vh !important;
+}
+
+#authImage {
+    background-size: cover;
+    background-position: center right;
+    background-image: url('/assets/img/homebg.png');
+}
+
+#logoImage {
+    display:block; 
+    width: 100%;
+}
+
+.mat-form-field {
+    width: 100%;
+    //height: 20px !important;
+    margin: 0 0 -.7em 0 !important;
+
+    /deep/ .mat-form-field-wrapper {
+        margin: 0 !important;
+    }
+
+    /deep/ .mat-form-field-infix {
+        padding: 5px 0 10px !important;
+    }
+
+}

@@ -12,7 +12,8 @@ import {
     MatListModule,
     MatDividerModule,
     MatSelectModule,
-    MatMenuModule
+    MatMenuModule,
+    MatCheckboxModule
 } from '@angular/material';
 
 @NgModule({
@@ -28,7 +29,8 @@ import {
         MatProgressSpinnerModule,
         MatListModule,
         MatDividerModule,
-        MatMenuModule
+        MatMenuModule,
+        MatCheckboxModule
     ],
     exports: [
         FlexLayoutModule,
@@ -43,7 +45,8 @@ import {
         MatProgressSpinnerModule,
         MatListModule,
         MatDividerModule,
-        MatMenuModule
+        MatMenuModule,
+        MatCheckboxModule
     ],
 })
 export class LayoutComponentsModule { }

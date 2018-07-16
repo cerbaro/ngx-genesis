@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgLoadingService } from '../../../core/comm/ngxg-loading';
+import { NgxgUnsubscribe } from '../../../core/comm/ngxg-unsubscribe';
 
 @Component({
-    selector: 'app-enso',
     templateUrl: './enso.component.html',
     styleUrls: ['./enso.component.scss']
 })

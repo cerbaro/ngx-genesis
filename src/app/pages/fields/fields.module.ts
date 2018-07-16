@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { FieldsRoutingModule } from './fields-routing.module';
 import { FieldsComponent } from './fields/fields.component';
@@ -12,13 +11,15 @@ import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { MdePopoverModule } from '@material-extended/mde';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 
+import { MapModule } from 'src/app/shared/modules/map/map.module';
+
 @NgModule({
     imports: [
         CommonModule,
         FieldsRoutingModule,
 
         LayoutComponentsModule,
-        LeafletModule,
+        MapModule,
         MdePopoverModule,
         FilterPipeModule
     ],

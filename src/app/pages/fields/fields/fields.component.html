@@ -92,8 +92,18 @@
 
             <div fxFlex>
                 <div id="mapFieldsWrapper">
-                    <div id="mapFields" leaflet [leafletOptions]="map.options"></div>
+                    <div ngxgMap id="mapFields" [options]="{latitude: 31.7, longitude:-83.25, zoom:8.4, controls: {baseMaps: false, locate: false}, basemap: 'Light', fitMapTo: 'geojson'}">
+
+                        <!-- <div ngxgGeoJson *ngFor="let field of fields" [options]="{id: field._id, geojson: field.extra.geojson}"></div> -->
+
+                        <!-- <div ngxgMarker *ngFor="let field of fields" (click)="markerClicked($event)" [options]="{title: field.name, latitude: field.location.lat, longitude: field.location.lon, divIconOptions: field.extra.divIconOptions, fieldId: field._id}"></div> -->
+
+                    </div>
                 </div>
+
+                <!-- <div id="mapFieldsWrapper">
+                    <div id="mapFields" leaflet [leafletOptions]="map.options"></div>
+                </div> -->
             </div>
 
         </div>

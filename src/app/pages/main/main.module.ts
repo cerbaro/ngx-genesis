@@ -8,8 +8,6 @@ import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { LeafletDrawModule } from '@asymmetrik/ngx-leaflet-draw';
 import { ChartModule } from '@kiwigrid/ngx-highcharts';
 
 
@@ -49,9 +47,6 @@ export function highchartsFactory() {
         MainRoutingModule,
 
         LayoutComponentsModule,
-
-        LeafletModule.forRoot(),
-        LeafletDrawModule.forRoot(),
 
         ChartModule
     ],

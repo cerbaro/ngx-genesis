@@ -1,0 +1,42 @@
+<div id="authWrapper" fxLayout="row" fxLayoutAlign="start stretch" class="mat-typography">
+    <div fxFlex=50 fxLayout="column" fxLayoutAlign="center center" style="border-right: solid 1px #CCC">
+
+        <div fxFlex="80px" style="width: 250px !important">
+            <img id="logoImage" src="assets/img/logo.png">
+        </div>
+
+        <div fxFlex="200px" style="width: 250px !important">
+
+            <form novalidate class="form-signin">
+
+                <mat-form-field appearance="outline">
+                    <input matInput type="email" placeholder="Email" formControlName="email" required>
+                    <!-- <mat-error *ngIf="formSignin.get('email').invalid && (formSigninSubmitted || formSignin.get('email').dirty)">Email inválido!</mat-error> -->
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <input matInput type="password" placeholder="Senha" formControlName="passwd" required>
+                    <!-- <mat-error *ngIf="formSignin.get('passwd').invalid && (formSigninSubmitted || formSignin.get('passwd').dirty)">Senha inválida</mat-error> -->
+                </mat-form-field>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center">
+                    <mat-checkbox formControlName="remember" color="primary">Manter conectado</mat-checkbox>
+                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Entrar</button>
+                </div>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="padding: 25px 0 0;">
+                    <a routerLink="/signin/recovery">Recuperar senha</a>
+                    <!-- <span style="border-right: solid 1px #CCC">&nbsp;</span>
+                        <a routerLink="/signup">Criar uma conta</a> -->
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+
+    <div fxFlex id="authImage">
+
+    </div>
+
+</div>

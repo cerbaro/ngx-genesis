@@ -5,7 +5,6 @@ import { PhenologyRoutingModule } from './phenology-routing.module';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 
 import { ChartModule } from '@kiwigrid/ngx-highcharts';
-import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 @NgModule({
     imports: [
@@ -13,8 +12,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
         PhenologyRoutingModule,
         LayoutComponentsModule,
 
-        ChartModule,
-        LeafletModule
+        ChartModule
     ],
     declarations: [
         PhenologyComponent
