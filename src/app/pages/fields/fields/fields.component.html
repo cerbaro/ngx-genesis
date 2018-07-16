@@ -3,7 +3,11 @@
     <div class="ngxgHeaderToolbar" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span fxFlex=41>
-                <button mat-button [mdePopoverTriggerFor]="farmFilter" class="ngxgButtonFilter ">
+
+                <button *ngIf="filters.user.length > 1" mat-button [mdePopoverTriggerFor]="userFilter" class="ngxgButtonFilter">
+                    Produtor
+                </button>
+                <button mat-button [mdePopoverTriggerFor]="farmFilter" class="ngxgButtonFilter">
                     Fazenda
                 </button>
                 <button mat-button [mdePopoverTriggerFor]="cropFilter" class="ngxgButtonFilter">
@@ -28,7 +32,8 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition" [routerLink]="['/field']">
+                <mat-card *ngFor="let field of fields | filterBy: filterBy" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"
+                    [routerLink]="['/field']">
 
                     <div fxFlex="300px">
                         <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
@@ -87,7 +92,7 @@
 
             <div fxFlex>
                 <div id="mapFieldsWrapper">
-                    <div id="mapFields" leaflet [leafletOptions]="options"></div>
+                    <div id="mapFields" leaflet [leafletOptions]="map.options"></div>
                 </div>
             </div>
 
@@ -98,14 +103,28 @@
 
     <!-- Filters -->
 
+    <mde-popover #userFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+        mdePopoverPositionY="above">
+        <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
+            <mat-card-header>Produtores</mat-card-header>
+            <mat-card-content>
+                <mat-selection-list (selectionChange)="filterChange('user', user.selectedOptions)" #user>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let user of filters.user" [value]="user.id">
+                        {{user.name}}
+                    </mat-list-option>
+                </mat-selection-list>
+            </mat-card-content>
+        </mat-card>
+    </mde-popover>
+
     <mde-popover #farmFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
             <mat-card-header>Fazendas</mat-card-header>
             <mat-card-content>
-                <mat-selection-list #shoes>
-                    <mat-list-option *ngFor="let shoe of typesOfShoes">
-                        {{shoe}}
+                <mat-selection-list (selectionChange)="filterChange('farm', farm.selectedOptions)" #farm>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let farm of filters.farm" [value]="farm.id">
+                        {{farm.name}}
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>
@@ -115,10 +134,11 @@
     <mde-popover #cropFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll">
+            <mat-card-header>Culturas</mat-card-header>
             <mat-card-content>
-                <mat-selection-list #shoes color="primary">
-                    <mat-list-option *ngFor="let shoe of typesOfShoes">
-                        {{shoe}}
+                <mat-selection-list (selectionChange)="filterChange('crop', crop.selectedOptions)" #crop>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let crop of filters.crop" [value]="crop.id">
+                        {{crop.name}}
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>
@@ -128,10 +148,11 @@
     <mde-popover #seasonFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll">
+            <mat-card-header>Safras</mat-card-header>
             <mat-card-content>
-                <mat-selection-list #shoes>
-                    <mat-list-option *ngFor="let shoe of typesOfShoes">
-                        {{shoe}}
+                <mat-selection-list (selectionChange)="filterChange('season', season.selectedOptions)" #season>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let season of filters.season" [value]="season.id">
+                        {{season.name}}
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>
@@ -139,160 +160,3 @@
     </mde-popover>
 
 </span>
-
-
-
-<!-- Preloaders
-            <span *ngIf="fieldsLoading">
-                <mat-card *ngFor="let field of [1, 2]" fxFlex fxLayout="row" class="fieldCardLoader mat-elevation-z0">
-
-                    <div fxFlex="300px">
-                        <div style="height: 100%; width: 100%;" class="line"></div>
-                    </div>
-
-                    <div fxFlex=28>
-                        <div style="height: 24px; width: 80%;" class="line"></div>
-                        <div style="height: 16px; margin: 4px 0 15px;" class="line"></div>
-
-                        <div style=" height: 18px; width: 46%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 30%; margin: 4px 0 16px" class="line"></div>
-
-                        <div style="height: 18px; width: 35%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 45%; margin: 4px 0 16px" class="line"></div>
-
-                        <div style="height: 18px; width: 50%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 60%; margin: 4px 0 16px;" class="line"></div>
-                    </div>
-
-                    <div fxFlex>
-                        <div style="height: 24px; width: 80%;" class="line"></div>
-                        <div style="height: 16px; width: 20%; margin: 4px 0 15px;" class="line"></div>
-
-                        <div style="height: 18px; width: 46%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 40%; margin: 4px 0 16px" class="line"></div>
-
-                        <div style="height: 18px; width: 55%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 65%; margin: 4px 0 16px" class="line"></div>
-
-                        <div style="height: 18px; width: 50%; margin: 4px 0;" class="line"></div>
-                        <div style="height: 13px; width: 35%; margin: 4px 0 16px;" class="line"></div>
-                    </div>
-
-                </mat-card>
-            </span>
-             -->
-
-
-<!-- 
-
-<div class="ngxgContent" fxLayout="row">
-    <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
-
-        <div id="fieldList" fxFlex="60" fxLayout="row wrap" fxLayoutAlign="space-between">
-
-            <mat-card fxFlex class="fieldCard mat-elevation-z0 ngxgHoverTransition">
-                <mat-card-header>
-                    <mat-card-title class="mat-display-1">Jaborandi 01</mat-card-title>
-                    <mat-card-subtitle>Luiz Eduardo Magalhães, Bahia</mat-card-subtitle>
-                </mat-card-header>
-                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-content>
-                    <p>113 Hectares</p>
-                    <p>Area</p>
-
-                    <p>29 - Limpo</p>
-                    <p>Condição agora</p>
-
-                    <p>05:07 - 19:50</p>
-                    <p>Amanhecer - Por-do-Sol</p>
-
-                    <hr>
-                    <p>2017/2018 Algodão #000</p>
-
-                    <p>Algodão/PHY007</p>
-                    <p>Cultura/Variedade</p>
-
-
-
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-
-            <mat-card fxFlex class="fieldCard mat-elevation-z0 ngxgHoverTransition">
-                <mat-card-header>
-                    <mat-card-title class="mat-display-1">Jaborandi 01</mat-card-title>
-                    <mat-card-subtitle>Luiz Eduardo Magalhães, Bahia</mat-card-subtitle>
-                </mat-card-header>
-                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-content>
-                    <p>113 Hectares</p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-
-            <mat-card fxFlex class="fieldCard mat-elevation-z0 ngxgHoverTransition">
-                <mat-card-header>
-                    <mat-card-title class="mat-display-1">Jaborandi 01</mat-card-title>
-                    <mat-card-subtitle>Luiz Eduardo Magalhães, Bahia</mat-card-subtitle>
-                </mat-card-header>
-                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-content>
-                    <p>113 Hectares</p>
-                    <p>Area</p>
-
-                    <p>29 - Limpo</p>
-                    <p>Condição agora</p>
-
-                    <p>05:07 - 19:50</p>
-                    <p>Amanhecer - Por-do-Sol</p>
-
-                    <hr>
-                    <p>2017/2018 Algodão #000</p>
-
-                    <p>Algodão/PHY007</p>
-                    <p>Cultura/Variedade</p>
-
-
-
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-
-            <mat-card fxFlex class="fieldCard mat-elevation-z0 ngxgHoverTransition">
-                <mat-card-header>
-                    <mat-card-title class="mat-display-1">Jaborandi 01</mat-card-title>
-                    <mat-card-subtitle>Luiz Eduardo Magalhães, Bahia</mat-card-subtitle>
-                </mat-card-header>
-                <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
-                <mat-card-content>
-                    <p>113 Hectares</p>
-                </mat-card-content>
-                <mat-card-actions>
-                    <button mat-button>LIKE</button>
-                    <button mat-button>SHARE</button>
-                </mat-card-actions>
-            </mat-card>
-
-        </div>
-
-
-
-        <div fxFlex>
-            <div id="mapFieldsWrapper">
-                <div id="mapFields" leaflet [leafletOptions]="options"></div>
-            </div>
-        </div>
-    </div>
-
-</div>
-
- -->

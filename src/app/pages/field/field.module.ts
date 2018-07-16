@@ -7,7 +7,7 @@ import { FieldComponent } from './field/field.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
-import { TabLoadingService } from './services/tab-loading.service';
+import { TabLoadingService } from './utils/tab-loading.service';
 
 @NgModule({
     imports: [

@@ -7,7 +7,7 @@ import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
-import { TabLoadingService } from '../services/tab-loading.service';
+import { TabLoadingService } from '../utils/tab-loading.service';
 import { startWith, takeUntil, filter } from 'rxjs/operators';
 
 

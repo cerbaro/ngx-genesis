@@ -8,9 +8,9 @@ import { FieldsComponent } from './fields/fields.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
-import { FilterComponent } from './filter/filter.component';
 
 import { MdePopoverModule } from '@material-extended/mde';
+import { FilterPipeModule } from 'ngx-filter-pipe';
 
 @NgModule({
     imports: [
@@ -19,11 +19,11 @@ import { MdePopoverModule } from '@material-extended/mde';
 
         LayoutComponentsModule,
         LeafletModule,
-        MdePopoverModule
+        MdePopoverModule,
+        FilterPipeModule
     ],
     declarations: [
-        FieldsComponent,
-        FilterComponent
+        FieldsComponent
     ],
     providers: [
         MapBoxService
