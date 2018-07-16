@@ -3,7 +3,7 @@ import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay } from 'rxjs/operators';
 import { Field } from 'src/app/shared/types/field';
-import { TabLoadingService } from 'src/app/pages/field/services/tab-loading.service';
+import { TabLoadingService } from 'src/app/pages/field/utils/tab-loading.service';
 
 @Component({
     templateUrl: './satellite.component.html',
