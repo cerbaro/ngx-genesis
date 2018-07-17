@@ -9,21 +9,29 @@
 }
 
 #logoImage {
-    display:block; 
+    display: block;
     width: 100%;
 }
 
 .mat-form-field {
     width: 100%;
-    //height: 20px !important;
     margin: 0 0 -.7em 0 !important;
-
     /deep/ .mat-form-field-wrapper {
         margin: 0 !important;
     }
-
     /deep/ .mat-form-field-infix {
         padding: 5px 0 10px !important;
     }
+}
 
+#passwordRecovery {
+    padding: 15px 0 0;
+    font-size: .9em;
+    a {
+        color: #353535;
+        text-decoration: none;
+        &:hover {
+            text-decoration: underline;
+        }
+    }
 }

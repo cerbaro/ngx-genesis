@@ -5,14 +5,18 @@ import { AuthRoutingModule } from './auth-routing.module';
 import { LoginComponent } from './login/login.component';
 import { SignupComponent } from './signup/signup.component';
 import { RecoverComponent } from './recover/recover.component';
-import { LayoutComponentsModule } from '../../shared/modules/layout-components.module';
+import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 @NgModule({
     imports: [
         CommonModule,
         AuthRoutingModule,
 
-        LayoutComponentsModule
+        LayoutComponentsModule,
+
+        FormsModule,
+        ReactiveFormsModule
     ],
     declarations: [
         LoginComponent,

@@ -8,7 +8,7 @@ import { RecoverComponent } from './recover/recover.component';
 const routes: Routes = [
     { path: '', redirectTo: 'login', pathMatch: 'full' },
     { path: 'login', component: LoginComponent },
-    { path: 'signup', component: SignupComponent },
+    // { path: 'signup', component: SignupComponent },
     { path: 'recover', component: RecoverComponent },
     { path: '**', redirectTo: 'login', pathMatch: 'full' }
 ];

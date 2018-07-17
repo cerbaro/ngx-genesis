@@ -1,3 +1,52 @@
-<p>
-    recover works!
-</p>
+<div id="authWrapper" fxLayout="row" fxLayoutAlign="start stretch" class="mat-typography">
+    <div fxFlex=50 fxLayout="column" fxLayoutAlign="center center" style="border-right: solid 1px #C0C0C0">
+
+        <div fxFlex="60px" style="width: 250px !important">
+            <img id="logoImage" src="assets/img/logo.png">
+        </div>
+
+        <div fxFlex="200px" style="width: 250px !important">
+
+            <span *ngIf="!passwordReset">
+                <form novalidate class="form-recover" [formGroup]="formRecover">
+
+                    <mat-form-field appearance="outline">
+                        <input matInput type="email" placeholder="Email" formControlName="email" required>
+                        <mat-error *ngIf="formRecover.get('email').invalid">Email inválido.</mat-error>
+                    </mat-form-field>
+
+                    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
+                        <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Recuperar senha</button>
+                        <button fxFlex mat-button class="ngxgButtonFilter" routerLink="../">Cancelar</button>
+                    </div>
+
+                </form>
+            </span>
+
+            <span *ngIf="passwordReset">
+
+                <form novalidate class="form-reset">
+
+                    <mat-form-field appearance="outline" [formGroup]="formReset">
+                        <input matInput type="password" placeholder="Nova senha" formControlName="passwd" required>
+                        <mat-error *ngIf="formReset.get('passwd').invalid">Senha precisa ter 8 ou mais caractéres.</mat-error>
+                    </mat-form-field>
+
+                    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
+                        <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Alterar senha</button>
+                        <button fxFlex mat-button class="ngxgButtonFilter" routerLink="../">Cancelar</button>
+                    </div>
+
+                </form>
+
+            </span>
+
+        </div>
+
+    </div>
+
+    <div fxFlex id="authImage">
+
+    </div>
+
+</div>
