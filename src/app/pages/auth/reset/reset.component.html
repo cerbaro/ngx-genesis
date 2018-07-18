@@ -1,0 +1,16 @@
+<form novalidate>
+
+    <mat-form-field appearance="outline" [formGroup]="formReset">
+        <input matInput type="password" placeholder="Nova senha" formControlName="passwd" required>
+        <mat-error *ngIf="formReset.get('passwd').invalid">Senha precisa ter 8 ou mais caractéres.</mat-error>
+    </mat-form-field>
+
+    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
+        <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Alterar senha</button>
+    </div>
+
+</form>
+
+<div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
+    <a routerLink="../">Cancelar e ir para o login.</a>
+</div>

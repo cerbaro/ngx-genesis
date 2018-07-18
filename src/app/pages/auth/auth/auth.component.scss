@@ -1,0 +1,22 @@
+#authWrapper {
+    height: 100vh !important;
+}
+
+#authImage {
+    background-size: cover;
+    background-position: center right;
+    background-image: url('/assets/img/homebg.png');
+}
+
+#logoImage {
+    width: 250px !important;
+    
+    img {
+        display: block;
+        width: 100%;
+    }
+}
+
+#formWrapper {
+    width: 250px !important
+}

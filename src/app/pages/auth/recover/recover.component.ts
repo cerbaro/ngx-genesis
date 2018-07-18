@@ -7,10 +7,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 })
 export class RecoverComponent implements OnInit {
 
-    public passwordReset: Boolean = false;
-
     public formRecover: FormGroup;
-    public formReset: FormGroup;
 
     constructor() { }
 
@@ -20,9 +17,6 @@ export class RecoverComponent implements OnInit {
             email: new FormControl('', Validators.email)
         });
 
-        this.formReset = new FormGroup({
-            passwd: new FormControl('', [Validators.required, Validators.minLength(8)])
-        });
     }
 
 }

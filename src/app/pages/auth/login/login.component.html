@@ -1,39 +1,21 @@
-<div id="authWrapper" fxLayout="row" fxLayoutAlign="start stretch" class="mat-typography">
-    <div fxFlex=50 fxLayout="column" fxLayoutAlign="center center" style="border-right: solid 1px #C0C0C0">
+<form novalidate [formGroup]="formSignin" (ngSubmit)="signIn()">
 
-        <div fxFlex="60px" style="width: 250px !important">
-            <img id="logoImage" src="assets/img/logo.png">
-        </div>
+    <mat-form-field appearance="outline">
+        <input matInput type="email" placeholder="Email" formControlName="email" required>
+    </mat-form-field>
 
-        <div fxFlex="200px" style="width: 250px !important">
+    <mat-form-field appearance="outline">
+        <input matInput type="password" placeholder="Senha" formControlName="passwd" required>
+        <mat-error *ngIf="formSignin.get('passwd').invalid || formSignin.get('email').invalid">Senha e/ou email inválido(s).</mat-error>
+    </mat-form-field>
 
-            <form novalidate class="form-signin" [formGroup]="formSignin">
-
-                <mat-form-field appearance="outline">
-                    <input matInput type="email" placeholder="Email" formControlName="email" required>
-                </mat-form-field>
-
-                <mat-form-field appearance="outline">
-                    <input matInput type="password" placeholder="Senha" formControlName="passwd" required>
-                    <mat-error *ngIf="formSignin.get('passwd').invalid || formSignin.get('email').invalid">Senha e/ou email inválido(s).</mat-error>
-                </mat-form-field>
-
-                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
-                    <mat-checkbox formControlName="remember" color="primary" style="color: #353535; font-size: .9em;">Manter conectado</mat-checkbox>
-                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Entrar</button>
-                </div>
-
-                <div id="passwordRecovery" fxLayout="row" fxLayoutAlign="end">
-                    <a routerLink="/auth/recover">Esqueceu sua senha?</a>
-                </div>
-            </form>
-
-        </div>
-
+    <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
+        <mat-checkbox formControlName="remember" color="primary" style="color: #353535; font-size: .9em;">Manter conectado</mat-checkbox>
+        <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Entrar</button>
     </div>
 
-    <div fxFlex id="authImage">
+</form>
 
-    </div>
-
+<div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
+    <a routerLink="/auth/recover">Esqueceu sua senha?</a>
 </div>

@@ -2,15 +2,25 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
 import { LoginComponent } from './login/login.component';
-import { SignupComponent } from './signup/signup.component';
 import { RecoverComponent } from './recover/recover.component';
+import { ResetComponent } from './reset/reset.component';
+import { AuthComponent } from './auth/auth.component';
+
+// import { SignupComponent } from './signup/signup.component';
 
 const routes: Routes = [
-    { path: '', redirectTo: 'login', pathMatch: 'full' },
-    { path: 'login', component: LoginComponent },
-    // { path: 'signup', component: SignupComponent },
-    { path: 'recover', component: RecoverComponent },
-    { path: '**', redirectTo: 'login', pathMatch: 'full' }
+    {
+        path: '',
+        component: AuthComponent,
+        children: [
+            { path: '', redirectTo: 'login', pathMatch: 'full' },
+            { path: 'login', component: LoginComponent },
+            // { path: 'signup', component: SignupComponent },
+            { path: 'recover', component: RecoverComponent },
+            { path: 'reset', component: ResetComponent },
+            { path: '**', redirectTo: 'login', pathMatch: 'full' }
+        ]
+    }
 ];
 
 @NgModule({
