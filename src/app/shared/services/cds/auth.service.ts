@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import * as GLOBAL from '../../globals';
-import { catchError } from 'rxjs/operators';
+
 
 @Injectable()
 export class AuthService {
@@ -19,16 +20,15 @@ export class AuthService {
     public signup(newAccount: Object): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/register', newAccount)
-            .pipe(catchError(error => Observable.throw(error)));
+            .post(this.cdsBaseURL + '/register', newAccount);
+
 
     }
 
     public activateAccount(activationInfo: Object): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/activate', activationInfo)
-            .pipe(catchError(error => Observable.throw(error)));
+            .post(this.cdsBaseURL + '/activate', activationInfo);
 
     }
 
@@ -39,24 +39,24 @@ export class AuthService {
     public recoverPassword(credentials: Object): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/password/recover', credentials)
-            .pipe(catchError(error => Observable.throw(error)));
+            .post(this.cdsBaseURL + '/password/recover', credentials);
+
 
     }
 
     public validateResetToken(email: String, token: String): Observable<any> {
 
         return this.http
-            .get(this.cdsBaseURL + '/password/reset/validate/email/' + email + '/token/' + token)
-            .pipe(catchError(error => Observable.throw(error)));
+            .get(this.cdsBaseURL + '/password/reset/validate/email/' + email + '/token/' + token);
+
 
     }
 
     public resetPassword(credentials: Object): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/password/reset', credentials)
-            .pipe(catchError(error => Observable.throw(error)));
+            .post(this.cdsBaseURL + '/password/reset', credentials);
+
 
     }
 
@@ -68,8 +68,7 @@ export class AuthService {
     public signin(credentials: Object): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/authenticate', credentials)
-            .pipe(catchError(error => Observable.throw(error)));
+            .post(this.cdsBaseURL + '/authenticate', credentials);
 
     }
 

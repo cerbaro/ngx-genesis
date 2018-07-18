@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 
 import * as GLOBAL from '../../globals';
 
@@ -26,6 +27,9 @@ export class InterceptorService implements HttpInterceptor {
 
         req = req.clone({ setHeaders: this.presetHeaders });
 
-        return next.handle(req);
+        return next.handle(req)
+            .pipe(catchError(error => throwError(error)));
+
     }
+
 }

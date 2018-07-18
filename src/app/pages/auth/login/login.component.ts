@@ -39,8 +39,6 @@ export class LoginComponent implements OnInit {
             this.auth.signin({ user: fValues }).subscribe(
                 result => {
 
-                    console.log(result);
-
                     if (remember) {
                         localStorage.setItem('SMAAccessToken', result.data.token);
                     } else {
@@ -53,8 +51,6 @@ export class LoginComponent implements OnInit {
                 error => console.log(error)
             );
 
-        } else {
-            console.log('Inválido');
         }
 
     }
