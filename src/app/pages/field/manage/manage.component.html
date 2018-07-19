@@ -1,0 +1,30 @@
+<span *ngIf="!dataLoading" class="mat-typography">
+    <div class="ngxgHeaderToolbar" fxLayout="row"></div>
+
+    <div id="fieldTabs" class="ngxgContent" fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row">
+
+            <form novalidate [formGroup]="formField" (ngSubmit)="submit()">
+
+                <mat-form-field appearance="outline">
+                    <input matInput type="email" placeholder="Email" formControlName="email" required>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <input matInput type="password" placeholder="Senha" formControlName="passwd" required>
+                    <mat-error *ngIf="formField.get('passwd').invalid || formField.get('email').invalid">Senha e/ou email inválido(s).</mat-error>
+                </mat-form-field>
+
+                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
+                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Entrar</button>
+                </div>
+
+            </form>
+
+            <div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
+                <a routerLink="/auth/recover">Esqueceu sua senha?</a>
+            </div>
+        </div>
+    </div>
+
+</span>

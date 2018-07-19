@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FieldComponent } from './field/field.component';
+import { ManageComponent } from './manage/manage.component';
 
 const routes: Routes = [
     {
@@ -13,6 +14,8 @@ const routes: Routes = [
             { path: 'phenology', loadChildren: './tabs/phenology/phenology.module#PhenologyModule' }
         ]
     },
+    { path: 'new', component: ManageComponent },
+    { path: ':id/edit', component: ManageComponent },
     { path: '**', component: FieldComponent }
 ];
 

@@ -35,6 +35,7 @@ export class FieldComponent extends NgxgUnsubscribe implements OnInit {
         this.tabsLoading = true;
 
         this.field = {
+            _id: 'iddocampo',
             name: 'Jabotirama 1',
             act: true,
             admin: true,
