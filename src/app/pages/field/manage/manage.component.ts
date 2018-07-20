@@ -18,9 +18,21 @@ export class ManageComponent implements OnInit {
     ngOnInit() {
 
         this.formField = new FormGroup({
-            email: new FormControl('', Validators.email),
-            passwd: new FormControl('', [Validators.required, Validators.minLength(8)]),
-            remember: new FormControl(false)
+            name: new FormControl(null, Validators.required),
+            location: new FormGroup({
+                lat: new FormControl(null, Validators.required),
+                lon: new FormControl(null, Validators.required),
+                geoid: new FormControl(null)
+            }),
+            area: new FormGroup({
+                size: new FormControl(null, Validators.required),
+                shape: new FormGroup({
+                    type: new FormControl(null, Validators.required),
+                    coordinates: new FormControl(null, Validators.required),
+                })
+            }, Validators.required),
+            elev: new FormControl(null),
+            inclination: new FormControl(null)
         });
 
         /**
@@ -37,7 +49,7 @@ export class ManageComponent implements OnInit {
             this.dataLoading = false;
             this.ngxgLoadingService.setLoading(this.dataLoading);
 
-        }, 2000);
+        });
     }
 
     public submit(): void {

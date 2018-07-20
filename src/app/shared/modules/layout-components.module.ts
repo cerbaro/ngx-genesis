@@ -13,7 +13,8 @@ import {
     MatDividerModule,
     MatSelectModule,
     MatMenuModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    MatChipsModule
 } from '@angular/material';
 
 @NgModule({
@@ -30,7 +31,8 @@ import {
         MatListModule,
         MatDividerModule,
         MatMenuModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatChipsModule
     ],
     exports: [
         FlexLayoutModule,
@@ -46,7 +48,8 @@ import {
         MatListModule,
         MatDividerModule,
         MatMenuModule,
-        MatCheckboxModule
+        MatCheckboxModule,
+        MatChipsModule
     ],
 })
 export class LayoutComponentsModule { }

@@ -2,28 +2,52 @@
     <div class="ngxgHeaderToolbar" fxLayout="row"></div>
 
     <div id="fieldTabs" class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="column">
+
+            <h1>Cadastrar Campo</h1>
 
             <form novalidate [formGroup]="formField" (ngSubmit)="submit()">
+                
+                <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" placeholder="Nome" formControlName="name" required>
+                        <mat-error *ngIf="formField.get('name').invalid">Nome inválido.</mat-error>
+                    </mat-form-field>
+                </div>
 
-                <mat-form-field appearance="outline">
-                    <input matInput type="email" placeholder="Email" formControlName="email" required>
-                </mat-form-field>
+                <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <mat-form-field appearance="outline">
+                        <mat-select placeholder="Selecione uma fazenda" disableOptionCentering="true">
+                            <mat-option value="1">Fazenda tio joão</mat-option>
+                            <mat-option value="2">Fazenda tio Nilo</mat-option>
+                            <mat-option value="3">Fazenda tio Ninho</mat-option>
+                        </mat-select>
+                    </mat-form-field>
 
-                <mat-form-field appearance="outline">
-                    <input matInput type="password" placeholder="Senha" formControlName="passwd" required>
-                    <mat-error *ngIf="formField.get('passwd').invalid || formField.get('email').invalid">Senha e/ou email inválido(s).</mat-error>
-                </mat-form-field>
+                    <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;">
+                        <mat-icon>add</mat-icon>
+                    </button>
+                </div>
 
-                <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
-                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Entrar</button>
+                <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <mat-form-field appearance="outline">
+                        <mat-chip-list #chipList>
+                            <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable" [removable]="removable" (removed)="remove(fruit)">
+                                {{fruit.name}}
+                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                            </mat-chip>
+                            <input placeholder="Compartilhar campo" [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                        </mat-chip-list>
+                    </mat-form-field>
+                </div>
+
+                <div fxFlex fxLayout="row" fxLayoutAlign="center center" style="margin-top: 15px;" fxLayoutGap="15px">
+                    <button type="submit" mat-button class="ngxgButtonWhite">Cancelar</button>
+                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Salvar</button>
                 </div>
 
             </form>
-
-            <div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
-                <a routerLink="/auth/recover">Esqueceu sua senha?</a>
-            </div>
         </div>
     </div>
 
