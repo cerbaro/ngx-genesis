@@ -14,7 +14,8 @@ import {
     MatSelectModule,
     MatMenuModule,
     MatCheckboxModule,
-    MatChipsModule
+    MatChipsModule,
+    MatAutocompleteModule
 } from '@angular/material';
 
 @NgModule({
@@ -32,7 +33,8 @@ import {
         MatDividerModule,
         MatMenuModule,
         MatCheckboxModule,
-        MatChipsModule
+        MatChipsModule,
+        MatAutocompleteModule
     ],
     exports: [
         FlexLayoutModule,
@@ -49,7 +51,8 @@ import {
         MatDividerModule,
         MatMenuModule,
         MatCheckboxModule,
-        MatChipsModule
+        MatChipsModule,
+        MatAutocompleteModule
     ],
 })
 export class LayoutComponentsModule { }
