@@ -1,0 +1,63 @@
+<span *ngIf="!dataLoading" class="mat-typography">
+    
+        <form novalidate [formGroup]="formSeason" (ngSubmit)="submit()">
+    
+            <div class="ngxgHeaderToolbar pageTitle" fxLayout="row" fxLayoutAlign="">
+                <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
+                    <span fxFlex=41>
+    
+                        <h1>Cadastrar Safra</h1>
+    
+                    </span>
+                    <span fxFlex="1 1 auto"></span>
+                    <span>
+                        <button type="submit" mat-button class="ngxgButtonWhite">Cancelar</button>
+                        <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Salvar</button>
+                    </span>
+                </div>
+            </div>
+    
+            <div class="ngxgContent" fxFlex fxLayout="row">
+    
+                <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+    
+                    <div fxFlex="420px" fxLayout="column">
+    
+                        <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                            <mat-form-field appearance="outline">
+                                <input matInput type="text" placeholder="Nome" formControlName="name" required>
+                                <mat-error *ngIf="formSeason.get('name').invalid">Nome inválido.</mat-error>
+                            </mat-form-field>
+                        </div>
+    
+                        <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                            <mat-form-field appearance="outline">
+                                <mat-select placeholder="Selecione uma fazenda" disableOptionCentering="true">
+                                    <mat-option value="1">Fazenda tio joão</mat-option>
+                                    <mat-option value="2">Fazenda tio Nilo</mat-option>
+                                    <mat-option value="3">Fazenda tio Ninho</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+    
+                            <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </div>
+    
+                        <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                        </div>
+    
+                    </div>
+    
+                    <div fxFlex fxLayout="column">
+
+    
+                    </div>
+    
+                </div>
+    
+            </div>
+    
+        </form>
+    
+    </span>

@@ -20,6 +20,23 @@
     z-index: 999; 
     border-bottom: solid 1px #EEE;
 
+    &:empty {
+        height: 0;
+    }
+
+    &.pageTitle {  
+        border-bottom-color: #F5F5F5;
+        border-top: solid 1px #EEE;
+        margin-top: 0;
+        margin-bottom: 30px;
+        padding-top: 50px;
+        padding-bottom: 30px;
+
+        h1 {
+            margin: 0;
+        }
+    }
+
     button {
         margin: 0 5px;
 
