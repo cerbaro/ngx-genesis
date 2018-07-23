@@ -10,7 +10,7 @@
                 <button mat-button [mdePopoverTriggerFor]="farmFilter" class="ngxgButtonWhite">
                     Fazenda
                 </button>
-                <button mat-button [mdePopoverTriggerFor]="cropFilter" class="ngxgButtonWhite">
+                <button mat-button [mdePopoverTriggerFor]="commodityFilter" class="ngxgButtonWhite">
                     Cultura
                 </button>
                 <button mat-button [mdePopoverTriggerFor]="seasonFilter" class="ngxgButtonWhite">
@@ -22,7 +22,7 @@
             <span>
                 <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/farm/new">Criar Fazenda</button>
                 <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/field/new">Criar Campo</button>
-                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new">Criar Safra</button>
+                <!-- <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new">Criar Safra</button> -->
             </span>
         </div>
     </div>
@@ -141,14 +141,14 @@
         </mat-card>
     </mde-popover>
 
-    <mde-popover #cropFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+    <mde-popover #commodityFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll">
             <mat-card-header>Culturas</mat-card-header>
             <mat-card-content>
-                <mat-selection-list (selectionChange)="filterChange('crop', crop.selectedOptions)" #crop>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let crop of filters.crop" [value]="crop.id">
-                        {{crop.name}}
+                <mat-selection-list (selectionChange)="filterChange('commodity', commodity.selectedOptions)" #commodity>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let commodity of filters.commodity" [value]="commodity.id">
+                        {{commodity.name}}
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>

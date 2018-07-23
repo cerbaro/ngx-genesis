@@ -1,5 +1,5 @@
 <span *ngIf="!dataLoading" class="mat-typography">
-    
+
     <form novalidate [formGroup]="formField" (ngSubmit)="submit()">
 
         <div class="ngxgHeaderToolbar pageTitle" fxLayout="row" fxLayoutAlign="">
@@ -11,7 +11,7 @@
                 </span>
                 <span fxFlex="1 1 auto"></span>
                 <span>
-                    <button type="submit" mat-button class="ngxgButtonWhite">Cancelar</button>
+                    <button type="button" mat-button class="ngxgButtonWhite" (click)="cancel($event)">Cancelar</button>
                     <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Salvar</button>
                 </span>
             </div>
@@ -23,28 +23,28 @@
 
                 <div fxFlex="420px" fxLayout="column">
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <input matInput type="text" placeholder="Nome" formControlName="name" required>
                             <mat-error *ngIf="formField.get('name').invalid">Nome inválido.</mat-error>
                         </mat-form-field>
                     </div>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Selecione uma fazenda" disableOptionCentering="true">
+                            <mat-select placeholder="Fazenda" disableOptionCentering="true">
                                 <mat-option value="1">Fazenda tio joão</mat-option>
                                 <mat-option value="2">Fazenda tio Nilo</mat-option>
                                 <mat-option value="3">Fazenda tio Ninho</mat-option>
                             </mat-select>
                         </mat-form-field>
 
-                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;">
+                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;" routerLink="/farm/new">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
 
-                    <div fxLayout="row" fxLayoutAlign="space-between start" style="margin-top: 15px;">
+                    <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <mat-chip-list #chipList>
                                 <mat-chip *ngFor="let user of sharableUsers" [selectable]="true" [removable]="true" (removed)="remove(user)">

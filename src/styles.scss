@@ -4,6 +4,10 @@
     clear: both;
 }
 
+.formRow {
+    margin-top: 15px;
+}
+
 .ngxgMaxWidth {
     margin: 0 auto;
     max-width: 1540px;
@@ -11,7 +15,7 @@
 
 .ngxgHeaderToolbar {
     width: 100%;
-    height: 60px;
+    min-height: 60px;
     background-color: rgba($color: #FFFFFF, $alpha: 1);
     margin-bottom: 30px;
     padding: 0 40px;
@@ -21,16 +25,17 @@
     border-bottom: solid 1px #EEE;
 
     &:empty {
-        height: 0;
+        min-height: 0px;
     }
 
     &.pageTitle {  
+        background-color: rgba($color: #FAFAFA, $alpha: 1);
         border-bottom-color: #F5F5F5;
         border-top: solid 1px #EEE;
         margin-top: 0;
         margin-bottom: 30px;
-        padding-top: 50px;
-        padding-bottom: 30px;
+        padding-top: 20px;
+        padding-bottom: 15px;
 
         h1 {
             margin: 0;

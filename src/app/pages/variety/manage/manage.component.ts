@@ -10,7 +10,7 @@ import { Location } from '@angular/common';
 export class ManageComponent implements OnInit {
 
     public dataLoading: Boolean;
-    public formFarm: FormGroup;
+    public formVariety: FormGroup;
 
     constructor(private ngxgLoadingService: NgxgLoadingService, private location: Location) {
         this.dataLoading = true;
@@ -18,9 +18,17 @@ export class ManageComponent implements OnInit {
 
     ngOnInit() {
 
-        this.formFarm = new FormGroup({
+        this.formVariety = new FormGroup({
             name: new FormControl(''),
-            users: new FormControl([], Validators.required)
+            comercialName: new FormControl([], Validators.required),
+            type: new FormControl([], Validators.required),
+            user: new FormControl([], Validators.required),
+            commodity: new FormControl([], Validators.required),
+            maturity: new FormGroup({
+                mg: new FormControl('', Validators.required),
+                crm: new FormControl(''),
+                lc: new FormControl('5', Validators.required)
+            })
         });
 
         /**
@@ -41,9 +49,9 @@ export class ManageComponent implements OnInit {
     }
 
     public submit(): void {
-        if (this.formFarm.valid) {
+        if (this.formVariety.valid) {
 
-            const fValues = this.formFarm.value;
+            const fValues = this.formVariety.value;
 
         }
     }

@@ -12,6 +12,9 @@ const routes: Routes = [
             { path: 'field', loadChildren: '../field/field.module#FieldModule' },
 
             { path: 'season', loadChildren: '../season/season.module#SeasonModule' },
+            { path: 'variety', loadChildren: '../variety/variety.module#VarietyModule' },
+
+            { path: 'farm', loadChildren: '../farm/farm.module#FarmModule' },
 
             { path: 'enso', loadChildren: '../enso/enso.module#EnsoModule' },
             { path: 'cameras', loadChildren: '../cameras/cameras.module#CamerasModule' },

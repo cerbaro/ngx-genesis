@@ -15,6 +15,8 @@ const routes: Routes = [
         ]
     },
     { path: 'new', component: ManageComponent },
+    // { path: ':field/season', loadChildren: '../season/season.module#SeasonModule' },
+    // { path: ':field/season/:season', loadChildren: '../season/season.module#SeasonModule' },
     { path: ':id/edit', component: ManageComponent },
     { path: '**', component: FieldComponent }
 ];

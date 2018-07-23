@@ -10,9 +10,11 @@
                 <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">El Niño</a>
                 <!-- <a mat-list-item [routerLink]="['/cameras']" routerLinkActive="link-active">Câmeras</a> -->
                 <mat-divider [vertical]="true"></mat-divider>
-                
-                <a mat-list-item [matMenuTriggerFor]="menu"><mat-icon>account_circle</mat-icon></a>
-                
+
+                <a mat-list-item [matMenuTriggerFor]="menu">
+                    <mat-icon>account_circle</mat-icon>
+                </a>
+
             </mat-list>
         </span>
     </span>
@@ -20,11 +22,11 @@
 <mat-toolbar id="mainToolbarSoul"></mat-toolbar>
 
 <mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
-    <button mat-menu-item [routerLink]="['/account']" routerLinkActive="link-active">
+    <button mat-menu-item routerLink="/account" routerLinkActive="link-active">
         <mat-icon>account_circle</mat-icon>
         <span>Minha conta</span>
     </button>
-    <button mat-menu-item>
+    <button mat-menu-item routerLink="/auth">
         <mat-icon>exit_to_app</mat-icon>
         <span>Sair</span>
     </button>

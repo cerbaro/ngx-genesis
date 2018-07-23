@@ -4,6 +4,7 @@ import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Location } from '@angular/common';
 
 @Component({
     templateUrl: './manage.component.html',
@@ -30,7 +31,7 @@ export class ManageComponent implements OnInit {
 
     @ViewChild('shrdUsrInput') shrdUsrInput: ElementRef;
 
-    constructor(private ngxgLoadingService: NgxgLoadingService) {
+    constructor(private ngxgLoadingService: NgxgLoadingService, private location: Location) {
         this.dataLoading = true;
     }
 
@@ -41,21 +42,14 @@ export class ManageComponent implements OnInit {
         );
 
         this.formSeason = new FormGroup({
-            name: new FormControl(null, Validators.required),
-            location: new FormGroup({
-                lat: new FormControl(null, Validators.required),
-                lon: new FormControl(null, Validators.required),
-                geoid: new FormControl(null)
-            }),
-            area: new FormGroup({
-                size: new FormControl(null, Validators.required),
-                shape: new FormGroup({
-                    type: new FormControl(null, Validators.required),
-                    coordinates: new FormControl(null, Validators.required),
-                })
-            }, Validators.required),
-            elev: new FormControl(null),
-            inclination: new FormControl(null)
+            name: new FormControl(''),
+            field: new FormControl([], Validators.required),
+            commodity: new FormControl([], Validators.required),
+            variety: new FormControl([], Validators.required),
+            plantingDate: new FormControl('', Validators.required),
+            harvestingDate: new FormControl(''),
+            plantingDepth: new FormControl('5', Validators.required),
+            irrigated: new FormControl('0', Validators.required)
         });
 
         /**
@@ -98,5 +92,8 @@ export class ManageComponent implements OnInit {
         }
     }
 
+    public cancel(event: any): void {
+        this.location.back();
+    }
 }
 

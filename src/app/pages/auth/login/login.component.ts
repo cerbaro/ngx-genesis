@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/services/cds/auth.service';
 export class LoginComponent implements OnInit {
 
     public formSignin: FormGroup;
+    public loggingIn: Boolean = false;
 
     constructor(private auth: AuthService, private route: ActivatedRoute, private router: Router) { }
 
@@ -27,6 +28,8 @@ export class LoginComponent implements OnInit {
     public signIn(): void {
 
         if (this.formSignin.valid) {
+
+            this.loggingIn = true;
 
             const redirectTo = this.route.snapshot.queryParams['returnto'] || '/';
 
@@ -46,9 +49,13 @@ export class LoginComponent implements OnInit {
                     }
 
                     this.router.navigate([redirectTo]);
+                    this.loggingIn = false;
 
                 },
-                error => console.log(error)
+                error => {
+                    this.loggingIn = false;
+                    console.log(error);
+                }
             );
 
         }

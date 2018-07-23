@@ -7,6 +7,7 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
 import { startWith, map } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { Location } from '@angular/common';
 
 @Component({
     templateUrl: './manage.component.html',
@@ -35,7 +36,7 @@ export class ManageComponent implements OnInit {
 
     @ViewChild('shrdUsrInput') shrdUsrInput: ElementRef;
 
-    constructor(private ngxgLoadingService: NgxgLoadingService) {
+    constructor(private ngxgLoadingService: NgxgLoadingService, private location: Location) {
         this.dataLoading = true;
     }
 
@@ -124,6 +125,10 @@ export class ManageComponent implements OnInit {
                 .filter(user => user.name.toLowerCase().includes(filterValue))
                 .filter(user => this.sharableUsers.length === 0 || this.sharableUsers.some(suser => !(suser['name'] === user.name)));
         }
+    }
+
+    public cancel(event: any): void {
+        this.location.back();
     }
 
 }

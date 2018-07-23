@@ -16,7 +16,7 @@ interface Filter {
 interface Filters {
     user: Array<Filter>;
     farm: Array<Filter>;
-    crop: Array<Filter>;
+    commodity: Array<Filter>;
     season: Array<Filter>;
 }
 
@@ -50,14 +50,14 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
         this.filters = {
             user: [],
             farm: [],
-            crop: [],
+            commodity: [],
             season: []
         };
 
         this.filterBy = {
             users: [{ user: { $or: [] } }],
             farm: { $or: [] }
-            // crop: { $or: [] },
+            // commodity: { $or: [] },
             // season: { $or: [] }
         };
 
@@ -112,7 +112,7 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
         this.filters = {
             user: [],
             farm: [],
-            crop: [],
+            commodity: [],
             season: []
         };
 
@@ -167,7 +167,7 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
         // this.filterBy = {
         //     users: [{ user: { $or: this.filters.user.filter(user => user.status === true).map(filter => filter.id) } }],
         //     farm: { $or: this.filters.farm.filter(farm => farm.status === true).map(filter => filter.id) },
-        //     // crop: { $or: this.filters.crop.filter(crop => crop.status === false).map(filter => filter.id) },
+        //     // commodity: { $or: this.filters.commodity.filter(commodity => commodity.status === false).map(filter => filter.id) },
         //     // season: { $or: this.filters.season.filter(season => season.status === false).map(filter => filter.id) }
         // };
 

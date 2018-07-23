@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ManageComponent } from './manage/manage.component';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
-import { FarmRoutingModule } from './farm-routing.module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { VarietyRoutingModule } from 'src/app/pages/variety/variety-routing.module';
 
 @NgModule({
     imports: [
         CommonModule,
-        FarmRoutingModule,
+        VarietyRoutingModule,
 
         ReactiveFormsModule,
         FormsModule,
@@ -16,4 +16,4 @@ import { FarmRoutingModule } from './farm-routing.module';
     ],
     declarations: [ManageComponent]
 })
-export class FarmModule { }
+export class VarietyModule { }

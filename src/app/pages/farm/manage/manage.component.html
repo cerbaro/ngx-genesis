@@ -1,3 +1,41 @@
-<p>
-    manage works!
-</p>
+<span *ngIf="!dataLoading" class="mat-typography">
+
+    <form novalidate [formGroup]="formFarm" (ngSubmit)="submit()">
+
+        <div class="ngxgHeaderToolbar pageTitle" fxLayout="row" fxLayoutAlign="">
+            <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
+                <span fxFlex=41>
+
+                    <h1>Cadastrar Fazenda</h1>
+
+                </span>
+                <span fxFlex="1 1 auto"></span>
+                <span>
+                    <button type="button" mat-button class="ngxgButtonWhite" (click)="cancel($event)">Cancelar</button>
+                    <button type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Salvar</button>
+                </span>
+            </div>
+        </div>
+
+        <div class="ngxgContent" fxFlex fxLayout="row">
+
+            <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start">
+
+                <div fxFlex="50" fxLayout="column">
+
+                    <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
+                        <mat-form-field appearance="outline">
+                            <input matInput type="text" placeholder="Nome" formControlName="name" required>
+                            <mat-error *ngIf="formFarm.get('name').invalid">Nome inválido.</mat-error>
+                        </mat-form-field>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </form>
+
+</span>
