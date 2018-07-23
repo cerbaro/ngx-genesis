@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 
 @Component({
     templateUrl: './account.component.html',
     styleUrls: ['./account.component.scss']
 })
-export class AccountComponent extends NgxgUnsubscribe implements OnInit {
+export class AccountComponent extends NgxgRequest implements OnInit {
 
     public accountLoading: Boolean;
 

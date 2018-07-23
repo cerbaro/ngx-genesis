@@ -9,6 +9,10 @@
         <mat-error *ngIf="formSignin.get('passwd').invalid || formSignin.get('email').invalid">Senha e/ou email inválido(s).</mat-error>
     </mat-form-field>
 
+    <mat-error *ngIf="error" fxLayout="row" fxLayoutAlign="center" style="margin: 10px 0 15px;">
+        {{error.message}}
+    </mat-error>
+
     <div fxLayout="row" fxLayoutAlign="space-between center" style="margin-top: 15px;">
         <mat-checkbox formControlName="remember" color="primary" style="color: #353535; font-size: .9em;">Manter conectado</mat-checkbox>
         <button *ngIf="!loggingIn" type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" disabled={{loggingIn}}>

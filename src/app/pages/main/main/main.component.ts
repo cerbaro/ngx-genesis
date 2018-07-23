@@ -1,20 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { takeUntil, startWith } from 'rxjs/operators';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
+import { AuthService } from 'src/app/shared/services/cds/auth.service';
 
 
 @Component({
     templateUrl: './main.component.html',
     styleUrls: ['./main.component.scss']
 })
-export class MainComponent extends NgxgUnsubscribe implements OnInit {
+export class MainComponent extends NgxgRequest implements OnInit {
 
     public loading: Boolean;
 
     constructor(
+        private auth: AuthService,
         private router: Router,
         private ngxgLoadingService: NgxgLoadingService
     ) {
@@ -38,6 +40,12 @@ export class MainComponent extends NgxgUnsubscribe implements OnInit {
 
     public onActivate(event) {
         window.scroll(0, 0);
+    }
+
+    public signout(): void {
+        if (this.auth.signout()) {
+            this.router.navigate(['/auth']);
+        }
     }
 
 }

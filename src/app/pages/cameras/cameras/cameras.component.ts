@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 
 @Component({
     templateUrl: './cameras.component.html',
     styleUrls: ['./cameras.component.scss']
 })
-export class CamerasComponent extends NgxgUnsubscribe implements OnInit {
+export class CamerasComponent extends NgxgRequest implements OnInit {
 
     public camerasLoading: Boolean;
 

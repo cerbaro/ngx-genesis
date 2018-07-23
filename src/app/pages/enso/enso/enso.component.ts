@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 
 @Component({
     templateUrl: './enso.component.html',
     styleUrls: ['./enso.component.scss']
 })
-export class EnsoComponent extends NgxgUnsubscribe implements OnInit {
+export class EnsoComponent extends NgxgRequest implements OnInit {
 
     public ensoLoading: Boolean;
 

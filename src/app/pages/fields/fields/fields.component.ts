@@ -5,7 +5,9 @@ import * as L from 'leaflet';
 import { Field } from 'src/app/shared/types/field';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
+import { FieldService } from 'src/app/shared/services/cds/field.service';
+import { takeUntil, map } from 'rxjs/operators';
 
 interface Filter {
     id: string;
@@ -29,10 +31,10 @@ interface Map {
     templateUrl: './fields.component.html',
     styleUrls: ['./fields.component.scss']
 })
-export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
+export class FieldsComponent extends NgxgRequest implements OnInit {
 
-    public fieldsLoading: Boolean;
-    public fields: Array<Field>;
+    public fieldsLoading: Boolean = true;
+    public fields: Array<Field> = Array();
 
     public filters: Filters;
     public filterBy: any;
@@ -41,11 +43,10 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
 
     constructor(
         private ngxgLoadingService: NgxgLoadingService,
-        private mapBoxService: MapBoxService
+        private mapBoxService: MapBoxService,
+        private fieldService: FieldService
     ) {
         super();
-
-        this.fieldsLoading = true;
 
         this.filters = {
             user: [],
@@ -76,29 +77,45 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
             this.ngxgLoadingService.setLoading(this.fieldsLoading);
         });
 
-        this.fields = [];
-        for (let i = 0; i <= 15; i++) {
 
-            this.fields.push({
-                name: 'Jabotirama ' + i % 2,
-                act: true,
-                admin: true,
-                area: { shape: { type: 'geometry', coordinates: [1, 2, 3] }, size: 1000 },
-                elev: 0,
-                farm: 'Jabotirama ' + i % 2,
-                weatherStations: [],
-                inclination: 0,
-                location: { geoid: 'BRRSPFB', lat: -28, lon: -52 },
-                pvt: true,
-                users: [{ admin: true, user: 'Vinicius ' + i % 2 }],
+        this.fieldService.getFieldsWithSeasons()
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(
+                result => this.fieldsLoaded(result.data),
+                error => this.setError(error)
+            );
 
-                app: {
-                    thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
-                }
-            });
+        // this.fields = [];
+        // for (let i = 0; i <= 15; i++) {
 
-        }
+        //     this.fields.push({
+        //         name: 'Jabotirama ' + i % 2,
+        //         act: true,
+        //         admin: true,
+        //         area: { shape: { type: 'geometry', coordinates: [1, 2, 3] }, size: 1000 },
+        //         elev: 0,
+        //         farm: 'Jabotirama ' + i % 2,
+        //         weatherStations: [],
+        //         inclination: 0,
+        //         location: { geoid: 'BRRSPFB', lat: -28, lon: -52 },
+        //         pvt: true,
+        //         users: [{ admin: true, user: 'Vinicius ' + i % 2 }],
 
+        //         app: {
+        //             thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
+        //         }
+        //     });
+
+        // }
+
+    }
+
+    private fieldsLoaded(fields: Array<Field>): void {
+
+        this.fields = fields;
+        
+        console.log(fields);
+        
         this.map = {
             options: {
                 layers: [
@@ -129,6 +146,8 @@ export class FieldsComponent extends NgxgUnsubscribe implements OnInit {
             }
 
         });
+
+        console.log(this.filters);
 
         this.refreshFilters('user');
         this.refreshFilters('farm');

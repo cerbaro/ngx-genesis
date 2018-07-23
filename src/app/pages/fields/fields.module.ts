@@ -12,6 +12,7 @@ import { MdePopoverModule } from '@material-extended/mde';
 import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { MapModule } from 'src/app/shared/modules/map/map.module';
+import { FieldService } from 'src/app/shared/services/cds/field.service';
 
 @NgModule({
     imports: [
@@ -27,7 +28,8 @@ import { MapModule } from 'src/app/shared/modules/map/map.module';
         FieldsComponent
     ],
     providers: [
-        MapBoxService
+        MapBoxService,
+        FieldService
     ]
 })
 export class FieldsModule { }

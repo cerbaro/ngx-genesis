@@ -1,5 +1,5 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay } from 'rxjs/operators';
 import { Field } from 'src/app/shared/types/field';
@@ -21,7 +21,7 @@ interface Map {
     templateUrl: './weather.component.html',
     styleUrls: ['./weather.component.scss']
 })
-export class WeatherComponent extends NgxgUnsubscribe implements OnInit {
+export class WeatherComponent extends NgxgRequest implements OnInit {
 
     public field: Field;
     public tabLoading: Boolean;

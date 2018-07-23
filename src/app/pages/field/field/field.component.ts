@@ -3,7 +3,7 @@ import { Router, NavigationStart } from '@angular/router';
 
 import { Field } from 'src/app/shared/types/field';
 
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
@@ -15,7 +15,7 @@ import { startWith, takeUntil, filter } from 'rxjs/operators';
     templateUrl: './field.component.html',
     styleUrls: ['./field.component.scss']
 })
-export class FieldComponent extends NgxgUnsubscribe implements OnInit {
+export class FieldComponent extends NgxgRequest implements OnInit {
 
     public fieldLoading: Boolean;
     public field: Field;

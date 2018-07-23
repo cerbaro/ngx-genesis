@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay } from 'rxjs/operators';
 import { Field } from 'src/app/shared/types/field';
@@ -19,7 +19,7 @@ interface Map {
     templateUrl: './phenology.component.html',
     styleUrls: ['./phenology.component.scss']
 })
-export class PhenologyComponent extends NgxgUnsubscribe implements OnInit {
+export class PhenologyComponent extends NgxgRequest implements OnInit {
 
     public field: Field;
     public tabLoading: Boolean;

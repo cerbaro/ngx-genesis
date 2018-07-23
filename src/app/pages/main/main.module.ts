@@ -7,6 +7,7 @@ import { MainComponent } from './main/main.component';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
+import { AuthService } from 'src/app/shared/services/cds/auth.service';
 
 import { ChartModule } from '@kiwigrid/ngx-highcharts';
 
@@ -52,6 +53,7 @@ export function highchartsFactory() {
     ],
     declarations: [MainComponent],
     providers: [
+        AuthService,
         NgxgLoadingService,
         DataExchangeService,
         { provide: HighchartsStatic, useFactory: highchartsFactory }

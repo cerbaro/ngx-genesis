@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NgxgUnsubscribe } from 'src/app/core/comm/ngxg-unsubscribe';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay } from 'rxjs/operators';
 import { Field } from 'src/app/shared/types/field';
@@ -9,7 +9,7 @@ import { TabLoadingService } from 'src/app/pages/field/utils/tab-loading.service
     templateUrl: './satellite.component.html',
     styleUrls: ['./satellite.component.scss']
 })
-export class SatelliteComponent extends NgxgUnsubscribe implements OnInit {
+export class SatelliteComponent extends NgxgRequest implements OnInit {
 
     public field: Field;
     public tabLoading: Boolean;

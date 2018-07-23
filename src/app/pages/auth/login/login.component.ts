@@ -3,17 +3,29 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Md5 } from 'ts-md5/dist/md5';
 import { AuthService } from 'src/app/shared/services/cds/auth.service';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent extends NgxgRequest implements OnInit {
 
     public formSignin: FormGroup;
     public loggingIn: Boolean = false;
 
-    constructor(private auth: AuthService, private route: ActivatedRoute, private router: Router) { }
+    constructor(
+        private auth: AuthService,
+        private route: ActivatedRoute,
+        private router: Router
+    ) {
+        super();
+
+        if (this.auth.isSignedin()) {
+            this.router.navigate(['/']);
+        }
+    }
 
     ngOnInit() {
 
@@ -39,7 +51,7 @@ export class LoginComponent implements OnInit {
 
             fValues.passwd = Md5.hashStr(fValues.passwd).toString();
 
-            this.auth.signin({ user: fValues }).subscribe(
+            this.auth.signin({ user: fValues }).pipe(takeUntil(this.ngxgUnsubscribe)).subscribe(
                 result => {
 
                     if (remember) {
@@ -49,12 +61,16 @@ export class LoginComponent implements OnInit {
                     }
 
                     this.router.navigate([redirectTo]);
-                    this.loggingIn = false;
+
+                    setTimeout(() => {
+                        this.loggingIn = false;
+                    }, 1000);
+
 
                 },
                 error => {
                     this.loggingIn = false;
-                    console.log(error);
+                    this.setError(error);
                 }
             );
 
