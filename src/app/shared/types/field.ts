@@ -8,7 +8,7 @@ export interface Field {
     act: boolean;
 
     users: {
-        user: string;
+        user: any;
         admin: boolean;
     }[];
 

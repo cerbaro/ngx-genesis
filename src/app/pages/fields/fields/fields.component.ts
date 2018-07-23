@@ -8,10 +8,12 @@ import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
 import { takeUntil, map } from 'rxjs/operators';
+import { SocialService } from 'src/app/shared/services/cds/social.service';
 
 interface Filter {
-    id: string;
+    _id: string;
     name: string;
+    email?: string;
     status: boolean;
 }
 
@@ -44,7 +46,8 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     constructor(
         private ngxgLoadingService: NgxgLoadingService,
         private mapBoxService: MapBoxService,
-        private fieldService: FieldService
+        private fieldService: FieldService,
+        private socialService: SocialService
     ) {
         super();
 
@@ -56,8 +59,8 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
         };
 
         this.filterBy = {
-            users: [{ user: { $or: [] } }],
-            farm: { $or: [] }
+            users: [{ user: { _id: { $or: [] } } }],
+            // farm: { $or: [] }
             // commodity: { $or: [] },
             // season: { $or: [] }
         };
@@ -79,7 +82,9 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
 
         this.fieldService.getFieldsWithSeasons()
-            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .pipe(
+                takeUntil(this.ngxgUnsubscribe)
+            )
             .subscribe(
                 result => this.fieldsLoaded(result.data),
                 error => this.setError(error)
@@ -113,9 +118,15 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     private fieldsLoaded(fields: Array<Field>): void {
 
         this.fields = fields;
-        
-        console.log(fields);
-        
+
+        this.fields.forEach(field => {
+            field.app = {
+                thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
+            };
+        });
+
+        console.log(this.fields);
+
         this.map = {
             options: {
                 layers: [
@@ -137,20 +148,21 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
             this.filters.user.push(
                 ...field.users
-                    .filter(user => this.filters.user.findIndex(usr => usr.id === user.user) === -1)
-                    .map(users => ({ id: users.user, name: users.user, status: true }))
+                    .filter(user => this.filters.user.findIndex(usr => usr._id === user.user._id) === -1)
+                    .map(users => ({ _id: users.user._id, name: users.user.name, email: users.user.email, status: true }))
             );
 
-            if (this.filters.farm.findIndex(farm => farm.id === field.farm) === -1) {
-                this.filters.farm.push({ id: field.farm, name: field.farm, status: true });
-            }
+            // if (this.filters.farm.findIndex(farm => farm._id === field._id) === -1) {
+            //     this.filters.farm.push({ _id: field.farm, name: field.farm, status: true });
+            // }
 
         });
 
-        console.log(this.filters);
+        console.log(this.fields, this.filters.user);
+
 
         this.refreshFilters('user');
-        this.refreshFilters('farm');
+        // this.refreshFilters('farm');
 
         setTimeout(() => {
             this.fieldsLoading = false;
@@ -164,10 +176,12 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
         const selected = selectedOptions.selected.map(sel => sel.value);
 
         if (fltr === 'user') {
-            this.filterBy.users[0].user.$or = selected;
+            this.filterBy.users[0].user._id.$or = selected;
         } else {
             this.filterBy[fltr].$or = selected;
         }
+
+        console.log(selected, this.filterBy);
 
         if (selected.length === 0) {
             this.refreshFilters(fltr);
@@ -178,9 +192,9 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     public refreshFilters(fltr: string): void {
 
         if (fltr === 'user') {
-            this.filterBy.users[0].user.$or = this.filters.user.filter(user => user.status === true).map(filter => filter.id);
+            this.filterBy.users[0].user._id.$or = this.filters.user.filter(user => user.status === true).map(filter => filter._id);
         } else {
-            this.filterBy[fltr].$or = this.filters[fltr].filter(item => item.status === true).map(filter => filter.id);
+            this.filterBy[fltr].$or = this.filters[fltr].filter(item => item.status === true).map(filter => filter._id);
         }
 
         // this.filterBy = {

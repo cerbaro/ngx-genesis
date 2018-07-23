@@ -13,6 +13,7 @@ import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { MapModule } from 'src/app/shared/modules/map/map.module';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
+import { SocialService } from 'src/app/shared/services/cds/social.service';
 
 @NgModule({
     imports: [
@@ -29,7 +30,8 @@ import { FieldService } from 'src/app/shared/services/cds/field.service';
     ],
     providers: [
         MapBoxService,
-        FieldService
+        FieldService,
+        SocialService
     ]
 })
 export class FieldsModule { }

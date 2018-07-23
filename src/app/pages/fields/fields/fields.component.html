@@ -119,8 +119,9 @@
             <mat-card-header>Produtores</mat-card-header>
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('user', user.selectedOptions)" #user>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let user of filters.user" [value]="user.id">
-                        {{user.name}}
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let user of filters.user" [value]="user._id">
+                        <h4 mat-line>{{user.name}}</h4>
+                        <p mat-line> {{user.email}} </p>
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>
