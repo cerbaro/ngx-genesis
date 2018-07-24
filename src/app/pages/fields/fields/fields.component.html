@@ -32,7 +32,7 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of fields | filterBy: filterBy" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"
+                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"
                     [routerLink]="['/field']">
 
                     <div fxFlex="300px">
@@ -134,7 +134,7 @@
             <mat-card-header>Fazendas</mat-card-header>
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('farm', farm.selectedOptions)" #farm>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let farm of filters.farm" [value]="farm.id">
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let farm of filters.farm" [value]="farm._id">
                         {{farm.name}}
                     </mat-list-option>
                 </mat-selection-list>
@@ -148,7 +148,7 @@
             <mat-card-header>Culturas</mat-card-header>
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('commodity', commodity.selectedOptions)" #commodity>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let commodity of filters.commodity" [value]="commodity.id">
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let commodity of filters.commodity" [value]="commodity._id">
                         {{commodity.name}}
                     </mat-list-option>
                 </mat-selection-list>
@@ -162,7 +162,7 @@
             <mat-card-header>Safras</mat-card-header>
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('season', season.selectedOptions)" #season>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let season of filters.season" [value]="season.id">
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let season of filters.season" [value]="season._id">
                         {{season.name}}
                     </mat-list-option>
                 </mat-selection-list>

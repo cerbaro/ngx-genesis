@@ -12,7 +12,7 @@ export interface Field {
         admin: boolean;
     }[];
 
-    farm: string;
+    farm: any;
 
     weatherStations: string[];
 

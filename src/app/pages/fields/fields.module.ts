@@ -9,7 +9,6 @@ import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components
 import { MapBoxService } from 'src/app/shared/services/map-box.service';
 
 import { MdePopoverModule } from '@material-extended/mde';
-import { FilterPipeModule } from 'ngx-filter-pipe';
 
 import { MapModule } from 'src/app/shared/modules/map/map.module';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
@@ -22,8 +21,7 @@ import { SocialService } from 'src/app/shared/services/cds/social.service';
 
         LayoutComponentsModule,
         MapModule,
-        MdePopoverModule,
-        FilterPipeModule
+        MdePopoverModule
     ],
     declarations: [
         FieldsComponent
