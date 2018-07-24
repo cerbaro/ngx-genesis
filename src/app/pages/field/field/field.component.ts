@@ -48,7 +48,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
             pvt: true,
             users: [{ admin: true, user: 'Vinicius' }],
             app: {
-                season: '1',
+                season: {},
                 thumbnail: this.mapBoxService.getTileImageURL([-28, -52])
             }
         };

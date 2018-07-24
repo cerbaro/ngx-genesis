@@ -46,7 +46,11 @@ export interface Field {
     seasons?: any;
 
     app?: {
-        season?: any;
+        season?: {
+            prev?: any;
+            current?: any;
+            next?: any;
+        };
         thumbnail?: string;
         link?: string;
         weather?: any;

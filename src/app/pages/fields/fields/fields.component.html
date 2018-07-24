@@ -4,18 +4,24 @@
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span fxFlex=41>
 
-                <button *ngIf="filters.user.length > 1" mat-button [mdePopoverTriggerFor]="userFilter" class="ngxgButtonWhite">
+                <button mat-button [mdePopoverTriggerFor]="userFilter" class="ngxgButtonWhite">
                     Produtor
                 </button>
                 <button mat-button [mdePopoverTriggerFor]="farmFilter" class="ngxgButtonWhite">
                     Fazenda
                 </button>
-                <button mat-button [mdePopoverTriggerFor]="commodityFilter" class="ngxgButtonWhite">
+
+                <button *ngIf="filters.commodity.length > 0" mat-button [mdePopoverTriggerFor]="seasonFilter" class="ngxgButtonWhite">
+                    Safra Atual
+                </button>
+
+                <!-- <button mat-button [mdePopoverTriggerFor]="commodityFilter" class="ngxgButtonWhite">
                     Cultura
                 </button>
-                <button mat-button [mdePopoverTriggerFor]="seasonFilter" class="ngxgButtonWhite">
-                    Safra
-                </button>
+                <button mat-button [mdePopoverTriggerFor]="varietyFilter" class="ngxgButtonWhite">
+                    Variedade
+                </button> -->
+
 
             </span>
             <span fxFlex="1 1 auto"></span>
@@ -32,8 +38,7 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"
-                    [routerLink]="['/field']">
+                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition" [routerLink]="['/field']">
 
                     <div fxFlex="300px">
                         <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
@@ -116,9 +121,9 @@
     <mde-popover #userFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
-            <mat-card-header>Produtores</mat-card-header>
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('user', user.selectedOptions)" #user>
+                    <h3 matSubheader>Produtores</h3>
                     <mat-list-option [checkboxPosition]="before" *ngFor="let user of filters.user" [value]="user._id">
                         <h4 mat-line>{{user.name}}</h4>
                         <p mat-line> {{user.email}} </p>
@@ -131,9 +136,10 @@
     <mde-popover #farmFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
-            <mat-card-header>Fazendas</mat-card-header>
+
             <mat-card-content>
                 <mat-selection-list (selectionChange)="filterChange('farm', farm.selectedOptions)" #farm>
+                    <h3 matSubheader>Fazendas</h3>
                     <mat-list-option [checkboxPosition]="before" *ngFor="let farm of filters.farm" [value]="farm._id">
                         {{farm.name}}
                     </mat-list-option>
@@ -142,7 +148,34 @@
         </mat-card>
     </mde-popover>
 
-    <mde-popover #commodityFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+    <mde-popover #seasonFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+        mdePopoverPositionY="above">
+        <mat-card style="max-height: 50vh; overflow: scroll">
+            <mat-card-content fxLayout="row">
+
+                <div fxFlex style="border-right: solid 1px #EEE">
+                    <mat-selection-list (selectionChange)="filterChange('commodity', commodity.selectedOptions)" #commodity>
+                        <h3 matSubheader>Culturas</h3>
+                        <mat-list-option [checkboxPosition]="before" *ngFor="let commodity of filters.commodity" [value]="commodity._id">
+                            {{commodity.name}}
+                        </mat-list-option>
+                    </mat-selection-list>
+                </div>
+
+                <div fxFlex>
+                    <mat-selection-list (selectionChange)="filterChange('variety', variety.selectedOptions)" #variety>
+                        <h3 matSubheader>Variedades</h3>
+                        <mat-list-option [checkboxPosition]="before" *ngFor="let variety of filters.variety" [value]="variety._id">
+                            {{variety.name}}
+                        </mat-list-option>
+                    </mat-selection-list>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </mde-popover>
+
+
+    <!-- <mde-popover #commodityFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll">
             <mat-card-header>Culturas</mat-card-header>
@@ -156,18 +189,18 @@
         </mat-card>
     </mde-popover>
 
-    <mde-popover #seasonFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
+    <mde-popover #varietyFilter [mdePopoverCloseOnClick]="false" [mdePopoverOverlapTrigger]="false" [mdeFocusTrapEnabled]="false"
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll">
-            <mat-card-header>Safras</mat-card-header>
+            <mat-card-header>Variedades</mat-card-header>
             <mat-card-content>
-                <mat-selection-list (selectionChange)="filterChange('season', season.selectedOptions)" #season>
-                    <mat-list-option [checkboxPosition]="before" *ngFor="let season of filters.season" [value]="season._id">
-                        {{season.name}}
+                <mat-selection-list (selectionChange)="filterChange('variety', variety.selectedOptions)" #variety>
+                    <mat-list-option [checkboxPosition]="before" *ngFor="let variety of filters.variety" [value]="variety._id">
+                        {{variety.name}}
                     </mat-list-option>
                 </mat-selection-list>
             </mat-card-content>
         </mat-card>
-    </mde-popover>
+    </mde-popover> -->
 
 </span>
