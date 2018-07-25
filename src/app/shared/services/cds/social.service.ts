@@ -12,7 +12,7 @@ export class SocialService {
 
     constructor(private http: HttpClient) { }
 
-    public publicInfo(userID: string): Observable<any> {
+    public getPublicInfo(userID: string): Observable<any> {
 
         return this.http
             .post(this.cdsBaseURL + '/', userID);

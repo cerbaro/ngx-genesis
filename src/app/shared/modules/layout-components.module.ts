@@ -18,7 +18,8 @@ import {
     MatAutocompleteModule,
     MatRadioModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+    MatBadgeModule
 } from '@angular/material';
 
 @NgModule({
@@ -40,7 +41,8 @@ import {
         MatAutocompleteModule,
         MatRadioModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatBadgeModule
     ],
     exports: [
         FlexLayoutModule,
@@ -61,7 +63,8 @@ import {
         MatAutocompleteModule,
         MatRadioModule,
         MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+        MatBadgeModule
     ],
 })
 export class LayoutComponentsModule { }

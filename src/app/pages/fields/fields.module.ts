@@ -13,6 +13,8 @@ import { MapModule } from 'src/app/shared/modules/map/map.module';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
 import { SocialService } from 'src/app/shared/services/cds/social.service';
 import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.service';
+import { RoundPipe } from 'src/app/shared/pipes/round.pipe';
+import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
 
 @NgModule({
     imports: [
@@ -24,11 +26,13 @@ import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.serv
         MdePopoverModule
     ],
     declarations: [
-        FieldsComponent
+        FieldsComponent,
+        RoundPipe
     ],
     providers: [
         LeafletService,
         FieldService,
+        CommodityService,
         SocialService
     ]
 })

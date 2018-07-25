@@ -20,6 +20,7 @@ export interface Field {
         lat: number;
         lon: number;
         geoid: string;
+        loc: any;
     };
 
     area: {
@@ -50,6 +51,7 @@ export interface Field {
             prev?: any;
             current?: any;
             next?: any;
+            display?: any;
         };
         thumbnail?: string;
         link?: string;
