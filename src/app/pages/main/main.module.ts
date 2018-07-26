@@ -51,7 +51,9 @@ export function highchartsFactory() {
 
         ChartModule
     ],
-    declarations: [MainComponent],
+    declarations: [
+        MainComponent
+    ],
     providers: [
         AuthService,
         NgxgLoadingService,

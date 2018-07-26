@@ -6,10 +6,14 @@ import { FieldRoutingModule } from './field-routing.module';
 import { FieldComponent } from './field/field.component';
 
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
-import { MapBoxService } from 'src/app/shared/services/map-box.service';
 import { TabLoadingService } from './utils/tab-loading.service';
 import { MapModule } from 'src/app/shared/modules/map/map.module';
 import { ManageComponent } from './manage/manage.component';
+import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.service';
+import { FieldService } from 'src/app/shared/services/cds/field.service';
+import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
+import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
+import { SocialService } from 'src/app/shared/services/cds/social.service';
 
 @NgModule({
     imports: [
@@ -25,8 +29,12 @@ import { ManageComponent } from './manage/manage.component';
         ManageComponent
     ],
     providers: [
-        MapBoxService,
-        TabLoadingService
+        TabLoadingService,
+        LeafletService,
+        FieldService,
+        CommodityService,
+        DarkskyService,
+        SocialService
     ]
 })
 export class FieldModule { }

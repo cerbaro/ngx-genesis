@@ -444,12 +444,20 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     public markerClicked(event: any): void {
         const field = this.allFields.find(fld => fld._id === event.fieldId);
 
-        if (field.app.season != null) {
-            this.router.navigate(['/field/' + field._id + '/season/' + (field.app.season as any)._id]);
-        } else {
-            this.router.navigate(['/field/' + field._id]);
-        }
+        this.openField(field);
 
     }
+
+    public openField(field: Field): void {
+
+        let link = '/field/' + field._id;
+
+        if (field.app.season.display != null) {
+            link = link + '/season/' + field.app.season[field.app.season.display]._id;
+        }
+
+        this.router.navigate([link]);
+    }
+
 
 }

@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 
+import { RoundPipe } from '../pipes/round.pipe';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {
     MatToolbarModule,
@@ -21,6 +23,7 @@ import {
     MatNativeDateModule,
     MatBadgeModule
 } from '@angular/material';
+
 
 @NgModule({
     imports: [
@@ -44,7 +47,11 @@ import {
         MatNativeDateModule,
         MatBadgeModule
     ],
+    declarations: [
+        RoundPipe
+    ],
     exports: [
+        RoundPipe,
         FlexLayoutModule,
 
         MatToolbarModule,

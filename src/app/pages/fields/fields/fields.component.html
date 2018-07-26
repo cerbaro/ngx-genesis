@@ -44,7 +44,7 @@
 
                 <span *ngFor="let field of allFields">
                     <mat-card fxFlex fxLayout="row" fxHide="{{field.app.hidden}}" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
-                        (mouseleave)="fieldOut(field)" [routerLink]="['/field']">
+                        (mouseleave)="fieldOut(field)" (click)="openField(field)">
 
                         <div fxFlex="300px">
                             <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
