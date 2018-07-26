@@ -277,37 +277,32 @@ export class FieldComponent extends NgxgRequest implements OnInit {
             .subscribe(result => {
 
                 this.field = result.data[0];
-                this.fieldLoaded(this.field);
-
-                // if (this.seasonExists) {
-                //     this.field.season = this.field.seasons.find(season => season._id == params['season']);
-                //     this.selectedSeason = this.field.season;
-
-                //     this.loadSeasonInfo(tryingSeason);
-
-                // } else {
-                //     this.dataShareService.setField(this.field);
-                //     this.loadingSeasonWeather = false;
-                // }
-
-                // this.loadingField = false;
-
+                this.fieldLoaded(this.field, params['season']);
 
             });
     }
 
-    private fieldLoaded(field: Field): void {
+    private fieldLoaded(field: Field, seasonID: any): void {
+
+        let selectedSeason: any;
 
         if (field.farm === null) {
             field.farm = { _id: null };
         }
 
+        if (seasonID != null) {
+            selectedSeason = [this.field.seasons.find(season => season._id === seasonID)];
+        } else {
+            selectedSeason = field.seasons;
+        }
+
+
         field.app = {
             hidden: true,
             season: {
-                prev: this.prevSeason(field.seasons),
-                current: this.currentSeason(field.seasons),
-                next: this.nextSeason(field.seasons)
+                prev: this.prevSeason(selectedSeason),
+                current: this.currentSeason(selectedSeason),
+                next: this.nextSeason(selectedSeason)
             },
             map: {
                 geojson: {
@@ -360,11 +355,18 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         this.currentStage(field);
         this.weatherData(field);
 
-
         this.dataExchangeService.setField(field);
         this.fieldLoading = false;
         this.ngxgLoadingService.setLoading(this.fieldLoading);
 
+    }
+
+
+    public switchSeason(season) {
+        const currentSubPage = this.route.snapshot.firstChild.url[0].path;
+        const localPage = (!season.commodity.phenologyModel && currentSubPage === 'phenology') ? 'climate' : currentSubPage;
+
+        this.router.navigate(['/field', this.field._id, 'season', season._id, localPage]);
     }
 
 }

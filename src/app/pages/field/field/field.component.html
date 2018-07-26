@@ -50,15 +50,22 @@
 
                 <!-- Season Information -->
 
-                <div fxLayout="column" fxFlex=37>
+                <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex=37 fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                    <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
+                    <br>
+                    <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}"
+                        (click)="$event.stopPropagation()">Criar Safra</button>
+                </div>
+
+                <div *ngIf="(((field || {}).app || {}).season || {}).display" fxLayout="column" fxFlex=37>
 
                     <div fxFlex="60px" fxLayout="row" fxLayoutGap="15px">
                         <span fxFlex=70>
                             <mat-form-field appearance="outline">
-                                <mat-select [(value)]="field.app.season" disableOptionCentering="true">
-                                    <mat-option value="1">2017/2018 Algodão #003</mat-option>
-                                    <mat-option value="2">2016/2017 Algodão #002</mat-option>
-                                    <mat-option value="3">2015/2016 Algodão #000</mat-option>
+                                <mat-select [ngModel]="field.app.season[field.app.season.display]" (ngModelChange)="switchSeason($event)" disableOptionCentering="true">
+                                    <mat-option *ngFor="let season of field.seasons" [value]="season">
+                                        {{ season.name }}
+                                    </mat-option>
                                 </mat-select>
                             </mat-form-field>
                         </span>
@@ -71,34 +78,49 @@
 
                     <div fxFlex fxLayout="row" fxLayoutGap="20px">
                         <span>
-                            <h4>Algodão</h4>
+                            <h4>{{field.app.season[field.app.season.display].commodity.name}}</h4>
                             <h5>Cultura</h5>
                         </span>
                         <span>
-                            <h4>PHY007</h4>
+                            <h4>{{field.app.season[field.app.season.display].variety.name}}</h4>
                             <h5>Variedade</h5>
                         </span>
                     </div>
 
                     <div fxFlex fxLayout="row" fxLayoutGap="20px">
                         <span>
-                            <h4>12/10/2017</h4>
-                            <h5>Data de colheita</h5>
+                            <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
+                            <h5>Data de plantio</h5>
                         </span>
                         <span>
-                            <h4>02/02/2018</h4>
-                            <h5>Previsão de colheita</h5>
+                            <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
+                                | date: 'dd/MM/yyyy'}}</h4>
+                            <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
                         </span>
                     </div>
 
                     <div fxFlex>
-                        <h4>R8 - Maturidade plena</h4>
-                        <h5>Estádio atual</h5>
+                        <span>
+                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).currentStage">
+                                <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
+                                <h5>Estádio atual</h5>
+                            </div>
+                        </span>
+                        <span>
+                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).nextStage">
+                                <h4>{{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
+                                    ({{field.app.season[field.app.season.display].app.nextStage.in}})
+                                </h4>
+                                <h5>Próximo estádio</h5>
+                            </div>
+                        </span>
                     </div>
 
                     <div fxFlex fxLayout="column" fxLayoutAlign="end stretch">
                         <button mat-button class="ngxgButtonEdit buttonEdit" routerLink="/season/iddaseason/edit">Editar safra</button>
                     </div>
+
+
 
                 </div>
 

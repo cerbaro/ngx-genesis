@@ -24,10 +24,6 @@
         h2, h4 {
             font-size: 1.2em;
         }
-        
-        h1, h2, h3, h4, h5 {
-            margin-bottom: -5px;
-        }
 
         h4 {
             clear: both;
@@ -36,6 +32,14 @@
         h5 {
             color: #555;
         }
+
+        h1, h2, h3, h4, h5 {
+            margin-bottom: -5px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
     }
 
     >div:first-child {
