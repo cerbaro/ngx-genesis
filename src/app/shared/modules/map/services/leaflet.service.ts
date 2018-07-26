@@ -115,7 +115,7 @@ export class LeafletService {
         if (geoJSON) {
             url += 'geojson(' + JSON.stringify(geoJSON) + ')/auto/';
         } else {
-            url += lon + ',' + lat + ',' + zoom + ',';
+            url += lon + ',' + lat + ',' + zoom + '/';
         }
         url += width + 'x' + height + '.png?access_token=' + this.accessToken;
 

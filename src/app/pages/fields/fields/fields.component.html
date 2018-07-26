@@ -132,7 +132,7 @@
 
             <div fxFlex>
                 <div id="mapFieldsWrapper">
-                    <div ngxgMap id="mapFields" (mapInstance)="mapInstance($event)" [options]="{latitude: 31.7, longitude:-83.25, zoom:15.4, controls: {baseMaps: true, locate: false}, basemap: 'Light', fitMapTo: 'geojson'}">
+                    <div ngxgMap id="mapFields" (mapInstance)="mapInstance($event)" [options]="{latitude: 31.7, longitude:-83.25, zoom:15.4, controls: {baseMaps: true, locate: false}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
 
                         <div ngxgGeoJson *ngFor="let field of allFields" [options]="{id: field._id, geojson: field.app.map.geojson}"></div>
 

@@ -429,6 +429,8 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     public fieldHover(field: Field): void {
         // this.fieldsMap.panTo([field.location.lat, field.location.lon]);
         // this.fieldsMap.zoomIn(10);
+
+        // Timeout to give some time to user navigate through the menu without changing the map view
         clearTimeout(this.mouseooverTout);
         this.mouseooverTout = setTimeout(() => {
             this.fieldsMap.setView([field.location.lat, field.location.lon], 12);
