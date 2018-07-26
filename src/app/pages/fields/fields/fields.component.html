@@ -38,82 +38,105 @@
 
             <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
 
-                <mat-card *ngFor="let field of fields" fxFlex fxLayout="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition" [routerLink]="['/field']">
+                <span *ngIf="!fieldsToShow" fxFlex fxLayout="row" fxLayoutAlign="center center">
+                    <h1>Nenhum campo encontrado para o filtro selecionado.</h1>
+                </span>
 
-                    <div fxFlex="300px">
-                        <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
-                    </div>
+                <span *ngFor="let field of allFields">
+                    <mat-card fxFlex fxLayout="row" fxHide="{{field.app.hidden}}" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
+                        (mouseleave)="fieldOut(field)" [routerLink]="['/field']">
 
-                    <div fxFlex=28>
-                        <h2>{{field.name}}</h2>
-                        <h5>{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
-
-                        <h4>{{field.area.size/10000 | round }} hectares</h4>
-                        <h5>Área</h5>
-
-                        <div *ngIf="((field || {}).app || {}).weather">
-                            <!-- <h4>{{field.app.weather.temperature}} - {{field.app.weather.summary}}</h4> -->
-                            <h5>Condição agora</h5>
-
-                            <span>
-                                <!-- <h4>{{field.app.weather.sunrise}}</h4> -->
-                                <h5>Amanhecer</h5>
-                            </span>
-                            <span>
-                                <!-- <h4>{{field.app.weather.sunset}}</h4> -->
-                                <h5>Pôr-do-Sol</h5>
-                            </span>
+                        <div fxFlex="300px">
+                            <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
                         </div>
 
-                    </div>
+                        <div fxFlex=28>
+                            <h2>{{field.name}}</h2>
+                            <h5>{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
 
-                    <div fxFlex>
-                        <div *ngIf="(((field || {}).app || {}).season || {}).display">
+                            <h4>{{field.area.size/10000 | round }} hectares</h4>
+                            <h5>Área</h5>
 
-                            <h2>{{field.app.season[field.app.season.display].name}}</h2>
-                            <h5>Safra {{ field.app.season.display === 'current'? 'Atual': field.app.season.display === 'prev'?
-                                'Passada': 'Futura' }}</h5>
+                            <div *ngIf="((field || {}).app || {}).weather">
+                                <h4>{{field.app.weather.temperature}} - {{field.app.weather.summary}}</h4>
+                                <h5>Condição agora</h5>
 
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].commodity.name}}</h4>
-                                <h5>Cultura</h5>
-                            </span>
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].variety.name}}</h4>
-                                <h5>Variedade</h5>
-                            </span>
+                                <span>
+                                    <h4>{{field.app.weather.sunrise}}</h4>
+                                    <h5>Amanhecer</h5>
+                                </span>
+                                <span>
+                                    <h4>{{field.app.weather.sunset}}</h4>
+                                    <h5>Pôr-do-Sol</h5>
+                                </span>
+                            </div>
 
-                            <span class="clearBoth"></span>
-
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
-                                <h5>Data de plantio</h5>
-                            </span>
-
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate | date: 'dd/MM/yyyy'}}</h4>
-                                <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
-                            </span>
-
-                            <!-- <h4>{{field.app.season.current.currentStage.stage.abbrv}} {{field.app.season.current.currentStage.stage.name}}</h4>
-                            <h5>Estádio atual</h5>
-
-                            <h4>{{field.app.season.current.extra.nextStage.stage.abbrv}} {{field.app.season.current.extra.nextStage.stage.name}} ({{field.app.season.current.extra.nextStage.in}})</h4>
-                            <h5>Próximo estádio</h5> -->
                         </div>
-                    </div>
 
-                </mat-card>
+                        <div fxFlex>
+                            <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                                <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
+                                <br>
+                                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}" (click)="$event.stopPropagation()">Criar Safra</button>
+                            </div>
+                            <div *ngIf="(((field || {}).app || {}).season || {}).display">
+
+                                <h2>{{field.app.season[field.app.season.display].name}}</h2>
+                                <h5>Safra {{ field.app.season.display === 'current'? 'Atual': field.app.season.display === 'prev'?
+                                    'Passada': 'Futura' }}</h5>
+
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].commodity.name}}</h4>
+                                    <h5>Cultura</h5>
+                                </span>
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].variety.name}}</h4>
+                                    <h5>Variedade</h5>
+                                </span>
+
+                                <span class="clearBoth"></span>
+
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
+                                    <h5>Data de plantio</h5>
+                                </span>
+
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
+                                        | date: 'dd/MM/yyyy'}}</h4>
+                                    <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
+                                </span>
+
+                                <span class="clearBoth"></span>
+                                <span>
+                                    <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).currentStage">
+                                        <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
+                                        <h5>Estádio atual</h5>
+                                    </div>
+                                </span>
+                                <span>
+                                    <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).nextStage">
+                                        <h4>{{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
+                                            ({{field.app.season[field.app.season.display].app.nextStage.in}})
+                                        </h4>
+                                        <h5>Próximo estádio</h5>
+                                    </div>
+                                </span>
+                            </div>
+                        </div>
+
+                    </mat-card>
+                </span>
             </div>
 
 
             <div fxFlex>
                 <div id="mapFieldsWrapper">
-                    <div ngxgMap id="mapFields" [options]="{latitude: 31.7, longitude:-83.25, zoom:8.4, controls: {baseMaps: false, locate: false}, basemap: 'Light', fitMapTo: 'geojson'}">
+                    <div ngxgMap id="mapFields" (mapInstance)="mapInstance($event)" [options]="{latitude: 31.7, longitude:-83.25, zoom:15.4, controls: {baseMaps: true, locate: false}, basemap: 'Light', fitMapTo: 'geojson'}">
 
-                        <!-- <div ngxgGeoJson *ngFor="let field of fields" [options]="{id: field._id, geojson: field.extra.geojson}"></div> -->
+                        <div ngxgGeoJson *ngFor="let field of allFields" [options]="{id: field._id, geojson: field.app.map.geojson}"></div>
 
-                        <!-- <div ngxgMarker *ngFor="let field of fields" (click)="markerClicked($event)" [options]="{title: field.name, latitude: field.location.lat, longitude: field.location.lon, divIconOptions: field.extra.divIconOptions, fieldId: field._id}"></div> -->
+                        <div ngxgMarker *ngFor="let field of allFields" (click)="markerClicked($event)" [options]="{title: field.name, latitude: field.location.lat, longitude: field.location.lon, divIconOptions: field.app.map.divIconOptions, fieldId: field._id}"></div>
 
                     </div>
                 </div>

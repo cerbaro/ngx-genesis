@@ -9,6 +9,11 @@
             overflow: hidden;
             padding: 0 10px;
             margin: 12px 0;
+            * {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
             img {
                 max-width: 300px;
                 height: auto;
@@ -19,10 +24,12 @@
             h4 {
                 margin-bottom: -5px;
                 clear: both;
+                text-overflow: ellipsis;
             }
             h5 {
                 font-size: .9em;
                 color: #555;
+                text-overflow: ellipsis;
             }
             span {
                 float: left;
@@ -46,7 +53,6 @@
         height: calc(100vh - 200px);
     }
 }
-
 
 /**
 .fieldCardLoader {

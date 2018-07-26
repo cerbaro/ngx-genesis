@@ -15,6 +15,7 @@ import { SocialService } from 'src/app/shared/services/cds/social.service';
 import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.service';
 import { RoundPipe } from 'src/app/shared/pipes/round.pipe';
 import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
+import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import { CommodityService } from 'src/app/shared/services/cds/commodity.service'
         LeafletService,
         FieldService,
         CommodityService,
+        DarkskyService,
         SocialService
     ]
 })

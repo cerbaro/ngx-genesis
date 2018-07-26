@@ -20,7 +20,7 @@ export interface Field {
         lat: number;
         lon: number;
         geoid: string;
-        loc: any;
+        loc?: any;
     };
 
     area: {
@@ -53,9 +53,14 @@ export interface Field {
             next?: any;
             display?: any;
         };
+        map?: {
+            geojson?: any;
+            divIconOptions?: any;
+        };
         thumbnail?: string;
         link?: string;
         weather?: any;
+        hidden?: boolean;
     };
 
 }

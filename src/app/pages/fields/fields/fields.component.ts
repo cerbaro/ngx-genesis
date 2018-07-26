@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import * as L from 'leaflet';
 import * as moment from 'moment';
@@ -7,9 +8,11 @@ import { Field } from 'src/app/shared/types/field';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, map } from 'rxjs/operators';
 import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.service';
 import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
+import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
+
 
 interface Filter {
     _id: string;
@@ -38,7 +41,10 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     public fieldsLoading: Boolean = true;
 
     public allFields: Array<Field> = Array();
-    public fields: Array<Field> = Array();
+    // public fields: Array<Field> = Array();
+    public fieldsToShow: Boolean;
+
+    public fieldsMap: L.Map;
 
     public filters: Filters = {
         user: [],
@@ -56,11 +62,15 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
     public map: Map;
 
+    private mouseooverTout: any;
+
     constructor(
+        private router: Router,
         private ngxgLoadingService: NgxgLoadingService,
         private leafLetService: LeafletService,
         private fieldService: FieldService,
-        private commodityService: CommodityService
+        private commodityService: CommodityService,
+        private darkSkyService: DarkskyService
     ) {
         super();
     }
@@ -86,42 +96,50 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
     }
 
-    private currentStage(season): any {
 
-        let currentStage: any;
-        let nextStage: any = null;
+    /**
+     * Phenology
+     */
 
-        const pdate = moment(season.plantingDate as string, 'YYYY-MM-DD');
+    private currentStage(field: any): any {
 
-        // this.commodityService
-        //     .getPhenologyStages(season.commodity._id)
-        //     .pipe(takeUntil(this.ngxgUnsubscribe))
-        //     .subscribe(result => {
+        if (field.app.season.display != null && field.app.season[field.app.season.display].app.phenologyModel) {
 
-        //         season.commodity.phenology = result.data;
+            const display: string = field.app.season.display;
+            let currentStage: any = null;
+            let nextStage: any = null;
 
-                season.phenology.current.stages.forEach(stage => {
-                    // stage.stage = result.data.find(p => p._id === stage.stage);
+            const pdate = moment(field.app.season[display].plantingDate as string, 'YYYY-MM-DD');
 
-                    if (moment() >= pdate.clone().add(stage.dap, 'days')) {
-                        currentStage = stage;
-                    } else if (nextStage == null && pdate.clone().add(stage.dap, 'days') > moment()) {
-                        nextStage = stage;
-                        nextStage.in = pdate.clone().add(nextStage.dap, 'days').fromNow();
-                    }
+            this.commodityService
+                .getPhenologyStages(field.app.season[display].commodity._id)
+                .pipe(takeUntil(this.ngxgUnsubscribe))
+                .subscribe(result => {
+
+                    field.app.season[display].commodity.phenology = result.data;
+
+                    field.app.season[display].phenology.current.stages.forEach(stage => {
+                        stage.stage = result.data.find(p => p._id === stage.stage);
+
+                        if (moment() >= pdate.clone().add(stage.dap, 'days')) {
+                            currentStage = stage;
+                        } else if (nextStage == null && pdate.clone().add(stage.dap, 'days') > moment()) {
+                            nextStage = stage;
+                            nextStage.in = pdate.clone().add(nextStage.dap, 'days').fromNow();
+                        }
+                    });
+
+
+                    field.app.season[display].app = field.app.season[display].app ? field.app.season[display].app : {};
+                    field.app.season[display].app.currentStage = currentStage;
+                    field.app.season[display].app.nextStage = nextStage;
+
                 });
-
-
-                season.app = season.app ? season.app : {};
-                season.app.currentStage = currentStage;
-                season.app.nextStage = nextStage;
-
-                return season;
-            // });
+        }
 
     }
 
-    private seasonPhenology(season: any, field): any {
+    private seasonPhenology(season: any): any {
         season.app.phenologyModel = false;
 
         if (season.commodity.inf.phenologyModel != null) {
@@ -148,19 +166,14 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
             if (season.app.phenologyModel === false) {
                 season.app.seasonStatus = 200;
             }
-            //console.log(season);
-            //return season;
-            return this.currentStage(season);
-
-        } else {
-
-            return season;
 
         }
 
+        return season;
+
     }
 
-    private prevSeason(seasons: any, field): any {
+    private prevSeason(seasons: any): any {
 
         const sFiltered = seasons
             .filter(season => {
@@ -179,14 +192,14 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
             prevSeason.app = prevSeason.app ? prevSeason.app : {};
 
-            return this.seasonPhenology(prevSeason, field);
+            return this.seasonPhenology(prevSeason);
 
         } else {
             return null;
         }
     }
 
-    private currentSeason(seasons: any, field): any {
+    private currentSeason(seasons: any): any {
 
         const sFiltered = seasons
             .filter(season => {
@@ -207,14 +220,14 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
             currentSeason.app = currentSeason.app ? currentSeason.app : {};
 
-            return this.seasonPhenology(currentSeason, field);
+            return this.seasonPhenology(currentSeason);
 
         } else {
             return null;
         }
     }
 
-    private nextSeason(seasons: any, field): any {
+    private nextSeason(seasons: any): any {
 
         const sFiltered = seasons
             .filter(season => {
@@ -233,18 +246,41 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
             nextSeason.app = nextSeason.app ? nextSeason.app : {};
 
-            return this.seasonPhenology(nextSeason, field);
+            return this.seasonPhenology(nextSeason);
 
         } else {
             return null;
         }
     }
 
+
+    /**
+     * Weather Data
+     */
+
+    private weatherData(field: Field): void {
+
+        this.darkSkyService.getDarkSkyCDS(field._id, field.location)
+            .pipe(
+                takeUntil(this.ngxgUnsubscribe),
+                map(result => result.data.darkSky)
+            ).subscribe(result => {
+
+                if (result !== null) {
+                    field.app.weather = field.app.weather ? field.app.weather : {};
+                    field.app.weather.temperature = Math.round(result.currently.temperature);
+                    field.app.weather.summary = result.currently.summary;
+                    field.app.weather.sunset = moment.unix(result.daily.data[1].sunsetTime).utc().utcOffset('-0300').format('HH:mm');
+                    field.app.weather.sunrise = moment.unix(result.daily.data[1].sunriseTime).utc().utcOffset('-0300').format('HH:mm');
+                    field.app.weather.lastRain = null;
+                }
+
+            });
+    }
+
     private fieldsLoaded(fields: Array<Field>): void {
 
         this.allFields = fields;
-
-        //console.log(this.allFields);
 
         this.allFields.forEach(field => {
 
@@ -253,10 +289,36 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
             }
 
             field.app = {
+                hidden: true,
                 season: {
-                    prev: this.prevSeason(field.seasons, field),
-                    current: this.currentSeason(field.seasons, field),
-                    next: this.nextSeason(field.seasons, field)
+                    prev: this.prevSeason(field.seasons),
+                    current: this.currentSeason(field.seasons),
+                    next: this.nextSeason(field.seasons)
+                },
+                map: {
+                    geojson: {
+                        'type': 'FeatureCollection',
+                        'features': [{
+                            'type': 'Feature',
+                            'geometry': {
+                                'type': field.area.shape.type,
+                                'coordinates': field.area.shape.coordinates
+                            },
+                            'properties': {
+                                'fill': 'EBD740',
+                                'fill-opacity': '.3',
+                                'stroke': 'EBD140'
+                            }
+                        }]
+                    },
+                    divIconOptions: {
+                        className: '',
+                        iconAnchor: [25, 57],
+                        html: '<div class="map-field-marker">' +
+                            '<img src="' + this.leafLetService
+                                .getTileImageURL([field.location.lat, field.location.lon], null, 'mapbox.satellite', 16) + '">'
+                            + '</div>'
+                    }
                 },
                 thumbnail: this.leafLetService.getTileImageURL([field.location.lat, field.location.lon], {
                     'type': 'FeatureCollection',
@@ -280,6 +342,9 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
                     field.app.season.next ? 'next' :
                         field.app.season.prev ? 'prev' : null;
 
+
+            this.currentStage(field);
+            this.weatherData(field);
             this.loadFilters(field);
 
         });
@@ -290,8 +355,6 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
         this.ngxgLoadingService.setLoading(this.fieldsLoading);
 
     }
-
-
 
     /**
      * Filters
@@ -322,20 +385,26 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
     private filterFields(): void {
 
-        this.fields =
-            this.allFields
-                .filter(field =>
-                    this.filterBy.user.length === 0 ||
-                    field.users.filter(user =>
-                        this.filterBy.user.includes(user.user._id)).length === this.filterBy.user.length
-                )
-                .filter(field => this.filterBy.farm.length === 0 || this.filterBy.farm.includes(field.farm._id))
-                .filter(field => this.filterBy.commodity.length === 0 ||
-                    (field.app.season.current != null && this.filterBy.commodity.includes(field.app.season.current.commodity._id))
-                )
-                .filter(field => this.filterBy.variety.length === 0 ||
-                    (field.app.season.current != null && this.filterBy.variety.includes(field.app.season.current.variety._id))
-                );
+        this.fieldsToShow = false;
+
+        this.allFields.forEach(field => field.app.hidden = true);
+
+        this.allFields
+            .filter(field =>
+                this.filterBy.user.length === 0 ||
+                field.users.filter(user =>
+                    this.filterBy.user.includes(user.user._id)).length === this.filterBy.user.length
+            )
+            .filter(field => this.filterBy.farm.length === 0 || this.filterBy.farm.includes(field.farm._id))
+            .filter(field => this.filterBy.commodity.length === 0 ||
+                (field.app.season.current != null && this.filterBy.commodity.includes(field.app.season.current.commodity._id))
+            )
+            .filter(field => this.filterBy.variety.length === 0 ||
+                (field.app.season.current != null && this.filterBy.variety.includes(field.app.season.current.variety._id))
+            ).forEach(field => {
+                field.app.hidden = false;
+                this.fieldsToShow = true;
+            });
 
     }
 
@@ -343,6 +412,41 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
         this.filterBy[fltr] = selectedOptions.selected.map(sel => sel.value);
         this.filterFields();
+
+    }
+
+
+    /**
+     * Events
+     *
+     * Mouse, Leaflet ...
+     */
+
+    public fieldOut(field: Field): void {
+        clearTimeout(this.mouseooverTout);
+    }
+
+    public fieldHover(field: Field): void {
+        // this.fieldsMap.panTo([field.location.lat, field.location.lon]);
+        // this.fieldsMap.zoomIn(10);
+        clearTimeout(this.mouseooverTout);
+        this.mouseooverTout = setTimeout(() => {
+            this.fieldsMap.setView([field.location.lat, field.location.lon], 12);
+        }, 1000);
+    }
+
+    public mapInstance(llmap: L.Map): void {
+        this.fieldsMap = llmap;
+    }
+
+    public markerClicked(event: any): void {
+        const field = this.allFields.find(fld => fld._id === event.fieldId);
+
+        if (field.app.season != null) {
+            this.router.navigate(['/field/' + field._id + '/season/' + (field.app.season as any)._id]);
+        } else {
+            this.router.navigate(['/field/' + field._id]);
+        }
 
     }
 
