@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { WeatherComponent } from './weather/weather.component';
 import { WeatherRoutingModule } from './weather-routing.module';
@@ -7,6 +7,8 @@ import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components
 
 import { ChartModule } from '@kiwigrid/ngx-highcharts';
 import { MapModule } from 'src/app/shared/modules/map/map.module';
+import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
+import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
 
 @NgModule({
     imports: [
@@ -19,6 +21,11 @@ import { MapModule } from 'src/app/shared/modules/map/map.module';
     ],
     declarations: [
         WeatherComponent
+    ],
+    providers: [
+        AgroGISService,
+        DarkskyService,
+        DatePipe
     ]
 })
 export class WeatherModule { }

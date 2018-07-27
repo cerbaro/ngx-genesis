@@ -136,7 +136,7 @@
                             <h3>Chuva e temperatura média diária</h3>
                         </div>
                         <div fxFlex>
-                            <chart [options]="charts.dailyObserved.options" (load)="saveChartInstance('dailyObserved', $event.context)"></chart>
+                            <chart type="StockChart" [options]="charts.dailyObserved.options" (load)="saveChartInstance('dailyObserved', $event.context)"></chart>
                         </div>
                     </mat-card>
 

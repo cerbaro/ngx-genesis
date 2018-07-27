@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import * as GLOBAL from '../../globals';
@@ -16,7 +16,7 @@ export class GeoService {
 
         return this.http
             .get(this.cdsBaseURL + '/latlon/' + location.lat + ',' + location.lon)
-            .pipe(catchError(error => Observable.throw(error)));
+            .pipe(catchError(error => throwError(error)));
     }
 
 }

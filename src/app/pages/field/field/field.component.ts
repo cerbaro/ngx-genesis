@@ -296,7 +296,6 @@ export class FieldComponent extends NgxgRequest implements OnInit {
             selectedSeason = field.seasons;
         }
 
-
         field.app = {
             hidden: true,
             season: {

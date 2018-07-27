@@ -1,11 +1,17 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
-import { takeUntil, delay } from 'rxjs/operators';
+import { takeUntil, delay, map } from 'rxjs/operators';
 import { Field } from 'src/app/shared/types/field';
 import { TabLoadingService } from 'src/app/pages/field/utils/tab-loading.service';
 
 import * as L from 'leaflet';
+import * as moment from 'moment';
+moment.locale('pt-br');
+
+import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
+import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
+
 
 interface Chart {
     options: any;
@@ -24,25 +30,37 @@ interface Map {
 export class WeatherComponent extends NgxgRequest implements OnInit {
 
     public field: Field;
-    public tabLoading: Boolean;
+    public tabLoading: Boolean = true;
 
     public charts: any;
     public maps: any;
 
+    public isseDate: String;
+    public windSpeed: Number;
+    public windGust: Number;
+    public dewPoint: Number;
+    public eto: Number;
+
+    private todayDate: string = moment().subtract(1, 'day').format('YYYYMMDD');
+    private endDate: string = this.todayDate;
+
+    private past1Year = moment().subtract(365, 'days').format('YYYYMMDD');
+    private startDate = this.past1Year;
+
     constructor(
         private tabLoadingService: TabLoadingService,
-        private dataExchangeService: DataExchangeService
+        private dataExchangeService: DataExchangeService,
+        private agrogisService: AgroGISService,
+        private darkSkyService: DarkskyService
     ) {
         super();
-
-        this.tabLoading = true;
 
     }
 
     ngOnInit() {
 
         this.dataExchangeService.getField().pipe(
-            delay(1000),
+            // delay(1000),
             takeUntil(this.ngxgUnsubscribe)
         ).subscribe(
             field => {
@@ -51,19 +69,174 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 this.buildCharts();
                 this.buildMaps();
 
-                this.tabLoading = false;
-                this.tabLoadingService.setLoading(false);
+                this.loadData();
+
+                /**
+                 * Timeout to avoid Error
+                 * ExpressionChangedAfterItHasBeenCheckedError
+                 */
+
+                setTimeout(() => {
+                    this.tabLoading = false;
+                    this.tabLoadingService.setLoading(false);
+                });
+
             }
         );
 
     }
 
-    public saveChartInstance(chart: string, instance: any): void {
+    private loadData(): void {
 
-        this.charts[chart].instance = instance;
-        instance.showLoading('Carregando dados...');
+        if (this.field.app.season.display != null) {
 
+            const display = this.field.app.season.display;
+
+            if (moment(this.field.app.season[display].plantingDate as Date).isSameOrBefore(moment().startOf('day'))) {
+                this.startDate = moment(this.field.app.season[display].plantingDate as Date).format('YYYYMMDD');
+            }
+
+            if (this.field.app.season[display].phenology != null) {
+                this.endDate = moment(this.field.app.season[display].phenology.current.harvestingDate as Date).format('YYYYMMDD');
+            } else {
+                this.endDate = moment(this.field.app.season[display].harvestingDate as Date).format('YYYYMMDD');
+            }
+
+        } else {
+            this.startDate = moment().startOf('year').format('YYYYMMDD');
+            this.endDate = this.todayDate;
+        }
+
+        /*
+         * Observed and accumulated charts
+         *
+         */
+
+        this.dailyObservedAndAccumulated();
+
+
+        /**
+         * Arid and ETO
+         *
+         */
+
+        this.agrogisService
+            .getDailyValue('observed', this.field.location,
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
+            .subscribe(
+                result => {
+                    if (result === null) {
+                        this.charts.isse.instance.showLoading('Dado não disponível.');
+                    } else {
+
+                        const arid = (result.reduce(function (max, x) {
+                            return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
+                        }, result[0]));
+
+                        this.isseDate = (moment(arid.date, 'YYYY-MM-DD').isSame(moment().subtract(1, 'day').startOf('day'))) ?
+                            'Ontem' : 'em ' + moment(arid.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+                        this.charts.isse.instance.series[0].points[0].update(parseFloat(arid.value.toFixed(2)));
+
+                        this.charts.isse.instance.hideLoading();
+                    }
+                },
+                error => this.setError(error)
+            );
+
+        this.agrogisService
+            .getDailyValue('observed', this.field.location,
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
+            .subscribe(
+                result => {
+                    if (result !== null) {
+                        const eto = (result.reduce(function (max, x) {
+                            return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
+                        }, result[0]));
+
+                        this.eto = Math.round(eto.value);
+                    }
+                },
+                error => this.setError(error)
+            );
+
+
+        /*
+         * Dark Sky Forecast
+         *
+         */
+
+        this.darkSkyService.getDarkSkyCDS(this.field._id, this.field.location)
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => result.data.darkSky))
+            .subscribe(
+                result => {
+
+                    if (result !== null) {
+                        this.charts.windRose.instance.series[0].setData([[result.currently.windBearing, 1]]);
+                        this.windSpeed = Math.round(result.currently.windSpeed);
+                        this.windGust = Math.round(result.currently.windGust);
+
+                        this.charts.windRose.instance.hideLoading();
+
+                        this.charts.temperature.instance.series[0]
+                            .setData([[Math.round(result.daily.data[0].temperatureMin), Math.round(result.daily.data[0].temperatureMax)]]);
+
+                        this.charts.temperature.instance.yAxis[0].addPlotLine({
+                            zIndex: 5,
+                            value: Math.round(result.currently.temperature),
+                            color: 'rgba(255,0,0,.1)',
+                            dashStyle: 'solid',
+                            width: 2,
+                            label: {
+                                useHTML: false,
+                                text: Math.round(result.currently.temperature) + '°C' + '<br> <span style="font-size:.7em;">Agora</span>',
+                                align: 'right',
+                                x: 0,
+                                style: {
+                                    color: 'rgba(0,0,0,1)',
+                                    fontSize: '1.8em',
+                                    fontWeight: 'bold'
+                                }
+                            }
+
+                        });
+
+                        this.charts.temperature.instance.hideLoading();
+
+                        this.charts.humidity.instance.series[0].addPoint([Math.round(result.currently.humidity * 100)]);
+                        this.charts.humidity.instance.hideLoading();
+
+
+                        this.dewPoint = Math.round(result.currently.dewPoint);
+
+                        this.charts.rainProbability.instance.xAxis[0].setCategories([
+                            moment.unix(result.daily.data[0].time).utc().format('DD/MM') + ' (Hoje)',
+                            moment.unix(result.daily.data[1].time).utc().format('DD/MM'),
+                            moment.unix(result.daily.data[2].time).utc().format('DD/MM'),
+                            moment.unix(result.daily.data[3].time).utc().format('DD/MM')
+                        ]);
+
+                        this.charts.rainProbability.instance.series[0].setData([
+                            result.daily.data[0].precipProbability * 100,
+                            result.daily.data[1].precipProbability * 100,
+                            result.daily.data[2].precipProbability * 100,
+                            result.daily.data[3].precipProbability * 100
+                        ]);
+
+                        this.charts.rainProbability.instance.hideLoading();
+
+                    } else {
+
+                        this.charts.windRose.instance.showLoading('Dado não disponível');
+                        this.charts.temperature.instance.showLoading('Dado não disponível');
+                        this.charts.humidity.instance.showLoading('Dado não disponível');
+                        this.charts.rainProbability.instance.showLoading('Dado não disponível');
+
+                    }
+                },
+                error => this.setError(error)
+            );
     }
+
 
     private buildCharts(): void {
 
@@ -734,6 +907,116 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
             }
         };
 
+    }
+
+    /**
+     * Chart Data
+     *
+     */
+
+    private dailyObservedAndAccumulated() {
+        this.agrogisService
+            .getDailyValue('observed', this.field.location, this.past1Year, this.todayDate, 'avgT', 'v1', 1, 'cfsr')
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.dailyObserved.instance.showLoading('Dado não disponível.');
+                } else {
+                    this.charts.dailyObserved.instance.series[1].setData(result);
+                    this.charts.dailyObserved.instance.hideLoading();
+                }
+            }, error => this.setError(error));
+        this.agrogisService
+            .getDailyValue('observed', this.field.location, this.past1Year, this.todayDate, 'totR', 'v05b', 1, 'gpm')
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.dailyObserved.instance.showLoading('Dado não disponível.');
+                } else {
+                    this.charts.dailyObserved.instance.series[0].setData(result.map(res => [res[0], Math.round(res[1])]));
+                    this.charts.dailyObserved.instance.hideLoading();
+                    result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf() &&
+                        res[0] <= moment(this.endDate.toString(), 'YYYYMMDD').valueOf());
+                    this.charts.dailyAccumulated.instance.series[0].setData(this.getAccumulation(result));
+                    this.charts.dailyAccumulated.instance.series[0]
+                        .update({ name: (!this.field.app.season.display) ? 'Desde 1º de Janeiro' : 'Esta safra' });
+                }
+            }, error => this.setError(error));
+        this.agrogisService
+            .getDailyValue('observed', this.field.location, this.startDate, this.endDate, 'gdd', 'v1', 2, 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.dailyAccumulated.instance.showLoading('Dado não disponível.');
+                } else {
+                    result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf());
+                    this.charts.dailyAccumulated.instance.series[1].setData(this.getAccumulation(result));
+                    this.charts.dailyAccumulated.instance.series[1]
+                        .update({ name: (!this.field.app.season.display) ? 'Desde 1º de Janeiro' : 'Esta safra' });
+                    this.charts.dailyAccumulated.instance.hideLoading();
+                }
+            }, error => this.setError(error));
+        /**
+         * Accumulated Historical
+         *
+         */
+        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'totR', 'v2', 1, 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.dailyAccumulated.instance.showLoading('Dado não disponível.');
+                } else {
+                    result.sort(function (a, b) { return (a[0] > b[0]) ? 1 : ((b[0] > a[0]) ? -1 : 0); });
+                    result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf());
+                    this.charts.dailyAccumulated.instance.series[2].setData(this.getAccumulation(result));
+                    this.charts.dailyAccumulated.instance.hideLoading();
+                }
+            }, error => this.setError(error));
+        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'gdd', 'v1', 2, 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.dailyAccumulated.instance.showLoading('Dado não disponível.');
+                } else {
+                    result.sort(function (a, b) { return (a[0] > b[0]) ? 1 : ((b[0] > a[0]) ? -1 : 0); });
+                    result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf());
+                    this.charts.dailyAccumulated.instance.series[3].setData(this.getAccumulation(result));
+                    this.charts.dailyAccumulated.instance.hideLoading();
+                }
+            }, error => this.setError(error));
+    }
+
+    /**
+     * Chart Utils
+     *
+     */
+
+    public saveChartInstance(chart: string, instance: any): void {
+
+        this.charts[chart].instance = instance;
+        instance.showLoading('Carregando dados...');
+
+    }
+
+    private formatHighChartData(data): Array<any> {
+        return data.map(res => {
+            return [
+                moment(res.date, 'YYYY-MM-DD').valueOf(),
+                res.value
+            ];
+        });
+    }
+
+    private getAccumulation(data) {
+        const totalList = [];
+        let total = 0;
+
+        for (let i = 0; i < data.length; i++) {
+            total += data[i][1];
+            totalList.push([data[i][0], total]);
+        }
+
+        return totalList;
     }
 
 }

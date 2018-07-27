@@ -19,7 +19,7 @@ export class NgxgRequest implements OnDestroy {
 
     public setError(error: any): void {
 
-        if (error.error.code) {
+        if (error.error && error.error.code) {
             this.error = error.error;
         } else {
             this.error = {} as CDSError;
