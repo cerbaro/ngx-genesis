@@ -35,6 +35,12 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
     public charts: any;
     public maps: any;
 
+    public gfsMap: {
+        geojson?: any;
+        marker?: any;
+        legend?: any;
+    };
+
     public isseDate: String;
     public windSpeed: Number;
     public windGust: Number;
@@ -787,37 +793,48 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
     private buildMaps(): void {
 
-        /*
-        * GFS Forecast
-        * 
-        
+        this.gfsMap = this.gfsMap ? this.gfsMap : {};
+        this.gfsMap.marker = {
+            className: '',
+            iconAnchor: [12, 41],
+            html: '<img src="assets/img/mkr.png" width="25px" height="41px" />'
+        };
+
+        /**
+         * GFS Forecast
+         */
 
         this.agrogisService.getGeoJSONColor('totR').subscribe(
             result => {
 
-                this.gfsMapLegend = [];
+                this.gfsMap = this.gfsMap ? this.gfsMap : {};
+                this.gfsMap.legend = [];
 
                 Object.keys(result[0].color_map).forEach(key => {
-                    this.gfsMapLegend.push({
+                    this.gfsMap.legend.push({
                         color: result[0].color_map[key],
                         ...result[0].range_map[key]
-                    })
-                })
+                    });
+                });
 
-                this.gfsMapLegend = this.gfsMapLegend.reverse();
+                this.gfsMap.legend = this.gfsMap.legend.reverse();
 
             },
-            error => this.setError(error)
-        );
+            error => this.setError(error));
 
 
-        this.agrogisService.getGeoJSON("forecast", this.field.location.geoid.substr(0, 4), moment().format("YYYYMMDD"), moment().add(7, 'days').format("YYYYMMDD"), "totR", "gfs", "ensoag").subscribe(
-            result => {
-                this.gfsMap = result;
-            },
-            error => this.setError(error)
-        );
-        */
+        this.agrogisService
+            .getGeoJSON('forecast',
+                this.field.location.geoid.substr(0, 4),
+                moment().format('YYYYMMDD'),
+                moment().add(7, 'days').format('YYYYMMDD'), 'totR', 'gfs', 'ensoag')
+            .subscribe(
+                result => {
+                    this.gfsMap = this.gfsMap ? this.gfsMap : {};
+                    this.gfsMap.geojson = result;
+                },
+                error => this.setError(error));
+
 
     }
 
