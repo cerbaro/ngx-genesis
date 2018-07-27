@@ -1,9 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
+
+import { Observable, forkJoin, pipe } from 'rxjs';
 import { takeUntil, delay } from 'rxjs/operators';
+
 import { Field } from 'src/app/shared/types/field';
 import { TabLoadingService } from 'src/app/pages/field/utils/tab-loading.service';
+import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
+
 
 interface Chart {
     options: any;
@@ -29,7 +34,8 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
 
     constructor(
         private tabLoadingService: TabLoadingService,
-        private dataExchangeService: DataExchangeService
+        private dataExchangeService: DataExchangeService,
+        private agrogisService: AgroGISService
     ) {
         super();
 
@@ -39,7 +45,7 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
     ngOnInit() {
 
         this.dataExchangeService.getField().pipe(
-            delay(1000),
+            // delay(1000),
             takeUntil(this.ngxgUnsubscribe)
         ).subscribe(
             field => {
@@ -47,8 +53,16 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
 
                 this.buildCharts();
 
-                this.tabLoading = false;
-                this.tabLoadingService.setLoading(false);
+                /**
+                 * Timeout to avoid Error
+                 * ExpressionChangedAfterItHasBeenCheckedError
+                 */
+
+                setTimeout(() => {
+                    this.tabLoading = false;
+                    this.tabLoadingService.setLoading(false);
+                    this.loadData();
+                }, 1000);
 
             }
         );
@@ -135,6 +149,15 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
                             valueSuffix: '°C'
                         }
                     }, {
+                        name: 'Temperatura Média',
+                        data: [],
+                        type: 'spline',
+                        color: 'rgba(155,155,0, .7)',
+                        tooltip: {
+                            valueDecimals: 0,
+                            valueSuffix: '°C'
+                        }
+                    }, {
                         name: 'Temperatura Mínima',
                         data: [],
                         type: 'spline',
@@ -147,6 +170,43 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
                 }
             } as Chart
         };
+
+    }
+
+    private loadData(): void {
+
+        const variables = [
+            { variable: 'totR', source: 'ensoag', version: 'v2', band: 1 },
+            { variable: 'maxT', source: 'ensoag', version: 'v1', band: 1 },
+            { variable: 'avgT', source: 'ensoag', version: 'v1', band: 1 },
+            { variable: 'minT', source: 'ensoag', version: 'v1', band: 1 }
+        ];
+
+        const climatologyObservable = [].concat.apply([], variables.map(variable =>
+            this.agrogisService.getClimatology(this.field.location, variable.variable, variable.version, variable.band, variable.source)
+        )) as Observable<any>[];
+
+        forkJoin(climatologyObservable)
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(results => {
+                results.forEach(result => {
+                    if (result !== null) {
+                        let series = 0;
+
+                        if (result[0].variable === 'maxTHis') {
+                            series = 1;
+
+                        } else if (result[0].variable === 'minTHis') {
+                            series = 3;
+                        } else if (result[0].variable === 'avgTHis') {
+                            series = 2;
+                        }
+
+                        this.charts.climatology.instance.series[series].setData(result.map(res => res.avg));
+                        this.charts.climatology.instance.hideLoading();
+                    }
+                });
+            });
 
     }
 

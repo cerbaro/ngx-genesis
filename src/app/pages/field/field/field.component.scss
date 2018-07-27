@@ -67,8 +67,8 @@
 
     button {
         height: 40px; 
-        color: rgba($color: #000, $alpha: .8) !important;
-        font-weight: 400 !important;
+        // color: rgba($color: #000, $alpha: .8) !important;
+        // font-weight: 500 !important;
         background-color: transparent;
         border: none;
         border-bottom: solid 1px #DDD;
@@ -81,6 +81,11 @@
 
         &.link-active:hover {
             background-color: #FDFDFD;
+        }
+
+        &[disabled], &[disabled]:hover {
+            color: #DDD;
+            background-color: #FFF;
         }
 
         &:hover {

@@ -363,7 +363,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
     public switchSeason(season) {
         const currentSubPage = this.route.snapshot.firstChild.url[0].path;
-        const localPage = (!season.commodity.phenologyModel && currentSubPage === 'phenology') ? 'climate' : currentSubPage;
+        const localPage = (!season.commodity.phenologyModel && currentSubPage === 'phenology') ? 'weather' : currentSubPage;
 
         this.router.navigate(['/field', this.field._id, 'season', season._id, localPage]);
     }

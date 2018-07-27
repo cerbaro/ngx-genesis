@@ -83,7 +83,10 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 setTimeout(() => {
                     this.tabLoading = false;
                     this.tabLoadingService.setLoading(false);
-                });
+
+                    // Also to give some time for the browser to render charts before laod data
+                    this.loadChartData();
+                }, 1000);
 
             }
         );
@@ -289,7 +292,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                         title: {
                             text: null,
                         },
-                        plotLines: [15]
+                        plotLines: []
                     }],
 
                     series: [{
@@ -357,7 +360,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                                     [0.55, '#DF5353']
                                 ]
                             },
-                            y: 0.7
+                            y: null
                         }],
                         dataLabels: {
                             format: '<div style="text-align:center; margin-top:-35px;">' +
@@ -788,7 +791,6 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
             } as Chart
         };
 
-        this.loadChartData();
     }
 
     private buildMaps(): void {

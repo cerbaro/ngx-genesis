@@ -50,7 +50,8 @@
 
                 <!-- Season Information -->
 
-                <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex=37 fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex=37 fxLayout="column" fxLayoutAlign="center center"
+                    style="height: 100%;">
                     <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
                     <br>
                     <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}"
@@ -159,10 +160,10 @@
 
     <div id="fieldTabsList" class="ngxgContent" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start start">
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['weather']" routerLinkActive="link-active">Tempo e Previsão</button>
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['climate']" routerLinkActive="link-active">Climatologia</button>
+            <button mat-raised-button class="mat-elevation-z0" routerLink="weather" routerLinkActive="link-active">Tempo e Previsão</button>
+            <button mat-raised-button class="mat-elevation-z0" routerLink="climate" routerLinkActive="link-active">Climatologia</button>
             <!-- <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button> -->
-            <button mat-raised-button class="mat-elevation-z0" [routerLink]="['phenology']" routerLinkActive="link-active">Guia de Fases</button>
+            <button mat-raised-button class="mat-elevation-z0" routerLink="phenology" routerLinkActive="link-active" [disabled]="!field.app.season[field.app.season.display].app.phenologyModel">Guia de Fases</button>
         </div>
     </div>
 
