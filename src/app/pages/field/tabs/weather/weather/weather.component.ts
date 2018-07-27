@@ -69,8 +69,6 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 this.buildCharts();
                 this.buildMaps();
 
-                this.loadData();
-
                 /**
                  * Timeout to avoid Error
                  * ExpressionChangedAfterItHasBeenCheckedError
@@ -86,7 +84,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
     }
 
-    private loadData(): void {
+    private loadChartData(): void {
 
         if (this.field.app.season.display != null) {
 
@@ -114,127 +112,19 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
         this.dailyObservedAndAccumulated();
 
-
         /**
          * Arid and ETO
          *
          */
 
-        this.agrogisService
-            .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
-            .subscribe(
-                result => {
-                    if (result === null) {
-                        this.charts.isse.instance.showLoading('Dado não disponível.');
-                    } else {
-
-                        const arid = (result.reduce(function (max, x) {
-                            return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
-                        }, result[0]));
-
-                        this.isseDate = (moment(arid.date, 'YYYY-MM-DD').isSame(moment().subtract(1, 'day').startOf('day'))) ?
-                            'Ontem' : 'em ' + moment(arid.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
-                        this.charts.isse.instance.series[0].points[0].update(parseFloat(arid.value.toFixed(2)));
-
-                        this.charts.isse.instance.hideLoading();
-                    }
-                },
-                error => this.setError(error)
-            );
-
-        this.agrogisService
-            .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
-            .subscribe(
-                result => {
-                    if (result !== null) {
-                        const eto = (result.reduce(function (max, x) {
-                            return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
-                        }, result[0]));
-
-                        this.eto = Math.round(eto.value);
-                    }
-                },
-                error => this.setError(error)
-            );
-
+        this.aridEto();
 
         /*
          * Dark Sky Forecast
          *
          */
 
-        this.darkSkyService.getDarkSkyCDS(this.field._id, this.field.location)
-            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => result.data.darkSky))
-            .subscribe(
-                result => {
-
-                    if (result !== null) {
-                        this.charts.windRose.instance.series[0].setData([[result.currently.windBearing, 1]]);
-                        this.windSpeed = Math.round(result.currently.windSpeed);
-                        this.windGust = Math.round(result.currently.windGust);
-
-                        this.charts.windRose.instance.hideLoading();
-
-                        this.charts.temperature.instance.series[0]
-                            .setData([[Math.round(result.daily.data[0].temperatureMin), Math.round(result.daily.data[0].temperatureMax)]]);
-
-                        this.charts.temperature.instance.yAxis[0].addPlotLine({
-                            zIndex: 5,
-                            value: Math.round(result.currently.temperature),
-                            color: 'rgba(255,0,0,.1)',
-                            dashStyle: 'solid',
-                            width: 2,
-                            label: {
-                                useHTML: false,
-                                text: Math.round(result.currently.temperature) + '°C' + '<br> <span style="font-size:.7em;">Agora</span>',
-                                align: 'right',
-                                x: 0,
-                                style: {
-                                    color: 'rgba(0,0,0,1)',
-                                    fontSize: '1.8em',
-                                    fontWeight: 'bold'
-                                }
-                            }
-
-                        });
-
-                        this.charts.temperature.instance.hideLoading();
-
-                        this.charts.humidity.instance.series[0].addPoint([Math.round(result.currently.humidity * 100)]);
-                        this.charts.humidity.instance.hideLoading();
-
-
-                        this.dewPoint = Math.round(result.currently.dewPoint);
-
-                        this.charts.rainProbability.instance.xAxis[0].setCategories([
-                            moment.unix(result.daily.data[0].time).utc().format('DD/MM') + ' (Hoje)',
-                            moment.unix(result.daily.data[1].time).utc().format('DD/MM'),
-                            moment.unix(result.daily.data[2].time).utc().format('DD/MM'),
-                            moment.unix(result.daily.data[3].time).utc().format('DD/MM')
-                        ]);
-
-                        this.charts.rainProbability.instance.series[0].setData([
-                            result.daily.data[0].precipProbability * 100,
-                            result.daily.data[1].precipProbability * 100,
-                            result.daily.data[2].precipProbability * 100,
-                            result.daily.data[3].precipProbability * 100
-                        ]);
-
-                        this.charts.rainProbability.instance.hideLoading();
-
-                    } else {
-
-                        this.charts.windRose.instance.showLoading('Dado não disponível');
-                        this.charts.temperature.instance.showLoading('Dado não disponível');
-                        this.charts.humidity.instance.showLoading('Dado não disponível');
-                        this.charts.rainProbability.instance.showLoading('Dado não disponível');
-
-                    }
-                },
-                error => this.setError(error)
-            );
+        this.darkSkyRealTimeForecast();
     }
 
 
@@ -290,7 +180,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
                     series: [{
                         name: 'Umidade',
-                        data: [20],
+                        data: [],
                         dataLabels: {
                             format: '<div style="text-align:center; margin-top:-35px;">' +
                                 '<span style="font-size:25px;color: #000">{y:.0f}%</span><br/>'
@@ -891,21 +781,43 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 }
             } as Chart
         };
+
+        this.loadChartData();
     }
 
     private buildMaps(): void {
 
-        this.maps = {
-            rainForecast: {
-                options: {
-                    layers: [
-                        L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 18, attribution: '...' })
-                    ],
-                    zoom: 5,
-                    center: L.latLng(46.879966, -121.726909)
-                }
-            }
-        };
+        /*
+        * GFS Forecast
+        * 
+        
+
+        this.agrogisService.getGeoJSONColor('totR').subscribe(
+            result => {
+
+                this.gfsMapLegend = [];
+
+                Object.keys(result[0].color_map).forEach(key => {
+                    this.gfsMapLegend.push({
+                        color: result[0].color_map[key],
+                        ...result[0].range_map[key]
+                    })
+                })
+
+                this.gfsMapLegend = this.gfsMapLegend.reverse();
+
+            },
+            error => this.setError(error)
+        );
+
+
+        this.agrogisService.getGeoJSON("forecast", this.field.location.geoid.substr(0, 4), moment().format("YYYYMMDD"), moment().add(7, 'days').format("YYYYMMDD"), "totR", "gfs", "ensoag").subscribe(
+            result => {
+                this.gfsMap = result;
+            },
+            error => this.setError(error)
+        );
+        */
 
     }
 
@@ -985,6 +897,92 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 }
             }, error => this.setError(error));
     }
+
+    private darkSkyRealTimeForecast() {
+        this.darkSkyService.getDarkSkyCDS(this.field._id, this.field.location)
+            .pipe(takeUntil(this.ngxgUnsubscribe), map(result => result.data.darkSky))
+            .subscribe(result => {
+                if (result !== null) {
+                    this.charts.windRose.instance.series[0].setData([[result.currently.windBearing, 1]]);
+                    this.windSpeed = Math.round(result.currently.windSpeed);
+                    this.windGust = Math.round(result.currently.windGust);
+                    this.charts.windRose.instance.hideLoading();
+                    this.charts.temperature.instance.series[0]
+                        .setData([[Math.round(result.daily.data[0].temperatureMin), Math.round(result.daily.data[0].temperatureMax)]]);
+                    this.charts.temperature.instance.yAxis[0].addPlotLine({
+                        zIndex: 5,
+                        value: Math.round(result.currently.temperature),
+                        color: 'rgba(255,0,0,.1)',
+                        dashStyle: 'solid',
+                        width: 2,
+                        label: {
+                            useHTML: false,
+                            text: Math.round(result.currently.temperature) + '°C' + '<br> <span style="font-size:.7em;">Agora</span>',
+                            align: 'right',
+                            x: 0,
+                            style: {
+                                color: 'rgba(0,0,0,1)',
+                                fontSize: '1.8em',
+                                fontWeight: 'bold'
+                            }
+                        }
+                    });
+                    this.charts.temperature.instance.hideLoading();
+                    this.charts.humidity.instance.series[0].addPoint([Math.round(result.currently.humidity * 100)]);
+                    this.charts.humidity.instance.hideLoading();
+                    this.dewPoint = Math.round(result.currently.dewPoint);
+                    this.charts.rainProbability.instance.xAxis[0].setCategories([
+                        moment.unix(result.daily.data[0].time).utc().format('DD/MM') + ' (Hoje)',
+                        moment.unix(result.daily.data[1].time).utc().format('DD/MM'),
+                        moment.unix(result.daily.data[2].time).utc().format('DD/MM'),
+                        moment.unix(result.daily.data[3].time).utc().format('DD/MM')
+                    ]);
+                    this.charts.rainProbability.instance.series[0].setData([
+                        result.daily.data[0].precipProbability * 100,
+                        result.daily.data[1].precipProbability * 100,
+                        result.daily.data[2].precipProbability * 100,
+                        result.daily.data[3].precipProbability * 100
+                    ]);
+                    this.charts.rainProbability.instance.hideLoading();
+                } else {
+                    this.charts.windRose.instance.showLoading('Dado não disponível');
+                    this.charts.temperature.instance.showLoading('Dado não disponível');
+                    this.charts.humidity.instance.showLoading('Dado não disponível');
+                    this.charts.rainProbability.instance.showLoading('Dado não disponível');
+                }
+            }, error => this.setError(error));
+    }
+
+    private aridEto() {
+        this.agrogisService
+            .getDailyValue('observed', this.field.location,
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
+            .subscribe(result => {
+                if (result === null) {
+                    this.charts.isse.instance.showLoading('Dado não disponível.');
+                } else {
+                    const arid = (result.reduce(function (max, x) {
+                        return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
+                    }, result[0]));
+                    this.isseDate = (moment(arid.date, 'YYYY-MM-DD').isSame(moment().subtract(1, 'day').startOf('day'))) ?
+                        'Ontem' : 'em ' + moment(arid.date, 'YYYY-MM-DD').format('DD/MM/YYYY');
+                    this.charts.isse.instance.series[0].points[0].update(parseFloat(arid.value.toFixed(2)));
+                    this.charts.isse.instance.hideLoading();
+                }
+            }, error => this.setError(error));
+        this.agrogisService
+            .getDailyValue('observed', this.field.location,
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
+            .subscribe(result => {
+                if (result !== null) {
+                    const eto = (result.reduce(function (max, x) {
+                        return (moment(x.date, 'YYYY-MM-DD').valueOf() > moment(max.date, 'YYYY-MM-DD').valueOf()) ? x : max;
+                    }, result[0]));
+                    this.eto = Math.round(eto.value);
+                }
+            }, error => this.setError(error));
+    }
+
 
     /**
      * Chart Utils

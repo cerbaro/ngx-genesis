@@ -44,7 +44,8 @@
                                 <h3>Ponto de Olvalho</h3>
                             </div>
                             <div fxFlex>
-                                Value
+                                <span *ngIf="dewPoint != null">{{dewPoint}}°C</span>
+                                <span *ngIf="dewPoint === null || dewPoint === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
 
@@ -68,7 +69,8 @@
                                 <h3>Velocidade do Vento</h3>
                             </div>
                             <div fxFlex>
-                                Value
+                                <span *ngIf="windSpeed != null">{{windSpeed}} km/h</span>
+                                <span *ngIf="windSpeed === null || windSpeed === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
 
@@ -81,7 +83,7 @@
             <div fxFlex fxLayout="column">
 
                 <div class="ngxgCardSectionTitle" fxFlex>
-                    <h1>Registrado Ontem</h1>
+                    <h1>Registrado {{isseDate}}</h1>
                 </div>
 
                 <div fxFlex fxLayout="row" fxLayoutGap="20px">
@@ -104,7 +106,8 @@
                                 <h3>Evapotranspiração Potencial</h3>
                             </div>
                             <div fxFlex>
-                                Value
+                                <span *ngIf="eto != null">{{eto | number: '1.1-2'}} mm</span>
+                                <span *ngIf="eto === null || eto === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
 
