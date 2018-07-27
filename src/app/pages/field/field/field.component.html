@@ -132,11 +132,11 @@
                 <div fxLayout="column" fxFlex=20>
 
                     <div fxFlex=23>
-                        <h3>Acumulado durante</h3>
-                        <p>
+                        <h3>Acumulado {{field.app.season.display? 'durante a safra' : 'nos últimos 30 dias'}}</h3>
+                        <h5>
                             {{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}} até {{field.app.season[field.app.season.display].harvestingDate
                             || field.app.season[field.app.season.display].modelHarvestingDate | date: 'dd/MM/yyyy'}}
-                        </p>
+                        </h5>
                     </div>
 
                     <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null">
