@@ -60,6 +60,7 @@ export interface Field {
         thumbnail?: string;
         link?: string;
         weather?: any;
+        climate?: any;
         hidden?: boolean;
     };
 

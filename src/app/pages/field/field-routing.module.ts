@@ -15,10 +15,12 @@ const withSeason: Routes = [
 ];
 
 const routes: Routes = [
-    { path: ':field', component: FieldComponent, children: withoutSeason },
-    { path: ':field/season/:season', component: FieldComponent, children: withSeason },
     { path: 'new', component: ManageComponent },
     { path: ':id/edit', component: ManageComponent },
+
+    { path: ':field', component: FieldComponent, children: withoutSeason },
+    { path: ':field/season/:season', component: FieldComponent, children: withSeason },
+
     { path: '**', component: FieldComponent }
 ];
 

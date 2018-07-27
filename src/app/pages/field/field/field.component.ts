@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, NavigationStart, ActivatedRoute, Params } from '@angular/router';
+import { Observable } from 'rxjs';
 
 import * as L from 'leaflet';
 import * as moment from 'moment';
@@ -15,6 +16,8 @@ import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.serv
 import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
 import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
+import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
+
 
 
 @Component({
@@ -23,10 +26,11 @@ import { FieldService } from 'src/app/shared/services/cds/field.service';
 })
 export class FieldComponent extends NgxgRequest implements OnInit {
 
-    public fieldLoading: Boolean;
     public field: Field;
 
-    public tabsLoading: Boolean;
+    public fieldLoading: Boolean = true;
+    public tabsLoading: Boolean = true;
+    public climateDataLoading: Boolean = true;
 
     constructor(
         private router: Router,
@@ -37,12 +41,10 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         private leafLetService: LeafletService,
         private fieldService: FieldService,
         private commodityService: CommodityService,
-        private darkSkyService: DarkskyService
+        private darkSkyService: DarkskyService,
+        private agrogisService: AgroGISService
     ) {
         super();
-
-        this.fieldLoading = true;
-        this.tabsLoading = true;
 
     }
 
@@ -247,7 +249,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
 
     /**
-     * Weather Data
+     * Weather & Climate Data
      */
 
     private weatherData(field: Field): void {
@@ -268,6 +270,62 @@ export class FieldComponent extends NgxgRequest implements OnInit {
                 }
 
             });
+    }
+
+    private climateData(field: Field): void {
+
+        const variables = [
+            { variable: 'totR', source: 'gpm', band: 1 },
+            { variable: 'gdd', source: 'ensoag', band: 2 },
+            { variable: 'arid', source: 'ensoag', band: 1 }
+        ];
+        const display = field.app.season.display;
+
+        const pDate = field.app.season[display].plantingDate as Date;
+        let hDate = (field.app.season[display].app.phenologyModel) ?
+            field.app.season[display].modelHarvestingDate as Date :
+            field.app.season[display].harvestingDate as Date;
+
+        if (moment(hDate).isAfter(moment())) {
+            hDate = new Date();
+        }
+
+        let variablesObservable = [].concat.apply([], variables.map(variable => {
+            return this.agrogisService
+                .summary(field.location.lat, field.location.lon,
+                    variable.variable, variable.band, variable.source, pDate, hDate);
+        })) as Observable<any>[];
+
+        variablesObservable = variablesObservable.filter(x => x != null);
+
+        if (variablesObservable.length > 0) {
+
+            let reqDone = 0;
+
+            variablesObservable.forEach(
+                variableObservable => {
+                    variableObservable
+                        .pipe(takeUntil(this.ngxgUnsubscribe))
+                        .subscribe(response => {
+
+                            if (response !== null) {
+                                field.app.climate = field.app.climate ? field.app.climate : {};
+                                field.app.climate[response[0].variable] = response[0];
+                            }
+
+                            if (reqDone++ >= variablesObservable.length - 1) {
+                                this.climateDataLoading = false;
+                            }
+
+                            console.log(response);
+
+                        });
+                });
+
+        } else {
+            this.climateDataLoading = false;
+        }
+
     }
 
     private loadField(params: any, tryingSeason: number): void {
@@ -353,13 +411,13 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
         this.currentStage(field);
         this.weatherData(field);
+        this.climateData(field);
 
         this.dataExchangeService.setField(field);
         this.fieldLoading = false;
         this.ngxgLoadingService.setLoading(this.fieldLoading);
 
     }
-
 
     public switchSeason(season) {
         const currentSubPage = this.route.snapshot.firstChild.url[0].path;

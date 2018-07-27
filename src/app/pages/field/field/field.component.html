@@ -132,22 +132,25 @@
                 <div fxLayout="column" fxFlex=20>
 
                     <div fxFlex=23>
-                        <h3>Acumulado durante a safra</h3>
-                        <p>01/01/2018 até 01/05/2018</p>
+                        <h3>Acumulado durante</h3>
+                        <p>
+                            {{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}} até {{field.app.season[field.app.season.display].harvestingDate
+                            || field.app.season[field.app.season.display].modelHarvestingDate | date: 'dd/MM/yyyy'}}
+                        </p>
                     </div>
 
-                    <div fxFlex=18>
-                        <h4>1200 mm</h4>
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null">
+                        <h4>{{field.app.climate.totR.sum | round}} mm</h4>
                         <h5>Chuva</h5>
                     </div>
 
-                    <div fxFlex=18>
-                        <h4>2000 GD</h4>
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).gdd != null">
+                        <h4>{{field.app.climate.gdd.sum | round}} GD</h4>
                         <h5>Graus-dia</h5>
                     </div>
 
-                    <div fxFlex=18>
-                        <h4>2000</h4>
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null">
+                        <h4>{{field.app.climate.arid.sum | round}} </h4>
                         <h5>ISSE</h5>
                     </div>
 
@@ -163,7 +166,7 @@
             <button mat-raised-button class="mat-elevation-z0" routerLink="weather" routerLinkActive="link-active">Tempo e Previsão</button>
             <button mat-raised-button class="mat-elevation-z0" routerLink="climate" routerLinkActive="link-active">Climatologia</button>
             <!-- <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button> -->
-            <button mat-raised-button class="mat-elevation-z0" routerLink="phenology" routerLinkActive="link-active" [disabled]="!field.app.season[field.app.season.display].app.phenologyModel">Guia de Fases</button>
+            <button mat-raised-button class="mat-elevation-z0" routerLink="phenology" routerLinkActive="link-active" [disabled]="!field.app.season.display || !field.app.season[field.app.season.display].app.phenologyModel">Guia de Fases</button>
         </div>
     </div>
 

@@ -74,13 +74,13 @@
         border-bottom: solid 1px #DDD;
 
         &.link-active {
-            background-color: #FDFDFD;
+            background-color: #F0F0F0;
             border: solid 1px #DDD;
-            border-bottom: solid 1px #FDFDFD;
+            border-bottom: solid 1px #F0F0F0;
         }
 
         &.link-active:hover {
-            background-color: #FDFDFD;
+            background-color: #F0F0F0;
         }
 
         &[disabled], &[disabled]:hover {
@@ -95,7 +95,7 @@
 }
 
 #fieldTabs {
-    background-color: #FDFDFD;
+    background-color: #F0F0F0;
     min-height: calc(100vh - 280px - 150px);
 
     .ngxgMaxWidth {

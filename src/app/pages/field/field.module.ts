@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 
 import { FieldRoutingModule } from './field-routing.module';
@@ -14,6 +14,7 @@ import { FieldService } from 'src/app/shared/services/cds/field.service';
 import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
 import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
 import { SocialService } from 'src/app/shared/services/cds/social.service';
+import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
 
 @NgModule({
     imports: [
@@ -34,6 +35,8 @@ import { SocialService } from 'src/app/shared/services/cds/social.service';
         FieldService,
         CommodityService,
         DarkskyService,
+        AgroGISService,
+        DatePipe,
         SocialService
     ]
 })
