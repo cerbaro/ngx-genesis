@@ -100,21 +100,29 @@
                         </span>
                     </div>
 
-                    <div fxFlex>
+                    <div fxFlex *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel">
                         <span>
-                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).currentStage">
+                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).currentStage">
                                 <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
                                 <h5>Estádio atual</h5>
                             </div>
                         </span>
                         <span>
-                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).nextStage">
+                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).nextStage">
                                 <h4>{{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
                                     ({{field.app.season[field.app.season.display].app.nextStage.in}})
                                 </h4>
                                 <h5>Próximo estádio</h5>
                             </div>
                         </span>
+                    </div>
+
+                    <div fxFlex *ngIf="field.app.season.display === 'prev'">
+                        <h4>Esta safra terminou há {{field.app.season[field.app.season.display].app.endDate}} dias</h4>
+                    </div>
+
+                    <div fxFlex *ngIf="field.app.season.display === 'next'">
+                        <h4>Esta safra começará em {{field.app.season[field.app.season.display].app.startDate}} dias</h4>
                     </div>
 
                     <div fxFlex fxLayout="column" fxLayoutAlign="end stretch">
@@ -125,31 +133,34 @@
 
                 </div>
 
-                <mat-divider vertical="true"></mat-divider>
+                <mat-divider fxHide="{{!climateDataLoading && !(((field || {}).app || {}).climate || {}).sDate}}" vertical="true"></mat-divider>
 
                 <!-- Season/Field Weather/Climate Information -->
+                <div *ngIf="climateDataLoading" fxFlex=20 fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                    <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
+                </div>
 
-                <div fxLayout="column" fxFlex=20>
+                <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex=20>
 
                     <div fxFlex=23>
-                        <h3>Acumulado {{field.app.season.display? 'durante a safra' : 'nos últimos 30 dias'}}</h3>
+                        <h3>Acumulado {{field.app.season.display && field.app.season.display !== 'next' ? 'durante a safra' :
+                            'nos últimos '+ field.app.climate.diffDate +' dias'}}</h3>
                         <h5>
-                            {{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}} até {{field.app.season[field.app.season.display].harvestingDate
-                            || field.app.season[field.app.season.display].modelHarvestingDate | date: 'dd/MM/yyyy'}}
+                            {{field.app.climate.sDate | date: 'dd/MM/yyyy'}} até {{field.app.climate.eDate | date: 'dd/MM/yyyy'}}
                         </h5>
                     </div>
 
-                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null">
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null" style="color:#2d5986">
                         <h4>{{field.app.climate.totR.sum | round}} mm</h4>
                         <h5>Chuva</h5>
                     </div>
 
-                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).gdd != null">
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).gdd != null" style="color:#ff0000">
                         <h4>{{field.app.climate.gdd.sum | round}} GD</h4>
                         <h5>Graus-dia</h5>
                     </div>
 
-                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null">
+                    <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null" style="color: #ff6000">
                         <h4>{{field.app.climate.arid.sum | round}} </h4>
                         <h5>ISSE</h5>
                     </div>

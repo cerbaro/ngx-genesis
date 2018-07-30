@@ -186,6 +186,11 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
             prevSeason.app = prevSeason.app ? prevSeason.app : {};
 
+            const endDate = moment((prevSeason.phenology != null) ?
+                prevSeason.phenology.current.harvestingDate : prevSeason.harvestingDate);
+
+            prevSeason.app.endDate = Math.abs(moment().diff(endDate, 'days'));
+
             return this.seasonPhenology(prevSeason);
 
         } else {
@@ -240,6 +245,9 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
             nextSeason.app = nextSeason.app ? nextSeason.app : {};
 
+            const startDate = moment((nextSeason.phenology != null) ? nextSeason.phenology.current.plantingDate : nextSeason.plantingDate);
+            nextSeason.app.startDate = Math.abs(moment().diff(startDate, 'days'));
+
             return this.seasonPhenology(nextSeason);
 
         } else {
@@ -274,6 +282,11 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
     private climateData(field: Field): void {
 
+        this.climateDataLoading = true;
+
+        let sDate = moment().subtract(30, 'days').toDate();
+        let eDate = moment().toDate();
+
         const variables = [
             { variable: 'totR', source: 'gpm', band: 1 },
             { variable: 'gdd', source: 'ensoag', band: 2 },
@@ -281,19 +294,27 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         ];
         const display = field.app.season.display;
 
-        const pDate = field.app.season[display].plantingDate as Date;
-        let hDate = (field.app.season[display].app.phenologyModel) ?
-            field.app.season[display].modelHarvestingDate as Date :
-            field.app.season[display].harvestingDate as Date;
+        if (display && display !== 'next') {
 
-        if (moment(hDate).isAfter(moment())) {
-            hDate = new Date();
+            sDate = field.app.season[display].plantingDate as Date;
+            eDate = (field.app.season[display].app.phenologyModel) ?
+                field.app.season[display].modelHarvestingDate as Date :
+                field.app.season[display].harvestingDate as Date;
+
+            if (moment(eDate).isAfter(moment())) {
+                eDate = new Date();
+            }
         }
+
+        field.app.climate = field.app.climate ? field.app.climate : {};
+        field.app.climate.sDate = sDate;
+        field.app.climate.eDate = eDate;
+        field.app.climate.diffDate = moment(eDate).diff(sDate, 'days');
 
         let variablesObservable = [].concat.apply([], variables.map(variable => {
             return this.agrogisService
                 .summary(field.location.lat, field.location.lon,
-                    variable.variable, variable.band, variable.source, pDate, hDate);
+                    variable.variable, variable.band, variable.source, sDate, eDate);
         })) as Observable<any>[];
 
         variablesObservable = variablesObservable.filter(x => x != null);
@@ -317,7 +338,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
                                 this.climateDataLoading = false;
                             }
 
-                            console.log(response);
+                            // console.log(response);
 
                         });
                 });
@@ -325,6 +346,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         } else {
             this.climateDataLoading = false;
         }
+
 
     }
 

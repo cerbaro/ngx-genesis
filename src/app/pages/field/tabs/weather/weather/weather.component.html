@@ -41,10 +41,12 @@
                         <!-- Dew Point -->
                         <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
                             <div class="ngxgCardTitle" fxFlex>
-                                <h3>Ponto de Olvalho</h3>
+                                <h3>Ponto de Orvalho</h3>
                             </div>
                             <div fxFlex>
-                                <span *ngIf="dewPoint != null">{{dewPoint}}°C</span>
+                                <span *ngIf="dewPoint != null" style="text-align: right;">
+                                    <h1>{{dewPoint}}°C</h1>
+                                </span>
                                 <span *ngIf="dewPoint === null || dewPoint === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
@@ -69,7 +71,9 @@
                                 <h3>Velocidade do Vento</h3>
                             </div>
                             <div fxFlex>
-                                <span *ngIf="windSpeed != null">{{windSpeed}} km/h</span>
+                                <span *ngIf="windSpeed != null" style="text-align: right;">
+                                    <h1>{{windSpeed}} km/h</h1>
+                                </span>
                                 <span *ngIf="windSpeed === null || windSpeed === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
@@ -106,7 +110,9 @@
                                 <h3>Evapotranspiração Potencial</h3>
                             </div>
                             <div fxFlex>
-                                <span *ngIf="eto != null">{{eto | number: '1.1-2'}} mm</span>
+                                <span *ngIf="eto != null" style="text-align: right;">
+                                    <h1>{{eto | number: '1.1-2'}} mm</h1>
+                                </span>
                                 <span *ngIf="eto === null || eto === undefined" class="data-not-available">Dado não disponível</span>
                             </div>
                         </mat-card>
@@ -183,7 +189,7 @@
                         </div>
                         <div fxFlex style="position: relative; min-height: 250px;">
 
-                            <div fxFlex fxLayoutAlign="center center" class="ngxgMapLoader" *ngIf="!(gfsMap || {}).geojson" >
+                            <div fxFlex fxLayoutAlign="center center" class="ngxgMapLoader" *ngIf="!(gfsMap || {}).geojson">
                                 <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
                             </div>
 

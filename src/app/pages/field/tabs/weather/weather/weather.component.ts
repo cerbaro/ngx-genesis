@@ -95,9 +95,9 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
     private loadChartData(): void {
 
-        if (this.field.app.season.display != null) {
+        const display = this.field.app.season.display;
 
-            const display = this.field.app.season.display;
+        if (display != null && display !== 'next') {
 
             if (moment(this.field.app.season[display].plantingDate as Date).isSameOrBefore(moment().startOf('day'))) {
                 this.startDate = moment(this.field.app.season[display].plantingDate as Date).format('YYYYMMDD');
@@ -254,9 +254,9 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                                 enabled: true,
                                 formatter: function () {
                                     if (this.y === this.point.high) {
-                                        return 'Max. Dia <br>' + this.y + '°C';
+                                        return 'Max. Dia ' + this.y + '°C';
                                     } else if (this.y === this.point.low) {
-                                        return 'Min. Dia <br>' + this.y + '°C';
+                                        return 'Min. Dia ' + this.y + '°C';
                                     }
                                 },
                                 color: 'rgba(100,100,100, 1)',
@@ -641,7 +641,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                         gridLineWidth: 0,
                         minorGridLineWidth: 0,
                         labels: {
-                            format: '{value} GD',
+                            format: '{value}',
                             align: 'left',
                             style: {
                                 color: 'rgb(255,96,0)',
@@ -650,7 +650,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                             x: 5
                         },
                         title: {
-                            text: 'Graus-dia',
+                            text: 'Índice de Severidade de Seca',
                             style: {
                                 fontSize: '1.2em',
                                 color: 'rgb(255,96,0)'
@@ -689,7 +689,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                         linkedTo: ':previous',
                         tooltip: {
                             valueDecimals: 0,
-                            valueSuffix: ' GD'
+                            valueSuffix: ''
                         },
                         data: [],
                         yAxis: 1
@@ -722,7 +722,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                         linkedTo: ':previous',
                         tooltip: {
                             valueDecimals: 0,
-                            valueSuffix: ' GD'
+                            valueSuffix: ''
                         },
                         data: [],
                         yAxis: 1
@@ -870,11 +870,14 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                         res[0] <= moment(this.endDate.toString(), 'YYYYMMDD').valueOf());
                     this.charts.dailyAccumulated.instance.series[0].setData(this.getAccumulation(result));
                     this.charts.dailyAccumulated.instance.series[0]
-                        .update({ name: (!this.field.app.season.display) ? 'Desde 1º de Janeiro' : 'Esta safra' });
+                        .update({
+                            name: (this.field.app.season.display && this.field.app.season.display !== 'next') ?
+                                'Esta safra' : 'Desde 1º de Janeiro'
+                        });
                 }
             }, error => this.setError(error));
         this.agrogisService
-            .getDailyValue('observed', this.field.location, this.startDate, this.endDate, 'gdd', 'v1', 2, 'ensoag')
+            .getDailyValue('observed', this.field.location, this.startDate, this.endDate, 'arid', 'v1', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
             .subscribe(result => {
                 if (result === null) {
@@ -883,10 +886,14 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                     result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf());
                     this.charts.dailyAccumulated.instance.series[1].setData(this.getAccumulation(result));
                     this.charts.dailyAccumulated.instance.series[1]
-                        .update({ name: (!this.field.app.season.display) ? 'Desde 1º de Janeiro' : 'Esta safra' });
+                        .update({
+                            name: (!this.field.app.season.display && this.field.app.season.display !== 'next') ?
+                                'Esta safra' : 'Desde 1º de Janeiro'
+                        });
                     this.charts.dailyAccumulated.instance.hideLoading();
                 }
             }, error => this.setError(error));
+
         /**
          * Accumulated Historical
          *
@@ -903,7 +910,8 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                     this.charts.dailyAccumulated.instance.hideLoading();
                 }
             }, error => this.setError(error));
-        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'gdd', 'v1', 2, 'ensoag')
+
+        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'arid', 'v1', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
             .subscribe(result => {
                 if (result === null) {
