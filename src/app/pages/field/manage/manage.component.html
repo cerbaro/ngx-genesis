@@ -6,7 +6,7 @@
             <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
                 <span fxFlex=41>
 
-                    <h1>Cadastrar Campo</h1>
+                    <h1>{{(editing)? 'Editar ' : 'Cadastrar novo '}} Campo</h1>
 
                 </span>
                 <span fxFlex="1 1 auto"></span>
@@ -32,14 +32,13 @@
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Fazenda" disableOptionCentering="true">
-                                <mat-option value="1">Fazenda tio joão</mat-option>
-                                <mat-option value="2">Fazenda tio Nilo</mat-option>
-                                <mat-option value="3">Fazenda tio Ninho</mat-option>
+                            <mat-select placeholder="Fazenda" formControlName="farm" disableOptionCentering="true">
+                                <mat-option *ngFor="let f of farms" [value]="f">{{f.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
-                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;" routerLink="/farm/new">
+                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;"
+                            routerLink="/farm/new">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -66,13 +65,9 @@
 
                 <div fxFlex fxLayout="column">
 
-                    <div ngxgMap id="mapField" [options]="{latitude: 31.7, longitude:-83.25, zoom:8.4, controls: {baseMaps: false, locate: false}, basemap: 'Light', fitMapTo: 'geojson'}">
-
-                        <!-- <div ngxgGeoJson *ngFor="let field of fields" [options]="{id: field._id, geojson: field.extra.geojson}"></div> -->
-
-                        <!-- <div ngxgMarker *ngFor="let field of fields" (click)="markerClicked($event)" [options]="{title: field.name, latitude: field.location.lat, longitude: field.location.lon, divIconOptions: field.extra.divIconOptions, fieldId: field._id}"></div> -->
+                    <div ngxgMap id="mapField" [options]="{latitude: -16.08, longitude:-47.78, zoom:5.4, controls: {baseMaps: true,locate: false, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
+                        <div ngxgGeoJson *ngIf="fieldGeoJSON" [options]="{id: fieldID, geojson: fieldGeoJSON, editable: true}"></div>
                     </div>
-
 
                 </div>
 

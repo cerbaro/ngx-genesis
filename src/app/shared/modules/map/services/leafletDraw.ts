@@ -209,7 +209,6 @@ export class LeafletDraw {
     }
 
     public loadDraw(geojson: any): void {
-
         this.checkEdit(geojson);
 
         this.addControl(false, true);
@@ -220,7 +219,7 @@ export class LeafletDraw {
 
         if (this.autoEdit) {
             drawn.eachLayer(l => {
-                // l.options.editing || (l.options.editing = {});
+                l.options.editing = (l.options.editing) ? l.options.editing : {};
                 l.editing.enable();
                 this.layers.addLayer(l);
             });

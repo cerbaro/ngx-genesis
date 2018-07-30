@@ -16,7 +16,7 @@ const withSeason: Routes = [
 
 const routes: Routes = [
     { path: 'new', component: ManageComponent },
-    { path: ':id/edit', component: ManageComponent },
+    { path: ':field/edit', component: ManageComponent },
 
     { path: ':field', component: FieldComponent, children: withoutSeason },
     { path: ':field/season/:season', component: FieldComponent, children: withSeason },

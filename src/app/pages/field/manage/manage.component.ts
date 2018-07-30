@@ -1,26 +1,37 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Location } from '@angular/common';
+
+import { ActivatedRoute, Params } from '@angular/router';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
+import { startWith, map, takeUntil } from 'rxjs/operators';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
-import { Location } from '@angular/common';
+
+import { Field } from 'src/app/shared/types/field';
+import { FieldService } from 'src/app/shared/services/cds/field.service';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
+
 
 @Component({
     templateUrl: './manage.component.html',
     styleUrls: ['./manage.component.scss']
 })
-export class ManageComponent implements OnInit {
+export class ManageComponent extends NgxgRequest implements OnInit {
 
-    public dataLoading: Boolean;
+    public editing: Boolean = false;
+    public dataLoading: Boolean = true;
+
     public formField: FormGroup;
+
+    public fieldID: String;
+    public fieldGeoJSON: any;
+
     public sharableUserCtrl: FormControl = new FormControl();
-
     public filteredShdUsers: Observable<any[]>;
-
     public sharableUsers: Array<any> = [
         { name: 'Vinicius' }
     ];
@@ -36,8 +47,21 @@ export class ManageComponent implements OnInit {
 
     @ViewChild('shrdUsrInput') shrdUsrInput: ElementRef;
 
-    constructor(private ngxgLoadingService: NgxgLoadingService, private location: Location) {
-        this.dataLoading = true;
+
+    public farms: Array<any> = [
+        { _id: '5b5727d0ee75df60675b9bf2', name: 'Vinicius' },
+        { _id: '', name: 'Mauricio' },
+        { _id: '', name: 'Clyde' },
+        { _id: '', name: 'Eduardo' }
+    ];
+
+    constructor(
+        private ngxgLoadingService: NgxgLoadingService,
+        private location: Location,
+        private route: ActivatedRoute,
+        private fieldService: FieldService
+    ) {
+        super();
     }
 
     ngOnInit() {
@@ -53,6 +77,7 @@ export class ManageComponent implements OnInit {
                 lon: new FormControl(null, Validators.required),
                 geoid: new FormControl(null)
             }),
+            farm: new FormControl(null),
             area: new FormGroup({
                 size: new FormControl(null, Validators.required),
                 shape: new FormGroup({
@@ -64,6 +89,19 @@ export class ManageComponent implements OnInit {
             inclination: new FormControl(null)
         });
 
+        this.route.params
+            .subscribe((params: Params) => {
+
+                if (params['field']) {
+                    this.loadField(params['field']);
+                    this.editing = true;
+                } else {
+                    console.log('Create new');
+                }
+
+            });
+
+
         /**
          * Timeout to avoid Error
          * ExpressionChangedAfterItHasBeenCheckedError
@@ -73,12 +111,36 @@ export class ManageComponent implements OnInit {
             this.ngxgLoadingService.setLoading(this.dataLoading);
         });
 
-        setTimeout(() => {
+    }
 
-            this.dataLoading = false;
-            this.ngxgLoadingService.setLoading(this.dataLoading);
+    private loadField(fieldID: string): void {
 
+        this.fieldID = fieldID;
+
+        this.fieldService.getField(this.fieldID)
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(result => this.loadFormField(result.data));
+    }
+
+    private loadFormField(field: Field): void {
+
+        Object.keys(this.formField.value).forEach(key => {
+            if (field[key]) {
+                if (key === 'farm') {
+                    this.formField.get(key).setValue(this.farms.find(farm => farm._id === field[key]));
+                } else {
+                    this.formField.get(key).setValue(field[key]);
+                }
+            }
         });
+
+        this.fieldGeoJSON = {
+            'type': field.area.shape.type,
+            'coordinates': field.area.shape.coordinates
+        };
+
+        this.dataLoading = false;
+        this.ngxgLoadingService.setLoading(this.dataLoading);
     }
 
     public submit(): void {

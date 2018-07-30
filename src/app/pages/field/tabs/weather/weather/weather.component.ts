@@ -806,23 +806,25 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
          * GFS Forecast
          */
 
-        this.agrogisService.getGeoJSONColor('totR').subscribe(
-            result => {
+        this.agrogisService.getGeoJSONColor('totR')
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(
+                result => {
 
-                this.gfsMap = this.gfsMap ? this.gfsMap : {};
-                this.gfsMap.legend = [];
+                    this.gfsMap = this.gfsMap ? this.gfsMap : {};
+                    this.gfsMap.legend = [];
 
-                Object.keys(result[0].color_map).forEach(key => {
-                    this.gfsMap.legend.push({
-                        color: result[0].color_map[key],
-                        ...result[0].range_map[key]
+                    Object.keys(result[0].color_map).forEach(key => {
+                        this.gfsMap.legend.push({
+                            color: result[0].color_map[key],
+                            ...result[0].range_map[key]
+                        });
                     });
-                });
 
-                this.gfsMap.legend = this.gfsMap.legend.reverse();
+                    this.gfsMap.legend = this.gfsMap.legend.reverse();
 
-            },
-            error => this.setError(error));
+                },
+                error => this.setError(error));
 
 
         this.agrogisService
@@ -830,6 +832,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 this.field.location.geoid.substr(0, 4),
                 moment().format('YYYYMMDD'),
                 moment().add(7, 'days').format('YYYYMMDD'), 'totR', 'gfs', 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(
                 result => {
                     this.gfsMap = this.gfsMap ? this.gfsMap : {};
@@ -984,6 +987,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
         this.agrogisService
             .getDailyValue('observed', this.field.location,
                 moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result === null) {
                     this.charts.isse.instance.showLoading('Dado não disponível.');
@@ -1000,6 +1004,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
         this.agrogisService
             .getDailyValue('observed', this.field.location,
                 moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
+            .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result !== null) {
                     const eto = (result.reduce(function (max, x) {
