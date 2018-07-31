@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FieldComponent } from './field/field.component';
 import { ManageComponent } from './manage/manage.component';
-import { FarmsResolveService } from './utils/farms-resolve.service';
-import { UsersResolveService } from './utils/users-resolve.service';
+
+import { FarmsResolveService } from 'src/app/shared/services/resolvers/farms-resolve.service';
+import { UsersResolveService } from 'src/app/shared/services/resolvers/users-resolve.service';
 
 const withoutSeason: Routes = [
     { path: '', redirectTo: 'weather', pathMatch: 'full' },

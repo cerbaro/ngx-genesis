@@ -1,56 +1,75 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router, Params } from '@angular/router';
+
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
-import { Observable } from 'rxjs';
-import { startWith, map } from 'rxjs/operators';
-import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
+import { takeUntil } from 'rxjs/operators';
 import { Location } from '@angular/common';
+import { SeasonService } from 'src/app/shared/services/cds/season.service';
+import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
+
+import * as moment from 'moment';
 
 @Component({
     templateUrl: './manage.component.html',
     styleUrls: ['./manage.component.scss']
 })
-export class ManageComponent implements OnInit {
+export class ManageComponent extends NgxgRequest implements OnInit {
 
-    public dataLoading: Boolean;
+    private seasonID: String;
+
+    public commodities: any;
+    public allVarieties: any;
+    public varieties: any;
+
+    public editing: Boolean = false;
+
+    public dataLoading: Boolean = true;
     public formSeason: FormGroup;
-    public sharableUserCtrl: FormControl = new FormControl();
 
-    public filteredShdUsers: Observable<any[]>;
-
-    public sharableUsers: Array<any> = [
-        { name: 'Vinicius' }
-    ];
-
-    public allSharableUsers: Array<any> = [
-        { name: 'Vinicius' },
-        { name: 'Mauricio' },
-        { name: 'Clyde' },
-        { name: 'Eduardo' }
-    ];
-
-    @ViewChild('shrdUsrInput') shrdUsrInput: ElementRef;
-
-    constructor(private ngxgLoadingService: NgxgLoadingService, private location: Location) {
-        this.dataLoading = true;
+    constructor(
+        private ngxgLoadingService: NgxgLoadingService,
+        private location: Location,
+        private route: ActivatedRoute,
+        private router: Router,
+        private seasonService: SeasonService
+    ) {
+        super();
     }
 
     ngOnInit() {
-        this.filteredShdUsers = this.sharableUserCtrl.valueChanges.pipe(
-            startWith(null),
-            map((user: any | null) => user ? this._filter(user) : null)
-        );
 
         this.formSeason = new FormGroup({
             name: new FormControl(''),
             field: new FormControl([], Validators.required),
             commodity: new FormControl([], Validators.required),
             variety: new FormControl([], Validators.required),
-            plantingDate: new FormControl('', Validators.required),
-            harvestingDate: new FormControl(''),
-            plantingDepth: new FormControl('5', Validators.required),
-            irrigated: new FormControl('0', Validators.required)
+            plantingDate: new FormControl(null, Validators.required),
+            harvestingDate: new FormControl(null),
+            plantingDepth: new FormControl(5, Validators.required),
+            irrigated: new FormControl(false, Validators.required)
         });
+
+        this.route.data.subscribe(
+            data => {
+                this.commodities = data.commodities;
+                this.allVarieties = data.varieties;
+            });
+
+        this.route.params
+            .subscribe((params: Params) => {
+
+                if (params['season']) {
+
+                    this.loadSeasonData(params['season']);
+                    this.editing = true;
+
+                } else {
+                    this.pageLoaded();
+                }
+
+            });
+
 
         /**
          * Timeout to avoid Error
@@ -61,12 +80,50 @@ export class ManageComponent implements OnInit {
             this.ngxgLoadingService.setLoading(this.dataLoading);
         });
 
-        setTimeout(() => {
+    }
 
-            this.dataLoading = false;
-            this.ngxgLoadingService.setLoading(this.dataLoading);
+    private pageLoaded(): void {
+        this.dataLoading = false;
+        this.ngxgLoadingService.setLoading(this.dataLoading);
+    }
 
-        });
+    private loadSeasonData(seasonID: string): void {
+
+        this.seasonID = seasonID;
+
+        this.seasonService.getSeason(this.seasonID)
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(result => {
+
+                const season = result.data;
+
+                /**
+                 * Link both commodities and varieties selects
+                 */
+
+                this.formSeason.get('commodity').valueChanges.subscribe(commodity => {
+                    this.varieties = this.allVarieties.filter(variety => {
+                        return variety.commodity._id === commodity._id;
+                    });
+                });
+
+                /**
+                 * Load Form
+                 */
+                Object.keys(this.formSeason.value).forEach(key => {
+                    if (season[key]) {
+                        if (key === 'commodity') {
+                            this.formSeason.get(key).setValue(this.commodities.find(commodity => commodity._id === season[key]._id));
+                        } else if (key === 'variety') {
+                            this.formSeason.get(key).setValue(this.varieties.find(variety => variety._id === season[key]._id));
+                        } else {
+                            this.formSeason.get(key).setValue(season[key]);
+                        }
+                    }
+                });
+
+                this.pageLoaded();
+            });
     }
 
     public submit(): void {
@@ -74,21 +131,6 @@ export class ManageComponent implements OnInit {
 
             const fValues = this.formSeason.value;
 
-        }
-    }
-
-    selected(event: MatAutocompleteSelectedEvent): void {
-        this.sharableUsers.push(event.option.value);
-        this.shrdUsrInput.nativeElement.value = '';
-        this.sharableUserCtrl.setValue(null);
-    }
-
-    private _filter(value: any): any[] {
-        if (typeof value === 'string') {
-            const filterValue = value.toLowerCase();
-            return this.allSharableUsers.filter(susers => this.sharableUsers.findIndex(su => su.name === susers.name) === -1)
-                .filter(user => user.name.toLowerCase().includes(filterValue))
-                .filter(user => this.sharableUsers.length === 0 || this.sharableUsers.some(suser => !(suser['name'] === user.name)));
         }
     }
 

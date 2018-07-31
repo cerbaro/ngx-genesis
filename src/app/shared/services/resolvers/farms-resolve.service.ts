@@ -7,7 +7,7 @@ import { map, catchError } from 'rxjs/operators';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { FarmService } from 'src/app/shared/services/cds/farm.service';
-import { Farm } from '../../../shared/types/farm';
+import { Farm } from 'src/app/shared/types/farm';
 
 
 @Injectable()

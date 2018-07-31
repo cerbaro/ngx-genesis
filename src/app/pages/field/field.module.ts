@@ -13,11 +13,14 @@ import { LeafletService } from 'src/app/shared/modules/map/services/leaflet.serv
 import { FieldService } from 'src/app/shared/services/cds/field.service';
 import { CommodityService } from 'src/app/shared/services/cds/commodity.service';
 import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
-import { SocialService } from 'src/app/shared/services/cds/social.service';
+
 import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
-import { FarmsResolveService } from './utils/farms-resolve.service';
+
 import { FarmService } from 'src/app/shared/services/cds/farm.service';
-import { UsersResolveService } from './utils/users-resolve.service';
+import { SocialService } from 'src/app/shared/services/cds/social.service';
+
+import { UsersResolveService } from 'src/app/shared/services/resolvers/users-resolve.service';
+import { FarmsResolveService } from 'src/app/shared/services/resolvers/farms-resolve.service';
 
 @NgModule({
     imports: [

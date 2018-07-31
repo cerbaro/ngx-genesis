@@ -6,7 +6,7 @@
             <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
                 <span fxFlex=41>
 
-                    <h1>Cadastrar Safra</h1>
+                        <h1>{{(editing)? 'Editar ' : 'Cadastrar nova '}} Safra</h1>
 
                 </span>
                 <span fxFlex="1 1 auto"></span>
@@ -42,24 +42,21 @@
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Cultura" disableOptionCentering="true">
-                                <mat-option value="1">v1</mat-option>
-                                <mat-option value="2">v2</mat-option>
-                                <mat-option value="3">v3</mat-option>
+                            <mat-select placeholder="Cultura" formControlName="commodity" disableOptionCentering="true">
+                                <mat-option *ngFor="let c of commodities" [value]="c">{{c.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Variedade" disableOptionCentering="true">
-                                <mat-option value="1">v1</mat-option>
-                                <mat-option value="2">v2</mat-option>
-                                <mat-option value="3">v3</mat-option>
+                            <mat-select placeholder="Variedade" formControlName="variety" disableOptionCentering="true">
+                                <mat-option *ngFor="let v of varieties" [value]="v">{{v.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
 
-                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;" routerLink="/variety/new">
+                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;"
+                            routerLink="/variety/new">
                             <mat-icon>add</mat-icon>
                         </button>
                     </div>
@@ -100,9 +97,9 @@
                             <label>Irrigado:</label>
                             &nbsp;&nbsp;
                             <mat-radio-group formControlName="irrigated">
-                                <mat-radio-button value='0'>Não</mat-radio-button>
+                                <mat-radio-button [value]="false">Não</mat-radio-button>
                                 &nbsp;&nbsp;
-                                <mat-radio-button value='1'>Sim</mat-radio-button>
+                                <mat-radio-button [value]="true">Sim</mat-radio-button>
                                 <mat-error *ngIf="this.formSeason.get('irrigated').hasError('required')">Por favor selecione sim ou não para irrigação.</mat-error>
                             </mat-radio-group>
                         </section>
