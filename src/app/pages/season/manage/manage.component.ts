@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators, RequiredValidator } from '@angular/forms';
 import { ActivatedRoute, Router, Params } from '@angular/router';
 
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
@@ -16,6 +16,7 @@ import * as moment from 'moment';
 })
 export class ManageComponent extends NgxgRequest implements OnInit {
 
+    private fieldID: String;
     private seasonID: String;
 
     public commodities: any;
@@ -54,6 +55,28 @@ export class ManageComponent extends NgxgRequest implements OnInit {
             data => {
                 this.commodities = data.commodities;
                 this.allVarieties = data.varieties;
+
+                /**
+                 * Link both commodities and varieties selects
+                 */
+
+                this.formSeason.get('commodity').valueChanges.subscribe(commodity => {
+
+                    if (this.formSeason.get('commodity').dirty) {
+                        this.formSeason.get('harvestingDate').clearValidators();
+
+                        if (!commodity.inf.phenologyModel) {
+                            this.formSeason.get('harvestingDate').setValidators(Validators.required);
+                        }
+
+                        this.varieties = this.allVarieties.filter(variety => {
+                            return variety.commodity._id === commodity._id;
+                        });
+                        this.formSeason.get('variety').setValue([]);
+                        this.formSeason.get('variety').enable();
+                    }
+
+                });
             });
 
         this.route.params
@@ -65,11 +88,12 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                     this.editing = true;
 
                 } else {
-                    this.pageLoaded();
+
+                    this.newSeason(params['field']);
+
                 }
 
             });
-
 
         /**
          * Timeout to avoid Error
@@ -80,11 +104,23 @@ export class ManageComponent extends NgxgRequest implements OnInit {
             this.ngxgLoadingService.setLoading(this.dataLoading);
         });
 
+
     }
 
     private pageLoaded(): void {
-        this.dataLoading = false;
-        this.ngxgLoadingService.setLoading(this.dataLoading);
+        setTimeout(() => {
+            this.dataLoading = false;
+            this.ngxgLoadingService.setLoading(this.dataLoading);
+        });
+    }
+
+    private newSeason(fieldID: String): void {
+
+        this.fieldID = fieldID;
+        this.formSeason.get('variety').disable();
+
+        this.pageLoaded();
+
     }
 
     private loadSeasonData(seasonID: string): void {
@@ -96,16 +132,6 @@ export class ManageComponent extends NgxgRequest implements OnInit {
             .subscribe(result => {
 
                 const season = result.data;
-
-                /**
-                 * Link both commodities and varieties selects
-                 */
-
-                this.formSeason.get('commodity').valueChanges.subscribe(commodity => {
-                    this.varieties = this.allVarieties.filter(variety => {
-                        return variety.commodity._id === commodity._id;
-                    });
-                });
 
                 /**
                  * Load Form
@@ -127,11 +153,21 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     }
 
     public submit(): void {
+
+        /**
+         * When selection commodities without phenology model it's mandatory to enter a harvesting date
+         */
+        this.formSeason.get('harvestingDate').updateValueAndValidity();
+
+        this.formSeason.get('field').setValue(this.fieldID);
+
         if (this.formSeason.valid) {
 
-            const fValues = this.formSeason.value;
+            const season = this.formSeason.value;
+            console.log(season);
 
         }
+
     }
 
     public cancel(event: any): void {

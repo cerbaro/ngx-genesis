@@ -6,7 +6,7 @@
             <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
                 <span fxFlex=41>
 
-                        <h1>{{(editing)? 'Editar ' : 'Cadastrar nova '}} Safra</h1>
+                    <h1>{{(editing)? 'Editar ' : 'Cadastrar nova '}} Safra</h1>
 
                 </span>
                 <span fxFlex="1 1 auto"></span>
@@ -45,14 +45,20 @@
                             <mat-select placeholder="Cultura" formControlName="commodity" disableOptionCentering="true">
                                 <mat-option *ngFor="let c of commodities" [value]="c">{{c.name}}</mat-option>
                             </mat-select>
+                            <mat-error *ngIf="formSeason.get('commodity').hasError('required')">Por favor selecione uma cultura.</mat-error>
                         </mat-form-field>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Variedade" formControlName="variety" disableOptionCentering="true">
+                            <mat-select placeholder="Variedade" formControlName="variety"
+                                disableOptionCentering="true">
                                 <mat-option *ngFor="let v of varieties" [value]="v">{{v.name}}</mat-option>
                             </mat-select>
+                            <mat-hint *ngIf="!formSeason.get('variety').enabled && !formSeason.get('variety').hasError('required')" align="start">
+                                Selecione uma cultura para selecionar uma variedade.
+                            </mat-hint>
+                            <mat-error *ngIf="formSeason.get('variety').hasError('required')">Por favor selecione uma varidade.</mat-error>
                         </mat-form-field>
 
                         <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;"
@@ -100,7 +106,7 @@
                                 <mat-radio-button [value]="false">Não</mat-radio-button>
                                 &nbsp;&nbsp;
                                 <mat-radio-button [value]="true">Sim</mat-radio-button>
-                                <mat-error *ngIf="this.formSeason.get('irrigated').hasError('required')">Por favor selecione sim ou não para irrigação.</mat-error>
+                                <mat-error *ngIf="this.formSeason.get('irrigated').hasError('required')">Selecione sim ou não para irrigação.</mat-error>
                             </mat-radio-group>
                         </section>
                     </div>

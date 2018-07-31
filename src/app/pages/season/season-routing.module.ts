@@ -6,7 +6,7 @@ import { VarietiesResolveService } from 'src/app/shared/services/resolvers/varie
 
 const routes: Routes = [
     {
-        path: 'new/field/:field/', component: ManageComponent,
+        path: 'new/field/:field', component: ManageComponent,
         resolve: {
             commodities: CommoditiesResolveService,
             varieties: VarietiesResolveService

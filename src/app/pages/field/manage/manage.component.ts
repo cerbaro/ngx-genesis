@@ -121,8 +121,10 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     }
 
     private pageLoaded(): void {
-        this.dataLoading = false;
-        this.ngxgLoadingService.setLoading(this.dataLoading);
+        setTimeout(() => {
+            this.dataLoading = false;
+            this.ngxgLoadingService.setLoading(this.dataLoading);
+        });
     }
 
     private loadFieldData(fieldID: string): void {
