@@ -54,8 +54,10 @@
                                     [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="add($event)">
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                                <mat-option *ngFor="let user of filteredShdUsers | async" [value]="user">
+                                <mat-option *ngFor="let user of filteredShdUsers | async" [value]="user" style="height: 58px; line-height: 20px; padding: 15px 16px;">
                                     {{user.name}}
+                                    <br>
+                                    <span class="mat-caption">{{user.email}}</span>
                                 </mat-option>
                             </mat-autocomplete>
                         </mat-form-field>
@@ -65,7 +67,7 @@
 
                 <div fxFlex fxLayout="column">
 
-                    <div ngxgMap id="mapField" [options]="{latitude: -16.08, longitude:-47.78, zoom:5.4, controls: {baseMaps: true,locate: false, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
+                    <div ngxgMap id="mapField" (mapInstance)="getMapInstance($event)" (drawSaved)="getDraw($event)" [options]="{latitude: -16.08, longitude:-47.78, zoom:5.4, controls: {baseMaps: true,locate: false, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
                         <div ngxgGeoJson *ngIf="fieldGeoJSON" [options]="{id: fieldID, geojson: fieldGeoJSON, editable: true}"></div>
                     </div>
 

@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { FieldComponent } from './field/field.component';
 import { ManageComponent } from './manage/manage.component';
+import { FarmsResolveService } from './utils/farms-resolve.service';
+import { UsersResolveService } from './utils/users-resolve.service';
 
 const withoutSeason: Routes = [
     { path: '', redirectTo: 'weather', pathMatch: 'full' },
@@ -15,8 +17,20 @@ const withSeason: Routes = [
 ];
 
 const routes: Routes = [
-    { path: 'new', component: ManageComponent },
-    { path: ':field/edit', component: ManageComponent },
+    {
+        path: 'new', component: ManageComponent,
+        resolve: {
+            farms: FarmsResolveService,
+            users: UsersResolveService
+        }
+    },
+    {
+        path: ':field/edit', component: ManageComponent,
+        resolve: {
+            farms: FarmsResolveService,
+            users: UsersResolveService
+        }
+    },
 
     { path: ':field', component: FieldComponent, children: withoutSeason },
     { path: ':field/season/:season', component: FieldComponent, children: withSeason },

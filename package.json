@@ -26,6 +26,7 @@
     "@auth0/angular-jwt": "^2.0.0",
     "@kiwigrid/ngx-highcharts": "github:cerbaro/angular2-highcharts",
     "@material-extended/mde": "^2.0.1",
+    "@turf/turf": "^5.1.6",
     "@types/leaflet.locatecontrol": "^0.60.7",
     "@types/leaflet.markercluster": "^1.0.3",
     "core-js": "^2.5.4",

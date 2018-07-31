@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 
-import { ActivatedRoute, Params } from '@angular/router';
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
@@ -15,6 +15,8 @@ import { Field } from 'src/app/shared/types/field';
 import { FieldService } from 'src/app/shared/services/cds/field.service';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 
+import * as L from 'leaflet';
+import * as Turf from '@turf/turf';
 
 @Component({
     templateUrl: './manage.component.html',
@@ -22,7 +24,13 @@ import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 })
 export class ManageComponent extends NgxgRequest implements OnInit {
 
+    private map: L.Map;
+    private fieldAreaModified = 0;
+    private fieldNotDrawn: Boolean = false;
+
     public editing: Boolean = false;
+    public showIndicator: Boolean = true;
+
     public dataLoading: Boolean = true;
 
     public formField: FormGroup;
@@ -32,16 +40,9 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
     public sharableUserCtrl: FormControl = new FormControl();
     public filteredShdUsers: Observable<any[]>;
-    public sharableUsers: Array<any> = [
-        { name: 'Vinicius' }
-    ];
+    public sharableUsers: Array<any> = [];
 
-    public allSharableUsers: Array<any> = [
-        { name: 'Vinicius' },
-        { name: 'Mauricio' },
-        { name: 'Clyde' },
-        { name: 'Eduardo' }
-    ];
+    public allSharableUsers: Array<any> = [];
 
     readonly separatorKeysCodes: number[] = [ENTER, COMMA];
 
@@ -49,16 +50,13 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
 
     public farms: Array<any> = [
-        { _id: '5b5727d0ee75df60675b9bf2', name: 'Vinicius' },
-        { _id: '', name: 'Mauricio' },
-        { _id: '', name: 'Clyde' },
-        { _id: '', name: 'Eduardo' }
     ];
 
     constructor(
         private ngxgLoadingService: NgxgLoadingService,
         private location: Location,
         private route: ActivatedRoute,
+        private router: Router,
         private fieldService: FieldService
     ) {
         super();
@@ -77,7 +75,10 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                 lon: new FormControl(null, Validators.required),
                 geoid: new FormControl(null)
             }),
+
             farm: new FormControl(null),
+            users: new FormControl(null),
+
             area: new FormGroup({
                 size: new FormControl(null, Validators.required),
                 shape: new FormGroup({
@@ -89,14 +90,20 @@ export class ManageComponent extends NgxgRequest implements OnInit {
             inclination: new FormControl(null)
         });
 
+        this.route.data.subscribe(
+            data => {
+                this.farms = data.farms;
+                this.allSharableUsers = data.users;
+            });
+
         this.route.params
             .subscribe((params: Params) => {
 
                 if (params['field']) {
-                    this.loadField(params['field']);
+                    this.loadFieldData(params['field']);
                     this.editing = true;
                 } else {
-                    console.log('Create new');
+                    this.pageLoaded();
                 }
 
             });
@@ -113,57 +120,133 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
     }
 
-    private loadField(fieldID: string): void {
+    private pageLoaded(): void {
+        this.dataLoading = false;
+        this.ngxgLoadingService.setLoading(this.dataLoading);
+    }
+
+    private loadFieldData(fieldID: string): void {
 
         this.fieldID = fieldID;
 
         this.fieldService.getField(this.fieldID)
             .pipe(takeUntil(this.ngxgUnsubscribe))
-            .subscribe(result => this.loadFormField(result.data));
-    }
+            .subscribe(result => {
 
-    private loadFormField(field: Field): void {
+                const field = result.data;
 
-        Object.keys(this.formField.value).forEach(key => {
-            if (field[key]) {
-                if (key === 'farm') {
-                    this.formField.get(key).setValue(this.farms.find(farm => farm._id === field[key]));
-                } else {
-                    this.formField.get(key).setValue(field[key]);
-                }
-            }
-        });
+                /**
+                 * Load Users
+                 */
+                this.sharableUsers = this.allSharableUsers.filter(shdUser => {
+                    return field.users.findIndex(user => user.user === shdUser._id) !== -1;
+                });
 
-        this.fieldGeoJSON = {
-            'type': field.area.shape.type,
-            'coordinates': field.area.shape.coordinates
-        };
+                /**
+                 * Load Form
+                 */
+                Object.keys(this.formField.value).forEach(key => {
+                    if (field[key]) {
+                        if (key === 'farm') {
+                            this.formField.get(key).setValue(this.farms.find(farm => farm._id === field[key]));
+                        } else {
+                            this.formField.get(key).setValue(field[key]);
+                        }
+                    }
+                });
 
-        this.dataLoading = false;
-        this.ngxgLoadingService.setLoading(this.dataLoading);
+                this.fieldGeoJSON = {
+                    'type': field.area.shape.type,
+                    'coordinates': field.area.shape.coordinates
+                };
+
+                this.pageLoaded();
+            });
     }
 
     public submit(): void {
+
         if (this.formField.valid) {
 
-            const fValues = this.formField.value;
+            this.formField.get('users').setValue(
+                this.sharableUsers.map(user => {
+                    return { user: user._id, admin: 1 };
+                }));
+
+            const field = this.formField.value;
+
+            if (!this.editing || this.fieldAreaModified >= 1 || this.formField.get('location').get('geoid').value === '') {
+
+                this.fieldService.getFieldGeoID(field.location).subscribe(
+                    result => {
+
+                        this.formField.get('location').get('geoid').setValue(result.data._id);
+                        field.location.geoid = (result.data._id);
+
+                        this.persistField(field);
+
+                    },
+                    error => this.setError(error));
+
+            } else {
+                this.persistField(field);
+            }
 
         }
     }
 
+    private persistField(field: Field): void {
+
+        if (this.editing) {
+
+            field._id = this.fieldID.toString();
+
+            this.fieldService.updateField(this.fieldID, { field: field }).subscribe(
+                result => {
+
+                    this.fieldService.updatePostGIS(this.fieldID, { geom: field.area.shape.coordinates }).subscribe(
+                        res => {
+                            this.result = result;
+                            this.location.back();
+                        },
+                        err => this.setError(err)
+                    );
+                },
+                error => this.setError(error)
+            );
+
+        } else {
+
+            this.fieldService.createField({ field: field }).subscribe(
+                result => {
+
+                    this.fieldService.createPostGIS({ _id: result.data['_id'], geom: field.area.shape.coordinates }).subscribe(
+                        res => {
+                            this.result = result;
+                            this.router.navigate(['/field/', this.result.data['_id']]);
+                        },
+                        err => this.setError(err));
+
+                },
+                error => this.setError(error)
+            );
+
+        }
+
+    }
+
+    public cancel(event: any): void {
+        this.location.back();
+    }
+
+
+    /**
+     * Auto Complete functions
+     */
+
     add(event: MatChipInputEvent): void {
         const input = event.input;
         const value = event.value;
-
-        // if ((value || '').trim()) {
-        //     this.sharableUsers.push({ name: value.trim() });
-        // }
-
-        // if (input) {
-        //     input.value = '';
-        // }
-
-        // this.sharableUserCtrl.setValue(null);
     }
 
     remove(user: any): void {
@@ -183,14 +266,62 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     private _filter(value: any): any[] {
         if (typeof value === 'string') {
             const filterValue = value.toLowerCase();
-            return this.allSharableUsers.filter(susers => this.sharableUsers.findIndex(su => su.name === susers.name) === -1)
+            return this.allSharableUsers
+                .filter(susers => this.sharableUsers.findIndex(su => (su.email === susers.email)) === -1)
                 .filter(user => user.name.toLowerCase().includes(filterValue))
-                .filter(user => this.sharableUsers.length === 0 || this.sharableUsers.some(suser => !(suser['name'] === user.name)));
+                .filter(user => this.sharableUsers.length === 0 || this.sharableUsers.some(suser => !(suser.email === user.email)));
         }
     }
 
-    public cancel(event: any): void {
-        this.location.back();
+
+    /**
+     * Field Map functions
+     */
+
+    public getDraw(layers: L.FeatureGroup) {
+
+        if (layers != null) {
+            this.fieldNotDrawn = false;
+
+            if (layers.getLayers().length > 0) {
+                this.fieldAreaModified = this.fieldAreaModified + 1;
+            }
+
+            L.geoJSON(layers.toGeoJSON(), {
+                onEachFeature: (f: any) => {
+
+                    this.formField.get('location').setValue({
+                        lat: Turf.center(f).geometry.coordinates[1],
+                        lon: Turf.center(f).geometry.coordinates[0],
+                        geoid: ''
+                    });
+
+                    this.formField.get('area').get('size').setValue(Turf.area(f));
+                    this.formField.get('area').get('shape').setValue({
+                        type: f.geometry.type,
+                        coordinates: f.geometry.coordinates
+                    });
+
+                    this.fieldGeoJSON = f;
+                }
+            });
+
+        } else {
+            this.fieldNotDrawn = true;
+            this.fieldAreaModified = 0;
+
+            this.formField.get('location').setValue({ lat: '', lon: '', geoid: '' });
+            this.formField.get('area').setValue({ size: '', shape: { type: '', coordinates: '' } });
+        }
+
+    }
+
+    public getMapInstance(mp: L.Map): void {
+        this.map = mp;
+
+        this.map.on(L.Draw.Event.DRAWSTART, (e) => {
+            this.showIndicator = false;
+        });
     }
 
 }

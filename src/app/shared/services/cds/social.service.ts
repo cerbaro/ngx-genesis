@@ -8,16 +8,20 @@ import * as GLOBAL from '../../globals';
 @Injectable()
 export class SocialService {
 
-    private cdsBaseURL: String = GLOBAL.cdsBaseURL + '/social/user';
+    private cdsBaseURL: String = GLOBAL.cdsBaseURL + '/social';
 
     constructor(private http: HttpClient) { }
 
     public getPublicInfo(userID: string): Observable<any> {
 
         return this.http
-            .post(this.cdsBaseURL + '/', userID);
+            .get(this.cdsBaseURL + '/user/' + userID);
 
+    }
 
+    public getUsers(): Observable<any> {
+        return this.http
+            .get(this.cdsBaseURL + '/users');
     }
 
 }

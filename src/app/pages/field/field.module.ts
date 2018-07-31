@@ -15,6 +15,9 @@ import { CommodityService } from 'src/app/shared/services/cds/commodity.service'
 import { DarkskyService } from 'src/app/shared/services/cds/darksky.service';
 import { SocialService } from 'src/app/shared/services/cds/social.service';
 import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service';
+import { FarmsResolveService } from './utils/farms-resolve.service';
+import { FarmService } from 'src/app/shared/services/cds/farm.service';
+import { UsersResolveService } from './utils/users-resolve.service';
 
 @NgModule({
     imports: [
@@ -37,7 +40,12 @@ import { AgroGISService } from 'src/app/shared/services/agrogis/agrogis.service'
         DarkskyService,
         AgroGISService,
         DatePipe,
-        SocialService
+
+        SocialService,
+        UsersResolveService,
+
+        FarmService,
+        FarmsResolveService
     ]
 })
 export class FieldModule { }
