@@ -11,7 +11,7 @@
                     Fazenda
                 </button>
 
-                <button *ngIf="filters.commodity.length > 0" mat-button [mdePopoverTriggerFor]="seasonFilter" class="ngxgButtonWhite">
+                <button mat-button [mdePopoverTriggerFor]="seasonFilter" class="ngxgButtonWhite">
                     Safra Atual
                 </button>
 
@@ -77,7 +77,8 @@
                             <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
                                 <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
                                 <br>
-                                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}" (click)="$event.stopPropagation()">Criar Safra</button>
+                                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}"
+                                    (click)="$event.stopPropagation()">Criar Safra</button>
                             </div>
                             <div *ngIf="(((field || {}).app || {}).season || {}).display">
 
@@ -157,7 +158,10 @@
         mdePopoverPositionY="above">
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
             <mat-card-content>
-                <mat-selection-list (selectionChange)="filterChange('user', user.selectedOptions)" #user>
+                <h3 *ngIf="filters.user.length <= 0">
+                    <br>Nenhuma Produtor</h3>
+
+                <mat-selection-list *ngIf="filters.user.length > 0" (selectionChange)="filterChange('user', user.selectedOptions)" #user>
                     <h3 matSubheader>Produtores</h3>
                     <mat-list-option [checkboxPosition]="before" *ngFor="let user of filters.user" [value]="user._id">
                         <h4 mat-line>{{user.name}}</h4>
@@ -173,7 +177,10 @@
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
 
             <mat-card-content>
-                <mat-selection-list (selectionChange)="filterChange('farm', farm.selectedOptions)" #farm>
+                <h3 *ngIf="filters.farm.length <= 0">
+                    <br>Nenhuma fazenda</h3>
+
+                <mat-selection-list *ngIf="filters.farm.length > 0" (selectionChange)="filterChange('farm', farm.selectedOptions)" #farm>
                     <h3 matSubheader>Fazendas</h3>
                     <mat-list-option [checkboxPosition]="before" *ngFor="let farm of filters.farm" [value]="farm._id">
                         {{farm.name}}
@@ -188,7 +195,11 @@
         <mat-card style="max-height: 50vh; overflow: scroll">
             <mat-card-content fxLayout="row">
 
-                <div fxFlex style="border-right: solid 1px #EEE">
+                <h3 *ngIf="filters.commodity.length <= 0">
+                    <br>Nenhuma Cultura</h3>
+
+
+                <div *ngIf="filters.commodity.length > 0" fxFlex style="border-right: solid 1px #EEE">
                     <mat-selection-list (selectionChange)="filterChange('commodity', commodity.selectedOptions)" #commodity>
                         <h3 matSubheader>Culturas</h3>
                         <mat-list-option [checkboxPosition]="before" *ngFor="let commodity of filters.commodity" [value]="commodity._id">
@@ -197,7 +208,7 @@
                     </mat-selection-list>
                 </div>
 
-                <div fxFlex>
+                <div *ngIf="filters.commodity.length > 0" fxFlex>
                     <mat-selection-list (selectionChange)="filterChange('variety', variety.selectedOptions)" #variety>
                         <h3 matSubheader>Variedades</h3>
                         <mat-list-option [checkboxPosition]="before" *ngFor="let variety of filters.variety" [value]="variety._id">
@@ -205,6 +216,8 @@
                         </mat-list-option>
                     </mat-selection-list>
                 </div>
+
+
             </mat-card-content>
         </mat-card>
     </mde-popover>

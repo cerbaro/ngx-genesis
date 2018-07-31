@@ -445,7 +445,6 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
         const field = this.allFields.find(fld => fld._id === event.fieldId);
 
         this.openField(field);
-
     }
 
     public openField(field: Field): void {
