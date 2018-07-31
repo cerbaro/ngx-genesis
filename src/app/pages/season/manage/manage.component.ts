@@ -41,10 +41,10 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     ngOnInit() {
 
         this.formSeason = new FormGroup({
-            name: new FormControl(''),
-            field: new FormControl([], Validators.required),
-            commodity: new FormControl([], Validators.required),
-            variety: new FormControl([], Validators.required),
+            name: new FormControl(null),
+            field: new FormControl(null, Validators.required),
+            commodity: new FormControl(null, Validators.required),
+            variety: new FormControl(null, Validators.required),
             plantingDate: new FormControl(null, Validators.required),
             harvestingDate: new FormControl(null),
             plantingDepth: new FormControl(5, Validators.required),
@@ -63,7 +63,10 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                 this.formSeason.get('commodity').valueChanges.subscribe(commodity => {
 
                     if (this.formSeason.get('commodity').dirty) {
+
                         this.formSeason.get('harvestingDate').clearValidators();
+                        this.formSeason.get('variety').reset();
+                        this.formSeason.get('variety').enable();
 
                         if (!commodity.inf.phenologyModel) {
                             this.formSeason.get('harvestingDate').setValidators(Validators.required);
@@ -72,8 +75,7 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                         this.varieties = this.allVarieties.filter(variety => {
                             return variety.commodity._id === commodity._id;
                         });
-                        this.formSeason.get('variety').setValue([]);
-                        this.formSeason.get('variety').enable();
+
                     }
 
                 });
@@ -140,8 +142,11 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                     if (season[key]) {
                         if (key === 'commodity') {
                             this.formSeason.get(key).setValue(this.commodities.find(commodity => commodity._id === season[key]._id));
+                            this.varieties = this.allVarieties.filter(variety => {
+                                return variety.commodity._id === this.formSeason.get(key).value._id;
+                            });
                         } else if (key === 'variety') {
-                            this.formSeason.get(key).setValue(this.varieties.find(variety => variety._id === season[key]._id));
+                            this.formSeason.get(key).setValue(this.allVarieties.find(variety => variety._id === season[key]._id));
                         } else {
                             this.formSeason.get(key).setValue(season[key]);
                         }
