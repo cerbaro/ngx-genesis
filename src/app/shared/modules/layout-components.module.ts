@@ -21,7 +21,9 @@ import {
     MatRadioModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatBadgeModule
+    MatBadgeModule,
+    MatProgressBarModule,
+    MatTooltipModule
 } from '@angular/material';
 
 
@@ -45,7 +47,9 @@ import {
         MatRadioModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatProgressBarModule,
+        MatTooltipModule
     ],
     declarations: [
         RoundPipe
@@ -71,7 +75,9 @@ import {
         MatRadioModule,
         MatDatepickerModule,
         MatNativeDateModule,
-        MatBadgeModule
+        MatBadgeModule,
+        MatProgressBarModule,
+        MatTooltipModule
     ],
 })
 export class LayoutComponentsModule { }

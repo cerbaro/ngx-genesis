@@ -102,27 +102,59 @@
                                     <h5>Data de plantio</h5>
                                 </span>
 
-                                <span>
+                                <span *ngIf="field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus === 200">
                                     <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
                                         | date: 'dd/MM/yyyy'}}</h4>
                                     <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
                                 </span>
 
                                 <span class="clearBoth"></span>
-                                <span>
+
+                                <span *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel && field.app.season[field.app.season.display].app.seasonStatus === 200">
                                     <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).currentStage">
                                         <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
                                         <h5>Estádio atual</h5>
                                     </div>
                                 </span>
-                                <span>
+                                <!-- <span *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel && field.app.season[field.app.season.display].app.seasonStatus === 200">
                                     <div *ngIf="(field.app.season[field.app.season.display].app || {}).phenologyModel && (field.app.season[field.app.season.display].app || {}).nextStage">
-                                        <h4>{{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
-                                            ({{field.app.season[field.app.season.display].app.nextStage.in}})
+                                        <h4>
+                                            {{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
                                         </h4>
-                                        <h5>Próximo estádio</h5>
+                                        <h5>Próximo estádio ({{field.app.season[field.app.season.display].app.nextStage.in}})</h5>
                                     </div>
+                                </span> -->
+
+
+                                <!-- Season not yet started -->
+                                <span *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 201">
+                                    <h4>Preparando simulação.</h4>
+                                    <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
                                 </span>
+
+                                <!-- Season Processing -->
+                                <span *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 202">
+                                    <h4>Simulando fases de desenvolvimento.</h4>
+                                    <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
+                                </span>
+
+                                <!-- Error when running model-->
+                                <span *ngIf="field.app.season[field.app.season.display].app.seasonStatus > 400">
+                                    <h4 style="color:red">Erro ao simular as fases de desenvolvimento.
+                                        <br>Por favor verifique as informações fornecidas.</h4>
+                                </span>
+
+
+                                <span *ngIf="field.app.season.display === 'prev' && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                    <h4>Esta safra terminou há {{field.app.season[field.app.season.display].app.endDate}} dias
+                                    </h4>
+                                </span>
+
+                                <span *ngIf="field.app.season.display === 'next' && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                    <h4>Esta safra começará em {{field.app.season[field.app.season.display].app.startDate}} dias
+                                    </h4>
+                                </span>
+
                             </div>
                         </div>
 

@@ -97,7 +97,10 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
     private currentStage(field: any): any {
 
-        if (field.app.season.display != null && field.app.season[field.app.season.display].app.phenologyModel) {
+        if (field.app.season.display != null &&
+            field.app.season[field.app.season.display].app.phenologyModel &&
+            field.app.season[field.app.season.display].app.seasonStatus === 200
+        ) {
 
             const display: string = field.app.season.display;
             let currentStage: any = null;
@@ -136,10 +139,13 @@ export class FieldComponent extends NgxgRequest implements OnInit {
     private seasonPhenology(season: any): any {
         season.app.phenologyModel = false;
 
-        if (season.commodity.inf.phenologyModel != null) {
+        if (season.commodity.inf.phenologyModel) {
             season.app.phenologyModel = season.commodity.inf.phenologyModel;
         } else {
             season.app.phenologyModel = null;
+
+            // For those commodities that don't have model
+            season.app.seasonStatus = 200;
         }
 
         // Loading season status
@@ -171,14 +177,18 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const dCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
+                const dCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
+
                 return moment(dCur as Date).isBefore(moment());
             });
 
         if (sFiltered.length > 0) {
             const prevSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.harvestingDate : reg.harvestingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.harvestingDate != null) ?
+                    reg.phenology.current.harvestingDate : reg.harvestingDate;
+                const dCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
 
                 return ((moment(dCur as Date).isAfter(moment(dReg as Date))) ? season : reg);
 
@@ -186,7 +196,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
             prevSeason.app = prevSeason.app ? prevSeason.app : {};
 
-            const endDate = moment((prevSeason.phenology != null) ?
+            const endDate = moment((prevSeason.phenology != null && prevSeason.phenology.current.harvestingDate != null) ?
                 prevSeason.phenology.current.harvestingDate : prevSeason.harvestingDate);
 
             prevSeason.app.endDate = Math.abs(moment().diff(endDate, 'days'));
@@ -202,16 +212,23 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const pCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
-                const hCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
-                return moment(pCur as Date).isBefore(moment()) && moment(hCur as Date).isAfter(moment());
+                const pCur = (season.phenology != null && season.phenology.current.plantingDate != null) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
+                const hCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
+
+                return moment(pCur as Date).isBefore(moment()) && moment(hCur as Date).isAfter(moment()) ||
+                    (season.commodity.inf.phenologyModel &&
+                        moment(pCur as Date).isBefore(moment()) && season.phenology.status.code !== 200);
             });
 
         if (sFiltered.length > 0) {
 
             const currentSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.plantingDate : reg.plantingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.plantingDate != null) ?
+                    reg.phenology.current.plantingDate : reg.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate != null) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
 
                 return ((moment(dCur as Date).isAfter(moment(dReg as Date))) ? season : reg);
 
@@ -230,14 +247,17 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
                 return moment(dCur as Date).isAfter(moment());
             });
 
         if (sFiltered.length > 0) {
             const nextSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.plantingDate : reg.plantingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.plantingDate != null) ?
+                    reg.phenology.current.plantingDate : reg.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
 
                 return ((moment(dCur as Date).isBefore(moment(dReg as Date))) ? season : reg);
 
@@ -245,7 +265,8 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
             nextSeason.app = nextSeason.app ? nextSeason.app : {};
 
-            const startDate = moment((nextSeason.phenology != null) ? nextSeason.phenology.current.plantingDate : nextSeason.plantingDate);
+            const startDate = moment((nextSeason.phenology != null && nextSeason.phenology.current.plantingDate) ?
+                nextSeason.phenology.current.plantingDate : nextSeason.plantingDate);
             nextSeason.app.startDate = Math.abs(moment().diff(startDate, 'days'));
 
             return this.seasonPhenology(nextSeason);
@@ -254,7 +275,6 @@ export class FieldComponent extends NgxgRequest implements OnInit {
             return null;
         }
     }
-
 
     /**
      * Weather & Climate Data
@@ -294,7 +314,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         ];
         const display = field.app.season.display;
 
-        if (display && display !== 'next') {
+        if (display && field.app.season[field.app.season.display].app.seasonStatus === 200 && display !== 'next') {
 
             sDate = field.app.season[display].plantingDate as Date;
             eDate = (field.app.season[display].app.phenologyModel) ?
@@ -357,12 +377,12 @@ export class FieldComponent extends NgxgRequest implements OnInit {
             .subscribe(result => {
 
                 this.field = result.data[0];
-                this.fieldLoaded(this.field, params['season']);
+                this.fieldLoaded(this.field, params['season'], tryingSeason);
 
             });
     }
 
-    private fieldLoaded(field: Field, seasonID: any): void {
+    private fieldLoaded(field: Field, seasonID: any, tryingSeason: number): void {
 
         let selectedSeason: any;
 
@@ -430,10 +450,27 @@ export class FieldComponent extends NgxgRequest implements OnInit {
                 field.app.season.next ? 'next' :
                     field.app.season.prev ? 'prev' : null;
 
-
         this.currentStage(field);
         this.weatherData(field);
         this.climateData(field);
+
+
+        // Automatically reload page in case season is not ready
+        if (tryingSeason < 10 &&
+            field.app.season.display &&
+            field.app.season[field.app.season.display].app.seasonStatus !== 200 &&
+            field.app.season[field.app.season.display].app.seasonStatus < 400) {
+
+            setTimeout(() => {
+
+                this.route.params
+                    .subscribe((params: Params) => {
+                        this.loadField(params, tryingSeason + 1);
+                    });
+
+            }, 15000);
+
+        }
 
         this.dataExchangeService.setField(field);
         this.fieldLoading = false;

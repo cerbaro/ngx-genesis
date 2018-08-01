@@ -142,10 +142,13 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     private seasonPhenology(season: any): any {
         season.app.phenologyModel = false;
 
-        if (season.commodity.inf.phenologyModel != null) {
+        if (season.commodity.inf.phenologyModel) {
             season.app.phenologyModel = season.commodity.inf.phenologyModel;
         } else {
             season.app.phenologyModel = null;
+
+            // For those commodities that don't have model
+            season.app.seasonStatus = 200;
         }
 
         // Loading season status
@@ -177,20 +180,29 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const dCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
+                const dCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
+
                 return moment(dCur as Date).isBefore(moment());
             });
 
         if (sFiltered.length > 0) {
             const prevSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.harvestingDate : reg.harvestingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.harvestingDate != null) ?
+                    reg.phenology.current.harvestingDate : reg.harvestingDate;
+                const dCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
 
                 return ((moment(dCur as Date).isAfter(moment(dReg as Date))) ? season : reg);
 
             }, sFiltered[0]);
 
             prevSeason.app = prevSeason.app ? prevSeason.app : {};
+
+            const endDate = moment((prevSeason.phenology != null && prevSeason.phenology.current.harvestingDate != null) ?
+                prevSeason.phenology.current.harvestingDate : prevSeason.harvestingDate);
+
+            prevSeason.app.endDate = Math.abs(moment().diff(endDate, 'days'));
 
             return this.seasonPhenology(prevSeason);
 
@@ -203,16 +215,23 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const pCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
-                const hCur = (season.phenology != null) ? season.phenology.current.harvestingDate : season.harvestingDate;
-                return moment(pCur as Date).isBefore(moment()) && moment(hCur as Date).isAfter(moment());
+                const pCur = (season.phenology != null && season.phenology.current.plantingDate != null) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
+                const hCur = (season.phenology != null && season.phenology.current.harvestingDate != null) ?
+                    season.phenology.current.harvestingDate : season.harvestingDate;
+
+                return moment(pCur as Date).isBefore(moment()) && moment(hCur as Date).isAfter(moment()) ||
+                    (season.commodity.inf.phenologyModel &&
+                        moment(pCur as Date).isBefore(moment()) && season.phenology.status.code !== 200);
             });
 
         if (sFiltered.length > 0) {
 
             const currentSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.plantingDate : reg.plantingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.plantingDate != null) ?
+                    reg.phenology.current.plantingDate : reg.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate != null) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
 
                 return ((moment(dCur as Date).isAfter(moment(dReg as Date))) ? season : reg);
 
@@ -231,20 +250,27 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
 
         const sFiltered = seasons
             .filter(season => {
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
                 return moment(dCur as Date).isAfter(moment());
             });
 
         if (sFiltered.length > 0) {
             const nextSeason = sFiltered.reduce((reg, season) => {
-                const dReg = (reg.phenology != null) ? reg.phenology.current.plantingDate : reg.plantingDate;
-                const dCur = (season.phenology != null) ? season.phenology.current.plantingDate : season.plantingDate;
+                const dReg = (reg.phenology != null && reg.phenology.current.plantingDate != null) ?
+                    reg.phenology.current.plantingDate : reg.plantingDate;
+                const dCur = (season.phenology != null && season.phenology.current.plantingDate) ?
+                    season.phenology.current.plantingDate : season.plantingDate;
 
                 return ((moment(dCur as Date).isBefore(moment(dReg as Date))) ? season : reg);
 
             }, sFiltered[0]);
 
             nextSeason.app = nextSeason.app ? nextSeason.app : {};
+
+            const startDate = moment((nextSeason.phenology != null && nextSeason.phenology.current.plantingDate) ?
+                nextSeason.phenology.current.plantingDate : nextSeason.plantingDate);
+            nextSeason.app.startDate = Math.abs(moment().diff(startDate, 'days'));
 
             return this.seasonPhenology(nextSeason);
 

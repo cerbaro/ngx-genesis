@@ -58,6 +58,9 @@
                         (click)="$event.stopPropagation()">Criar Safra</button>
                 </div>
 
+                <!-- <div *ngIf="seasonStatus"></div> -->
+
+
                 <div *ngIf="(((field || {}).app || {}).season || {}).display" fxLayout="column" fxFlex=37>
 
                     <div fxFlex="60px" fxLayout="row" fxLayoutGap="15px">
@@ -93,35 +96,50 @@
                             <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
                             <h5>Data de plantio</h5>
                         </span>
-                        <span>
+                        <span *ngIf="field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus === 200">
                             <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
                                 | date: 'dd/MM/yyyy'}}</h4>
                             <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
                         </span>
                     </div>
 
-                    <div fxFlex *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel">
-                        <span>
-                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).currentStage">
-                                <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
-                                <h5>Estádio atual</h5>
-                            </div>
+                    <div fxFlex fxLayout="row" fxLayoutGap="20px" *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                        <span *ngIf="(field.app.season[field.app.season.display].app || {}).currentStage">
+                            <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
+                            <h5>Estádio atual</h5>
                         </span>
-                        <span>
-                            <div *ngIf="(field.app.season[field.app.season.display].app || {}).nextStage">
-                                <h4>{{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
-                                    ({{field.app.season[field.app.season.display].app.nextStage.in}})
-                                </h4>
-                                <h5>Próximo estádio</h5>
-                            </div>
+
+                        <span *ngIf="(field.app.season[field.app.season.display].app || {}).nextStage">
+                            <h4>
+                                {{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
+                            </h4>
+                            <h5>Próximo estádio ({{field.app.season[field.app.season.display].app.nextStage.in}})</h5>
                         </span>
                     </div>
 
-                    <div fxFlex *ngIf="field.app.season.display === 'prev'">
+                    <!-- Season not yet started -->
+                    <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 201">
+                        <h4>Preparando simulação.</h4>
+                        <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
+                    </div>
+
+                    <!-- Season Processing -->
+                    <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 202">
+                        <h4>Simulando fases de desenvolvimento.</h4>
+                        <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
+                    </div>
+
+                    <!-- Error when running model-->
+                    <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus > 400">
+                        <h4 style="color:red">Erro ao simular as fases de desenvolvimento.
+                            <br>Por favor verifique as informações fornecidas.</h4>
+                    </div>
+
+                    <div fxFlex *ngIf="field.app.season.display === 'prev' && field.app.season[field.app.season.display].app.seasonStatus === 200">
                         <h4>Esta safra terminou há {{field.app.season[field.app.season.display].app.endDate}} dias</h4>
                     </div>
 
-                    <div fxFlex *ngIf="field.app.season.display === 'next'">
+                    <div fxFlex *ngIf="field.app.season.display === 'next' && field.app.season[field.app.season.display].app.seasonStatus === 200">
                         <h4>Esta safra começará em {{field.app.season[field.app.season.display].app.startDate}} dias</h4>
                     </div>
 
@@ -143,8 +161,9 @@
                 <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex=20>
 
                     <div fxFlex=23>
-                        <h3>Acumulado {{field.app.season.display && field.app.season.display !== 'next' ? 'durante a safra' :
-                            'nos últimos '+ field.app.climate.diffDate +' dias'}}</h3>
+                        <h3>Acumulado {{field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus
+                            === 200 && field.app.season.display !== 'next' ? 'durante a safra' : 'nos últimos '+ field.app.climate.diffDate
+                            +' dias'}}</h3>
                         <h5>
                             {{field.app.climate.sDate | date: 'dd/MM/yyyy'}} até {{field.app.climate.eDate | date: 'dd/MM/yyyy'}}
                         </h5>

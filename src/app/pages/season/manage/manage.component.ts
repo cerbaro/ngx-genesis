@@ -64,17 +64,14 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
                     if (this.formSeason.get('commodity').dirty) {
 
-                        this.formSeason.get('harvestingDate').clearValidators();
                         this.formSeason.get('variety').reset();
-                        this.formSeason.get('variety').enable();
-
-                        if (!commodity.inf.phenologyModel) {
-                            this.formSeason.get('harvestingDate').setValidators(Validators.required);
-                        }
+                        this.formSeason.get('harvestingDate').reset();
 
                         this.varieties = this.allVarieties.filter(variety => {
                             return variety.commodity._id === commodity._id;
                         });
+
+                        this.formSeason.get('variety').enable();
 
                     }
 
@@ -153,23 +150,48 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                     }
                 });
 
+                this.fieldID = season.field._id;
+
                 this.pageLoaded();
             });
     }
 
     public submit(): void {
 
-        /**
-         * When selection commodities without phenology model it's mandatory to enter a harvesting date
-         */
-        this.formSeason.get('harvestingDate').updateValueAndValidity();
-
         this.formSeason.get('field').setValue(this.fieldID);
 
         if (this.formSeason.valid) {
 
             const season = this.formSeason.value;
-            console.log(season);
+
+            season.name = season.name ? season.name :
+                moment(season.plantingDate).format('YYYY') + '/' +
+                moment(season.plantingDate).clone().add(1, 'year').format('YYYY') + ' ' +
+                season.commodity.name + ' #' + moment().format('DDMMHHmmSS');
+
+            season.plantingDate = moment(season.plantingDate).format('YYYY-MM-DD');
+            season.harvestingDate = season.harvestingDate ? moment(season.harvestingDate).format('YYYY-MM-DD') : null;
+
+            season.commodity = season.commodity._id;
+            season.variety = season.variety._id;
+
+            if (this.editing) {
+
+                this.seasonService.updateSeason(this.seasonID, { season: season }).subscribe(
+                    result => {
+                        this.router.navigate(['/field', this.fieldID, 'season', result.data['_id']]);
+                    },
+                    error => this.setError(error));
+
+            } else {
+
+                this.seasonService.creatSeason({ season: season }).subscribe(
+                    result => {
+                        this.router.navigate(['/field', this.fieldID, 'season', result.data['_id']]);
+                    },
+                    error => this.setError(error));
+
+            }
 
         }
 

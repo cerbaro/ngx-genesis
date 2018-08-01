@@ -52,6 +52,8 @@ export interface Field {
             current?: any;
             next?: any;
             display?: any;
+
+            proc?: any;
         };
         map?: {
             geojson?: any;

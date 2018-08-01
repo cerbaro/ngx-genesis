@@ -51,8 +51,7 @@
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
-                            <mat-select placeholder="Variedade" formControlName="variety"
-                                disableOptionCentering="true">
+                            <mat-select placeholder="Variedade" formControlName="variety" disableOptionCentering="true">
                                 <mat-option *ngFor="let v of varieties" [value]="v">{{v.name}}</mat-option>
                             </mat-select>
                             <mat-hint *ngIf="!formSeason.get('variety').enabled && !formSeason.get('variety').hasError('required')" align="start">
@@ -72,20 +71,20 @@
                             <input matInput [matDatepicker]="picker1" placeholder="Data de Plantio" (focus)="picker1.open()" formControlName="plantingDate">
                             <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
                             <mat-datepicker #picker1></mat-datepicker>
-                            <mat-error *ngIf="this.formSeason.get('plantingDate').hasError('required')">Escolha uma data de plantio.</mat-error>
+                            <mat-error *ngIf="formSeason.get('plantingDate').hasError('required')">Escolha uma data de plantio.</mat-error>
                         </mat-form-field>
                     </div>
-
+                    
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <input matInput [matDatepicker]="picker2" placeholder="Data de Colheita" (focus)="picker2.open()" formControlName="harvestingDate"
-                                [required]="!commodityWithModel">
+                                [required]="formSeason.get('commodity').value != null && !formSeason.get('commodity').value.inf.phenologyModel">
                             <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
                             <mat-datepicker #picker2></mat-datepicker>
-                            <mat-hint *ngIf="commodityWithModel" align="start">
-                                <strong>A data de colheita será calculada automaticamente.</strong>
+                            <mat-hint *ngIf="formSeason.get('commodity').value != null && formSeason.get('commodity').value.inf.phenologyModel" align="start">
+                                A data de colheita será calculada automaticamente.
                             </mat-hint>
-                            <mat-error *ngIf="this.formSeason.get('harvestingDate').hasError('required')">Escolha uma data prevista para a colheita.</mat-error>
+                            <mat-error *ngIf="formSeason.get('harvestingDate').hasError('required')">Escolha uma data prevista para a colheita.</mat-error>
 
                         </mat-form-field>
                     </div>
@@ -94,7 +93,7 @@
                         <mat-form-field appearance="outline">
                             <input matInput type="number" placeholder="Profundidade da semeadura (cm)" formControlName="plantingDepth" min="1">
                             <span matSuffix>cm</span>
-                            <mat-error *ngIf="this.formSeason.get('plantingDepth').invalid">Parâmetro inválido.</mat-error>
+                            <mat-error *ngIf="formSeason.get('plantingDepth').invalid">Parâmetro inválido.</mat-error>
                         </mat-form-field>
                     </div>
 
@@ -106,7 +105,7 @@
                                 <mat-radio-button [value]="false">Não</mat-radio-button>
                                 &nbsp;&nbsp;
                                 <mat-radio-button [value]="true">Sim</mat-radio-button>
-                                <mat-error *ngIf="this.formSeason.get('irrigated').hasError('required')">Selecione sim ou não para irrigação.</mat-error>
+                                <mat-error *ngIf="formSeason.get('irrigated').hasError('required')">Selecione sim ou não para irrigação.</mat-error>
                             </mat-radio-group>
                         </section>
                     </div>
