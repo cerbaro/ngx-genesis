@@ -10,7 +10,7 @@ import { DataExchangeService } from 'src/app/shared/services/data-exchange.servi
 import { AuthService } from 'src/app/shared/services/cds/auth.service';
 
 import { ChartModule } from '@kiwigrid/ngx-highcharts';
-
+import { DialogModule } from 'src/app/shared/modules/dialog/dialog.module';
 
 /*
  * Highcharts modules and translation
@@ -19,6 +19,7 @@ import { ChartModule } from '@kiwigrid/ngx-highcharts';
 
 import * as Highcharts from 'highcharts/highstock';
 import { HighchartsStatic } from '@kiwigrid/ngx-highcharts/dist/HighchartsService';
+
 
 export function highchartsFactory() {
     const hcm = require('highcharts/highcharts-more');
@@ -49,7 +50,8 @@ export function highchartsFactory() {
 
         LayoutComponentsModule,
 
-        ChartModule
+        ChartModule,
+        DialogModule
     ],
     declarations: [
         MainComponent

@@ -74,7 +74,7 @@
                             <mat-error *ngIf="formSeason.get('plantingDate').hasError('required')">Escolha uma data de plantio.</mat-error>
                         </mat-form-field>
                     </div>
-                    
+
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <input matInput [matDatepicker]="picker2" placeholder="Data de Colheita" (focus)="picker2.open()" formControlName="harvestingDate"
@@ -110,7 +110,16 @@
                         </section>
                     </div>
 
+                    <mat-divider style="margin-top:40px;"></mat-divider>
+
+                    <div *ngIf="editing" fxLayout="row" fxLayoutAlign="start" class="formRow">
+                        <button type="button" mat-stroked-button color="warn" (click)="deleteDialog()">
+                            <mat-icon>delete</mat-icon>Apagar safra
+                        </button>
+                    </div>
+
                 </div>
+
                 <div fxFlex fxLayout="column"></div>
 
             </div>

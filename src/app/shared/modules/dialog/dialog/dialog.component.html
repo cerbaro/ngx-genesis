@@ -1,0 +1,9 @@
+<span class="mat-typography">
+    <h2 mat-dialog-title>{{data.title}}</h2>
+    <div mat-dialog-content>
+        <p>{{data.content}}</p>
+    </div>
+    <div mat-dialog-actions>
+        <button *ngFor="let act of data.actions" mat-button [mat-dialog-close]="act.value" cdkFocusInitial>{{act.text}}</button>
+    </div>
+</span>

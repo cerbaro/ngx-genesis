@@ -1,5 +1,4 @@
 @import '~@angular/material/theming';
-
 .clearBoth {
     clear: both;
 }
@@ -21,14 +20,12 @@
     padding: 0 40px;
     position: sticky;
     top: 80px;
-    z-index: 999; 
+    z-index: 999;
     border-bottom: solid 1px #EEE;
-
     &:empty {
         min-height: 0px;
     }
-
-    &.pageTitle {  
+    &.pageTitle {
         background-color: rgba($color: #FAFAFA, $alpha: 1);
         border-bottom-color: #F5F5F5;
         border-top: solid 1px #EEE;
@@ -36,24 +33,19 @@
         margin-bottom: 30px;
         padding-top: 20px;
         padding-bottom: 15px;
-
         h1 {
             margin: 0;
         }
     }
-
     button {
         margin: 0 5px;
-
         &:last-child {
             margin-right: 0;
         }
-
         &:first-child {
             margin-left: 0;
         }
     }
-    
 }
 
 .ngxgContent {
@@ -64,7 +56,6 @@
 .ngxgHoverTransition {
     @include mat-elevation-transition;
     @include mat-elevation(0);
-
     &:hover {
         cursor: pointer;
         @include mat-elevation(2);
@@ -84,7 +75,6 @@
     background-color: #FFF;
 }
 
-
 .ngxgCardSectionTitle h1 {
     margin-top: 20px;
     color: #545454;
@@ -92,11 +82,9 @@
 
 .ngxgCard {
     padding: 10px 10px !important;
-
     .ngxgCardTitle h3 {
         color: #757575;
     }
-
     chart {
         display: block;
         width: 100% !important;
@@ -108,29 +96,26 @@
  * Fix FlexLayout within router-outlet
  */
 
-router-outlet + * { 
-    flex: 1 1 auto; 
+router-outlet+* {
+    flex: 1 1 auto;
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
 }
-
 
 /**
  * Fix Leaflet buttons z-index
  */
 
-
-.leaflet-top, .leaflet-bottom {
+.leaflet-top,
+.leaflet-bottom {
     z-index: 500 !important;
 }
-
 
 /**
  * Leaflet markers
  */
 
-
- .map-field-marker {
+.map-field-marker {
     position: relative;
     background: #FFF;
     border-radius: 3px;
@@ -166,7 +151,6 @@ router-outlet + * {
     & .leaflet-draw-draw-polygon {
         background-size: 350px 44px !important;
     }
-
     & .leaflet-draw-edit-remove {
         background-size: 312px 44px !important;
     }

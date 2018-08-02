@@ -63,10 +63,18 @@
                         </mat-form-field>
                     </div>
 
+                    <mat-divider style="margin-top:40px;"></mat-divider>
+
+                    <div *ngIf="editing" fxLayout="row" fxLayoutAlign="start" class="formRow">
+                        <button type="button" mat-stroked-button color="warn" (click)="deleteDialog()">
+                            <mat-icon>delete</mat-icon>Apagar campo
+                        </button>
+                    </div>
+
                 </div>
 
                 <div fxFlex fxLayout="column">
-
+                    <mat-error *ngIf="fieldNotDrawn" fxFlexAlign="end">Desenhe o campo no mapa.</mat-error>
                     <div ngxgMap id="mapField" (mapInstance)="getMapInstance($event)" (drawSaved)="getDraw($event)" [options]="{latitude: -16.08, longitude:-47.78, zoom:5.4, controls: {baseMaps: true,locate: false, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
                         <div ngxgGeoJson *ngIf="fieldGeoJSON" [options]="{id: fieldID, geojson: fieldGeoJSON, editable: true}"></div>
                     </div>

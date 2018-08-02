@@ -23,7 +23,8 @@ import {
     MatNativeDateModule,
     MatBadgeModule,
     MatProgressBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    MatDialogModule
 } from '@angular/material';
 
 
@@ -49,7 +50,8 @@ import {
         MatNativeDateModule,
         MatBadgeModule,
         MatProgressBarModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDialogModule
     ],
     declarations: [
         RoundPipe
@@ -77,7 +79,8 @@ import {
         MatNativeDateModule,
         MatBadgeModule,
         MatProgressBarModule,
-        MatTooltipModule
+        MatTooltipModule,
+        MatDialogModule
     ],
 })
 export class LayoutComponentsModule { }

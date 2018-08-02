@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, Validators, RequiredValidator } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, Params } from '@angular/router';
+import { MatDialog } from '@angular/material';
 
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { takeUntil } from 'rxjs/operators';
@@ -8,7 +9,10 @@ import { Location } from '@angular/common';
 import { SeasonService } from 'src/app/shared/services/cds/season.service';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 
+import { DialogComponent } from 'src/app/shared/modules/dialog/dialog/dialog.component';
+
 import * as moment from 'moment';
+
 
 @Component({
     templateUrl: './manage.component.html',
@@ -33,7 +37,8 @@ export class ManageComponent extends NgxgRequest implements OnInit {
         private location: Location,
         private route: ActivatedRoute,
         private router: Router,
-        private seasonService: SeasonService
+        private seasonService: SeasonService,
+        private dialog: MatDialog
     ) {
         super();
     }
@@ -200,5 +205,32 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     public cancel(event: any): void {
         this.location.back();
     }
+
+    /**
+     * Delete Season
+     */
+    public deleteDialog(): void {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            width: '350px',
+            data: {
+                title: 'Apagar safra',
+                content: 'Tem certeza que deseja apagar esta safra? Esta operação é irreversível',
+                actions: [
+                    { text: 'Cancelar', value: false },
+                    { text: 'Apagar', value: true }
+                ]
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.seasonService.deleteSeason(this.seasonID)
+                    .subscribe(() => this.router.navigate(['/field', this.fieldID]));
+            }
+
+        });
+    }
 }
+
+
 

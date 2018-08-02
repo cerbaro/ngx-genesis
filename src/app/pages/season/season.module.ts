@@ -21,7 +21,9 @@ import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter } from '@angular/material-mo
         FormsModule,
         LayoutComponentsModule
     ],
-    declarations: [ManageComponent],
+    declarations: [
+        ManageComponent
+    ],
     providers: [
         SeasonService,
         CommodityService,

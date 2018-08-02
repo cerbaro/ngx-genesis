@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
+import { MatDialog } from '@angular/material';
 
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
@@ -17,6 +18,8 @@ import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 
 import * as L from 'leaflet';
 import * as Turf from '@turf/turf';
+import { DialogComponent } from 'src/app/shared/modules/dialog/dialog/dialog.component';
+
 
 @Component({
     templateUrl: './manage.component.html',
@@ -57,7 +60,8 @@ export class ManageComponent extends NgxgRequest implements OnInit {
         private location: Location,
         private route: ActivatedRoute,
         private router: Router,
-        private fieldService: FieldService
+        private fieldService: FieldService,
+        private dialog: MatDialog
     ) {
         super();
     }
@@ -194,6 +198,11 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                 this.persistField(field);
             }
 
+        } else {
+
+            if (!this.editing && this.fieldAreaModified === 0) {
+                this.fieldNotDrawn = true;
+            }
         }
     }
 
@@ -239,6 +248,31 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
     public cancel(event: any): void {
         this.location.back();
+    }
+
+    /**
+     * Delete Field
+     */
+    public deleteDialog(): void {
+        const dialogRef = this.dialog.open(DialogComponent, {
+            width: '350px',
+            data: {
+                title: 'Apagar campo',
+                content: 'Tem certeza que deseja apagar esta campo? Esta operação é irreversível',
+                actions: [
+                    { text: 'Cancelar', value: false },
+                    { text: 'Apagar', value: true }
+                ]
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            if (result) {
+                this.fieldService.deleteField(this.fieldID)
+                    .subscribe(() => this.router.navigate(['/fields']));
+            }
+
+        });
     }
 
 
