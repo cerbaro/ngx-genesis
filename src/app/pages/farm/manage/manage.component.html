@@ -21,49 +21,16 @@
 
             <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
 
-                <div fxFlex="50" fxLayout="column">
+                <div fxFlex="1 100 50" fxLayout="column">
 
-                    <div fxFlex fxLayout="row">
-                        <table mat-table [dataSource]="farmDataSource" matSort #farmsSort="matSort" matSortActive="name" matSortDisableClear matSortDirection="asc"
-                            style="width:100%">
+                    <h3>Insira um nome para a fazenda.</h3>
 
-                            <!-- Name Column -->
-                            <ng-container matColumnDef="name">
-                                <th mat-header-cell *matHeaderCellDef mat-sort-header> Fazenda </th>
-                                <td mat-cell *matCellDef="let element"> {{element.name}} </td>
-                            </ng-container>
-
-                            <!-- Edit Column -->
-                            <ng-container matColumnDef="edit">
-                                <th mat-header-cell *matHeaderCellDef> </th>
-                                <td *matCellDef="let element" class="mat-column-edit">
-                                    <button mat-stroked-button color="accent">Edit</button>
-                                </td>
-                            </ng-container>
-
-                            <!-- Delete Column -->
-                            <ng-container matColumnDef="delete">
-                                <th mat-header-cell *matHeaderCellDef> </th>
-                                <td *matCellDef="let element" class="mat-column-delete">
-                                    <button mat-stroked-button color="warn">Apagar</button>
-                                </td>
-                            </ng-container>
+                    <mat-form-field appearance="outline">
+                        <input matInput type="text" placeholder="Nome" formControlName="name" required>
+                        <mat-error *ngIf="formFarm.get('name').invalid">Nome inválido.</mat-error>
+                    </mat-form-field>
 
 
-                            <tr mat-header-row *matHeaderRowDef="farmTableColumns"></tr>
-                            <tr mat-row *matRowDef="let row; columns: farmTableColumns;"></tr>
-                        </table>
-                    </div>
-
-                </div>
-
-                <div fxFlex="50" fxLayout="column">
-                    <div fxFlex fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
-                        <mat-form-field appearance="outline">
-                            <input matInput type="text" placeholder="Nome" formControlName="name" required>
-                            <mat-error *ngIf="formFarm.get('name').invalid">Nome inválido.</mat-error>
-                        </mat-form-field>
-                    </div>
                 </div>
 
             </div>

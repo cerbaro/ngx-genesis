@@ -4,9 +4,8 @@ import { NgxgLoadingService } from 'src/app/core/comm/ngxg-loading';
 import { Location } from '@angular/common';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { FarmService } from 'src/app/shared/services/cds/farm.service';
-import { Farm } from 'src/app/shared/types/farm';
-import { MatTableDataSource, MatSort } from '@angular/material';
 import { takeUntil } from 'rxjs/operators';
+import { Params, ActivatedRoute } from '@angular/router';
 
 export interface FarmsTable {
 
@@ -21,17 +20,18 @@ export interface FarmsTable {
 })
 export class ManageComponent extends NgxgRequest implements OnInit {
 
+    private farmID: string;
+
+    public editing: Boolean = false;
+
     public dataLoading: Boolean = true;
     public formFarm: FormGroup;
-
-    public farmDataSource: MatTableDataSource<FarmsTable> = new MatTableDataSource();
-    public farmTableColumns: Array<String> = ['name', 'edit', 'delete'];
-    @ViewChild('farmsSort') farmsSort: MatSort;
 
     constructor(
         private ngxgLoadingService: NgxgLoadingService,
         private location: Location,
-        private farmService: FarmService
+        private farmService: FarmService,
+        private route: ActivatedRoute
     ) {
         super();
 
@@ -48,52 +48,73 @@ export class ManageComponent extends NgxgRequest implements OnInit {
             this.ngxgLoadingService.setLoading(this.dataLoading);
         });
 
-        this.formFarm = new FormGroup({
-            name: new FormControl('')
-        });
+        this.route.params
+            .subscribe((params: Params) => {
 
-
-        this.farmService.getFarms()
-            .pipe(takeUntil(this.ngxgUnsubscribe))
-            .subscribe(result => {
-                if (result.data.length > 0) {
-                    this.farmsLoaded(result.data);
+                if (params['farm']) {
+                    this.loadFarmData(params['farm']);
+                    this.editing = true;
+                } else {
+                    this.pageLoaded();
                 }
+
             });
 
-        setTimeout(() => {
+        this.formFarm = new FormGroup({
+            name: new FormControl(null, Validators.required)
+        });
 
+    }
+
+    private pageLoaded(): void {
+        setTimeout(() => {
             this.dataLoading = false;
             this.ngxgLoadingService.setLoading(this.dataLoading);
-
         });
     }
 
-    private farmsLoaded(farms: Array<any>): void {
+    private loadFarmData(farmID: string): void {
 
-        const farmData = [];
+        this.farmID = farmID;
 
-        farms.map(farm => {
-            farmData.push({ _id: farm._id, name: farm.name });
-        });
+        this.farmService.getFarm(this.farmID)
+            .pipe(takeUntil(this.ngxgUnsubscribe))
+            .subscribe(result => {
 
-        this.farmDataSource.data = farmData;
-        this.farmDataSource.sort = this.farmsSort;
+                const farm = result.data;
+
+                Object.keys(this.formFarm.value).forEach(key => {
+                    if (farm[key]) {
+                        this.formFarm.get(key).setValue(farm[key]);
+                    }
+                });
+
+                this.pageLoaded();
+            });
     }
 
     public submit(): void {
 
         if (this.formFarm.valid) {
 
-            const fValues = this.formFarm.value;
-            const farm = fValues as Farm;
+            const farm = this.formFarm.value;
 
-            this.farmService.createFarm({ farm: farm }).subscribe(
-                result => {
-                    this.cancel(null);
-                },
-                error => this.setError(error)
-            );
+            if (this.editing) {
+
+                this.farmService.updateFarm(this.farmID, { farm: farm }).subscribe(
+                    result => {
+                        this.cancel(null);
+                    },
+                    error => this.setError(error));
+
+            } else {
+
+                this.farmService.createFarm({ farm: farm }).subscribe(
+                    result => {
+                        this.cancel(null);
+                    },
+                    error => this.setError(error));
+            }
         }
     }
 

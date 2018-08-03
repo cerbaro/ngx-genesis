@@ -14,6 +14,7 @@ const routes: Routes = [
             { path: 'season', loadChildren: '../season/season.module#SeasonModule' },
             { path: 'variety', loadChildren: '../variety/variety.module#VarietyModule' },
 
+            { path: 'farms', loadChildren: '../farms/farms.module#FarmsModule' },
             { path: 'farm', loadChildren: '../farm/farm.module#FarmModule' },
 
             { path: 'enso', loadChildren: '../enso/enso.module#EnsoModule' },

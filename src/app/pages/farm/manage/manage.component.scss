@@ -11,23 +11,3 @@
         vertical-align: unset !important;
     }
 }
-
-.mat-column-edit,
-.mat-column-delete {
-    width: 90px;
-    text-align: right;
-}
-
-.mat-column-name {
-    font-size: 1.2em;
-}
-
-.mat-row>td {
-    padding-top: 15px;
-    padding-bottom: 15px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.mat-header-row>th, .mat-row:last-child>td {
-    border-bottom: none;
-}

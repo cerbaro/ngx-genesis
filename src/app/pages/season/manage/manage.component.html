@@ -23,6 +23,8 @@
 
                 <div fxFlex fxLayout="column" style="max-width: 520px;">
 
+                    <h3>Complete os campos abaixo para criar uma safra.</h3>
+
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <input matInput type="text" placeholder="Nome (opcional)" formControlName="name">
@@ -59,11 +61,12 @@
                             </mat-hint>
                             <mat-error *ngIf="formSeason.get('variety').hasError('required')">Por favor selecione uma varidade.</mat-error>
                         </mat-form-field>
-
-                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;"
-                            routerLink="/variety/new">
-                            <mat-icon>add</mat-icon>
-                        </button>
+                        <span matTooltip="Em breve será possível cadastrar novas variedades.">
+                            <button disabled mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" style="margin-left: 15px; height: 41px;"
+                                routerLink="/variety/new">
+                                <mat-icon>add</mat-icon>
+                            </button>
+                        </span>
                     </div>
 
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">

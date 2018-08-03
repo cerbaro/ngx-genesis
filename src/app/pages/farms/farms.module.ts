@@ -1,23 +1,23 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ManageComponent } from './manage/manage.component';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { LayoutComponentsModule } from 'src/app/shared/modules/layout-components.module';
-import { FarmRoutingModule } from './farm-routing.module';
+import { FarmsRoutingModule } from './farms-routing.module';
 import { FarmService } from 'src/app/shared/services/cds/farm.service';
+import { FarmsComponent } from './farms/farms.component';
 
 @NgModule({
     imports: [
         CommonModule,
-        FarmRoutingModule,
+        FarmsRoutingModule,
 
         ReactiveFormsModule,
         FormsModule,
         LayoutComponentsModule
     ],
     declarations: [
-        ManageComponent
+        FarmsComponent
     ],
     providers: [FarmService]
 })
-export class FarmModule { }
+export class FarmsModule { }

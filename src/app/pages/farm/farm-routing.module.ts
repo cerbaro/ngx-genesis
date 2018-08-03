@@ -3,8 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ManageComponent } from './manage/manage.component';
 
 const routes: Routes = [
-    { path: 'new/field/:field/', component: ManageComponent },
-    { path: ':id/edit', component: ManageComponent },
+    { path: ':farm/edit', component: ManageComponent },
     { path: 'new', component: ManageComponent },
     { path: '', redirectTo: 'new', pathMatch: 'full' },
     { path: '**', component: ManageComponent }
