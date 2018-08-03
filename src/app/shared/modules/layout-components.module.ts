@@ -24,7 +24,9 @@ import {
     MatBadgeModule,
     MatProgressBarModule,
     MatTooltipModule,
-    MatDialogModule
+    MatDialogModule,
+    MatSortModule,
+    MatTableModule
 } from '@angular/material';
 
 
@@ -51,7 +53,9 @@ import {
         MatBadgeModule,
         MatProgressBarModule,
         MatTooltipModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTableModule,
+        MatSortModule
     ],
     declarations: [
         RoundPipe
@@ -80,7 +84,9 @@ import {
         MatBadgeModule,
         MatProgressBarModule,
         MatTooltipModule,
-        MatDialogModule
+        MatDialogModule,
+        MatTableModule,
+        MatSortModule
     ],
 })
 export class LayoutComponentsModule { }
