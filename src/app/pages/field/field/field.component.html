@@ -16,7 +16,8 @@
 
                     <div fxFlex fxLayoutGap="20px">
                         <h1>{{field.name}}</h1>
-                        <h5>{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
+                        <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
+                        <h5 *ngIf="field.location.loc.city == null">{{field.location.loc.state.name}}, {{field.location.loc.country.abbr}}</h5>
                     </div>
 
                     <div fxFlex fxLayoutGap="20px">
@@ -196,7 +197,7 @@
             <button mat-raised-button class="mat-elevation-z0" routerLink="weather" routerLinkActive="link-active">Tempo e Previsão</button>
             <button mat-raised-button class="mat-elevation-z0" routerLink="climate" routerLinkActive="link-active">Climatologia</button>
             <!-- <button mat-raised-button class="mat-elevation-z0" [routerLink]="['satellite']" routerLinkActive="link-active">Satélite</button> -->
-            <button mat-raised-button class="mat-elevation-z0" routerLink="phenology" routerLinkActive="link-active" [disabled]="!field.app.season.display || !field.app.season[field.app.season.display].app.phenologyModel">Guia de Fases</button>
+            <button mat-raised-button class="mat-elevation-z0" routerLink="phenology" routerLinkActive="link-active" [disabled]="!field.app.season.display || !field.app.season[field.app.season.display].app.phenologyModel || field.app.season[field.app.season.display].app.seasonStatus !== 200">Guia de Fases</button>
         </div>
     </div>
 

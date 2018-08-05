@@ -18,7 +18,7 @@
             </span>
             <span fxFlex="1 1 auto"></span>
             <span>
-                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/farms/new">Criar Fazenda</button>
+                <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/farm/new">Criar Fazenda</button>
                 <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/field/new">Criar Campo</button>
                 <!-- <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new">Criar Safra</button> -->
             </span>
@@ -44,7 +44,8 @@
 
                         <div fxFlex=28>
                             <h2>{{field.name}}</h2>
-                            <h5>{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
+                            <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
+                            <h5 *ngIf="field.location.loc.city == null">{{field.location.loc.state.name}}, {{field.location.loc.country.abbr}}</h5>
 
                             <h4>{{field.area.size/10000 | round }} hectares</h4>
                             <h5>Área</h5>
