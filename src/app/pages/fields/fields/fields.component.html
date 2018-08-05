@@ -44,7 +44,7 @@
 
                         <div fxFlex=28>
                             <h2>{{field.name}}</h2>
-                            <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.abbr}}</h5>
+                            <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.name}}</h5>
                             <h5 *ngIf="field.location.loc.city == null">{{field.location.loc.state.name}}, {{field.location.loc.country.abbr}}</h5>
 
                             <h4>{{field.area.size/10000 | round }} hectares</h4>
