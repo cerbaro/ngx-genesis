@@ -8,7 +8,10 @@
             <mat-list fxLayout="row">
                 <a mat-list-item [routerLink]="['/fields']" routerLinkActive="link-active">Campos</a>
                 <a mat-list-item [routerLink]="['/farms']" routerLinkActive="link-active">Fazendas</a>
-                <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">El Niño</a>
+                <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">
+                    <span matBadge="!" matBadgeColor="warn" matBadgeOverlap="true" matBadgePosition="above after" matBadgeSize="medium">El Niño</span>
+                </a>
+                
                 <mat-divider [vertical]="true"></mat-divider>
 
                 <a mat-list-item [matMenuTriggerFor]="menu">
