@@ -26,20 +26,20 @@
     </div>
 
     <div class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="15px">
 
-            <div id="fieldList" fxFlex=65 fxLayout="column" fxLayoutAlign="start">
+            <div id="fieldList" fxFlex=65 fxLayout="column" fxLayout.lt-lg="row wrap" fxLayoutAlign="start">
 
                 <span *ngIf="!fieldsToShow" fxFlex fxLayout="row" fxLayoutAlign="center center">
                     <h1>Nenhum campo encontrado para o filtro selecionado.</h1>
                 </span>
 
-                <span *ngFor="let field of allFields">
-                    <mat-card fxFlex fxLayout="row" fxHide="{{field.app.hidden}}" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
+                <span fxFlex fxFlex.lt-lg="50" fxLayout="row" fxLayout.lt-lg="column" *ngFor="let field of allFields">
+                    <mat-card fxFlex fxLayout="row" fxLayout.lt-lg="column" fxHide="{{field.app.hidden}}" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
                         (mouseleave)="fieldOut(field)" (click)="openField(field)">
 
-                        <div fxFlex="300px">
-                            <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
+                        <div fxFlex style="overflow: hidden; display:flex;">
+                            <img src="{{field.app.thumbnail}}">
                         </div>
 
                         <div fxFlex=28>
@@ -66,7 +66,7 @@
 
                         </div>
 
-                        <div fxFlex>
+                        <div fxFlex ngClass.gt-md="fieldCardDivider">
                             <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
                                 <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
                                 <br>
@@ -155,7 +155,6 @@
                 </span>
             </div>
 
-
             <div fxFlex>
                 <div id="mapFieldsWrapper">
                     <div ngxgMap id="mapFields" (mapInstance)="mapInstance($event)" [options]="{latitude: 31.7, longitude:-83.25, zoom:15.4, controls: {baseMaps: true, locate: false}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
@@ -166,10 +165,6 @@
 
                     </div>
                 </div>
-
-                <!-- <div id="mapFieldsWrapper">
-                    <div id="mapFields" leaflet [leafletOptions]="map.options"></div>
-                </div> -->
             </div>
 
         </div>

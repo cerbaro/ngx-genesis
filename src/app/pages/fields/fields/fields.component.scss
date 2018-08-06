@@ -1,9 +1,10 @@
 #fieldList {
     .fieldCard {
-        min-width: 800px;
-        max-height: 230px;
+        // min-width: 800px;
+        // max-height: 230px;
         padding: 0;
-        margin: 0 10px 25px 0 !important;
+        margin-bottom: 25px !important;
+        margin-right: 10px;
         border: solid 1px #DBDBDB;
         >div {
             overflow: hidden;
@@ -15,8 +16,9 @@
                 text-overflow: ellipsis;
             }
             img {
-                max-width: 300px;
+                width: 100%;
                 height: auto;
+                align-self: center;
             }
             h2 {
                 margin-bottom: -5px;
@@ -38,10 +40,14 @@
             padding: 0;
             margin: 0;
         }
-        >div:last-child {
-            border-left: solid 1px #DBDBDB;
-        }
+        // >div:last-child {
+        //     border-left: solid 1px #DBDBDB;
+        // }
     }
+}
+
+.fieldCardDivider {
+    border-left: solid 1px #DBDBDB;
 }
 
 #mapFieldsWrapper {
