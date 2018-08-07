@@ -41,7 +41,7 @@ export class FieldsComponent extends NgxgRequest implements OnInit {
     public fieldsLoading: Boolean = true;
 
     public allFields: Array<Field> = Array();
-    // public fields: Array<Field> = Array();
+    public fields: Array<Field> = Array();
     public fieldsToShow: Boolean;
 
     public fieldsMap: L.Map;

@@ -28,21 +28,21 @@
     <div class="ngxgContent" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="15px">
 
-            <div id="fieldList" fxFlex=65 fxLayout="column" fxLayout.lt-lg="row wrap" fxLayoutAlign="start">
+            <div id="fieldList" fxFlex=60 fxLayout="column" fxLayoutAlign="start" fxLayout.lt-lg="row wrap" fxLayoutAlign.lt-lg="start start">
 
                 <span *ngIf="!fieldsToShow" fxFlex fxLayout="row" fxLayoutAlign="center center">
                     <h1>Nenhum campo encontrado para o filtro selecionado.</h1>
                 </span>
 
-                <span fxFlex fxFlex.lt-lg="50" fxLayout="row" fxLayout.lt-lg="column" *ngFor="let field of allFields">
-                    <mat-card fxFlex fxLayout="row" fxLayout.lt-lg="column" fxHide="{{field.app.hidden}}" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
+                <span fxFlex fxLayout="row" fxFlex.lt-lg="33" fxLayout.lt-lg="column" *ngFor="let field of allFields">
+                    <mat-card *ngIf="!field.app.hidden" fxFlex fxLayout="row" fxFlex.lt-lg="33" fxLayout.lt-lg="column" class="fieldCard mat-elevation-z0 ngxgHoverTransition" (mouseenter)="fieldHover(field)"
                         (mouseleave)="fieldOut(field)" (click)="openField(field)">
 
-                        <div fxFlex style="overflow: hidden; display:flex;">
+                        <div fxFlex="230px" fxFlex.lt-lg="50px" style="overflow: hidden; display:flex;">
                             <img src="{{field.app.thumbnail}}">
                         </div>
 
-                        <div fxFlex=28>
+                        <div fxFlex>
                             <h2>{{field.name}}</h2>
                             <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.name}}</h5>
                             <h5 *ngIf="field.location.loc.city == null">{{field.location.loc.state.name}}, {{field.location.loc.country.abbr}}</h5>
@@ -66,7 +66,7 @@
 
                         </div>
 
-                        <div fxFlex ngClass.gt-md="fieldCardDivider">
+                        <div fxFlex=40 ngClass.gt-md="fieldCardDivider" fxHide.lt-lg>
                             <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
                                 <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
                                 <br>
