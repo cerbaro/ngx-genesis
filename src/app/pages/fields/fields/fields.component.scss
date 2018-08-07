@@ -1,27 +1,23 @@
 #fieldList {
     .fieldCard {
         // min-width: 800px;
-        max-height: 230px;
         padding: 0;
-        margin-bottom: 25px !important;
-        margin-right: 10px;
         border: solid 1px #DBDBDB;
+        
         >div {
             overflow: hidden;
             padding: 0 10px;
             margin: 12px 0;
-            * {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+
             img {
-                width: 100%;
-                height: auto;
-                align-self: center;
+                object-fit: cover;
             }
+            
             h2 {
                 margin-bottom: -5px;
+                white-space: nowrap; 
+                overflow: hidden; 
+                text-overflow: ellipsis;
             }
             h4 {
                 margin-bottom: -5px;
@@ -39,8 +35,7 @@
         >div:first-child {
             padding: 0;
             margin: 0;
-        }
-        // >div:last-child {
+        } // >div:last-child {
         //     border-left: solid 1px #DBDBDB;
         // }
     }
@@ -50,9 +45,26 @@
     border-left: solid 1px #DBDBDB;
 }
 
+.fitWidth {
+    margin-bottom: 15px !important;
+    .fieldThumb {
+        width: 100%;
+    }
+}
+
+.fitHeight {
+    max-height: 230px !important;
+    margin-bottom: 15px !important;
+    .fieldThumb {
+        height: 100%;
+    }
+}
+
 #mapFieldsWrapper {
     top: 170px;
+    position: -webkit-sticky;
     position: sticky;
+
     #mapFields {
         height: calc(100vh - 200px);
     }
