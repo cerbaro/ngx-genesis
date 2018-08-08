@@ -25,7 +25,6 @@ export class LeafletLocate {
 
         this.map.on('locationfound', (e) => {
             lc.stop();
-            console.log('found');
         });
     }
 

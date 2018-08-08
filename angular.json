@@ -54,6 +54,7 @@
                             "./node_modules/normalize.css/normalize.css",
                             "./node_modules/leaflet/dist/leaflet.css",
                             "./node_modules/leaflet-draw/dist/leaflet.draw.css",
+                            "./node_modules/font-awesome/css/font-awesome.min.css",
                             "./node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css",
                             "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
                             "./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",

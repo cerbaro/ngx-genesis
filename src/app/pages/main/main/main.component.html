@@ -1,5 +1,5 @@
 <mat-toolbar id="mainToolbar" fxLayout="row" class="mat-typography">
-    <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
+    <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center" fxHide.lt-sm>
         <span>
             <img src="assets/img/logo.png" style="display:block; height:40px;">
         </span>
@@ -11,7 +11,7 @@
                 <a mat-list-item [routerLink]="['/enso']" routerLinkActive="link-active">
                     <span matBadge="!" matBadgeColor="warn" matBadgeOverlap="true" matBadgePosition="above after" matBadgeSize="medium">El Niño</span>
                 </a>
-                
+
                 <mat-divider [vertical]="true"></mat-divider>
 
                 <a mat-list-item [matMenuTriggerFor]="menu">
@@ -19,21 +19,61 @@
                 </a>
 
             </mat-list>
+
+
+            <mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
+                <button mat-menu-item routerLink="/account" routerLinkActive="link-active">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Minha conta</span>
+                </button>
+                <button mat-menu-item (click)="signout()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span>Sair</span>
+                </button>
+            </mat-menu>
+        </span>
+    </span>
+
+    <span class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center" fxHide.gt-xs>
+        <span>
+            <img src="assets/img/logo.png" style="display:block; height:40px;">
+        </span>
+        <span fxFlex="2 1 auto"></span>
+        <span>
+
+            <button mat-icon-button [matMenuTriggerFor]="mainMenu">
+                <mat-icon>menu</mat-icon>
+            </button>
+
+            <mat-menu #mainMenu="matMenu" yPosition="below" [overlapTrigger]="false">
+                <button mat-menu-item routerLink="/fields" routerLinkActive="link-active">
+                    <mat-icon></mat-icon>
+                    <span>Campos</span>
+                </button>
+                <button mat-menu-item routerLink="/farms" routerLinkActive="link-active">
+                    <mat-icon></mat-icon>
+                    <span>Fazendas</span>
+                </button>
+                <button mat-menu-item routerLink="/enso" routerLinkActive="link-active">
+                    <mat-icon></mat-icon>
+                    <span>Enso</span>
+                </button>
+
+                <mat-divider></mat-divider>
+                <button mat-menu-item routerLink="/account" routerLinkActive="link-active">
+                    <mat-icon>account_circle</mat-icon>
+                    <span>Minha conta</span>
+                </button>
+                <button mat-menu-item (click)="signout()">
+                    <mat-icon>exit_to_app</mat-icon>
+                    <span>Sair</span>
+                </button>
+            </mat-menu>
         </span>
     </span>
 </mat-toolbar>
 <mat-toolbar id="mainToolbarSoul"></mat-toolbar>
 
-<mat-menu #menu="matMenu" yPosition="below" [overlapTrigger]="false">
-    <button mat-menu-item routerLink="/account" routerLinkActive="link-active">
-        <mat-icon>account_circle</mat-icon>
-        <span>Minha conta</span>
-    </button>
-    <button mat-menu-item (click)="signout()">
-        <mat-icon>exit_to_app</mat-icon>
-        <span>Sair</span>
-    </button>
-</mat-menu>
 
 <!-- Preloader -->
 <span *ngIf="loading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">

@@ -137,6 +137,22 @@ export class LeafletDraw {
 
         this.addControl(true, false);
 
+        this.map.on('draw:drawstart', (e) => {
+            this.map.scrollWheelZoom.disable();
+        });
+
+        this.map.on('draw:editstart', (e) => {
+            this.map.scrollWheelZoom.disable();
+        });
+
+        this.map.on('draw:drawstop', (e) => {
+            this.map.scrollWheelZoom.enable();
+        });
+
+        this.map.on('draw:editstop', (e) => {
+            this.map.scrollWheelZoom.enable();
+        });
+
         this.map.on(L.Draw.Event.CREATED, (e) => {
 
             this.layers.addLayer(e.layer);
@@ -190,6 +206,10 @@ export class LeafletDraw {
                 circlemarker: false,
                 rectangle: false,
                 polygon: {
+                    icon: new L.DivIcon({
+                        iconSize: new L.Point(10, 10),
+                        className: 'leaflet-div-icon leaflet-editing-icon'
+                    }),
                     allowIntersection: false,
                     drawError: {
                         color: '#e1e100',
