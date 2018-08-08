@@ -2,14 +2,14 @@
     <div class="ngxgHeaderToolbar" fxLayout="row"></div>
 
     <div class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="60px">
+        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="60px" fxLayoutGap.lt-md="10px">
 
-            <div fxFlex="40" fxLayout="column">
+            <div fxFlex fxLayout="column">
                 <br>
                 <br>
                 <h1>Condições atuais e previsão para os próximos 3 meses</h1>
                 <p style="max-width: 800px;">
-                    <img src="/assets/img/enso/ensochart.png" style="width: 300px; height: auto; float: right; margin-left: 25px;" /> As condições atuais das águas do Oceano Pacífico equatorial são neutras com uma expectativa de aquecimento
+                    <img src="/assets/img/enso/ensochart.png" ngStyle.gt-xs="margin-left: 25px;" style="max-width: 300px; height: auto; float: right; " /> As condições atuais das águas do Oceano Pacífico equatorial são neutras com uma expectativa de aquecimento
                     durante o segundo semestre de 2018 com a probabilidade de estabelecimento do ciclo El Niño durante a
                     safra de verão 2018/2019. As probabilidades para os próximos 3 meses (julho-agosto-setembro) estão apresentadas
                     no gráfico ao lado para as fases neutra (verde), El Niño (vermelha) e La Niña (azul). A maior probabilidade
@@ -32,17 +32,18 @@
                 <br>
                 <br>
                 
-
             </div>
-            <mat-divider [vertical]=true></mat-divider>
+
+            <mat-divider [vertical]=true fxHide.lt-md></mat-divider>
+            
             <div fxFlex fxLayout="column">
                 <br>
                 <br>
                 <h1>Como os ciclos El Niño e La Niña afetam o Brasil?</h1>
 
-                <img src="/assets/img/enso/ensoBRelnino.png" style="min-width: 500px; width: 90%;" />
+                <img src="/assets/img/enso/ensoBRelnino.png" style=" width: 90%;" />
                 <br>
-                <img src="/assets/img/enso/ensoBRlanina.png" style="min-width: 500px; width: 90%;" />
+                <img src="/assets/img/enso/ensoBRlanina.png" style=" width: 90%;" />
                 
             </div>
 
