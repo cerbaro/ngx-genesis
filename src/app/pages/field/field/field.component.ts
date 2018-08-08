@@ -308,9 +308,9 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         let eDate = moment().toDate();
 
         const variables = [
-            { variable: 'totR', source: 'gpm', band: 1 },
-            { variable: 'gdd', source: 'ensoag', band: 2 },
-            { variable: 'arid', source: 'ensoag', band: 1 }
+            { variable: 'totR', version: 'mergegpmv1', source: 'cptec', band: 1 },
+            { variable: 'gdd', version: 'v1', source: 'ensoag', band: 2 },
+            { variable: 'arid', version: 'v1', source: 'ensoag', band: 1 }
         ];
         const display = field.app.season.display;
 
@@ -334,7 +334,7 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         let variablesObservable = [].concat.apply([], variables.map(variable => {
             return this.agrogisService
                 .summary(field.location.lat, field.location.lon,
-                    variable.variable, variable.band, variable.source, sDate, eDate);
+                    variable.variable, variable.version, variable.band, variable.source, sDate, eDate);
         })) as Observable<any>[];
 
         variablesObservable = variablesObservable.filter(x => x != null);

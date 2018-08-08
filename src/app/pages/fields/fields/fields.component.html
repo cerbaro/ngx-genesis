@@ -76,11 +76,11 @@
                     ngClass.gt-md="fitHeight" ngClass.md="fitWidth" ngClass.sm="fitWidth" ngClass.xs="fitHeight" (mouseenter)="fieldHover(field)"
                     (mouseleave)="fieldOut(field)" (click)="openField(field)">
 
-                    <div fxFlex="130px" fxFlex.lt-lg="50px" fxLayoutAlign="center center" style="overflow: hidden;">
+                    <div fxFlex="130px" fxFlex.lt-lg="50px"  fxLayoutAlign="center center" style="overflow: hidden;">
                         <img class="fieldThumb" src="{{field.app.thumbnail}}">
                     </div>
 
-                    <div fxFlex fxFlex.lt-lg="200px">
+                    <div fxFlex fxFlex.lt-lg="200px" fxFlex.xs>
                         <h2>{{field.name}}</h2>
                         <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.name}}</h5>
                         <h5 *ngIf="field.location.loc.city == null">{{field.location.loc.state.name}}, {{field.location.loc.country.abbr}}</h5>

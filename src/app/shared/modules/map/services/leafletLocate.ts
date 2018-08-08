@@ -23,6 +23,10 @@ export class LeafletLocate {
             }
         ).addTo(this.map);
 
+        this.map.on('locationfound', (e) => {
+            lc.stop();
+            console.log('found');
+        });
     }
 
 }

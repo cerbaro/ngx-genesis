@@ -1,6 +1,6 @@
 #fieldHeader {
-    min-width: 800px;
-    max-height: 280px;
+    // min-width: 800px;
+    // max-height: 280px;
     padding: 0;
     margin: 20px 0 30px 0 !important;
    
@@ -11,10 +11,8 @@
         margin: 12px 0;
         
         img {
-            width: 100%;
-            min-width: 300px;
-            max-width: 350px;
-            height: auto;
+            object-fit: cover;
+            max-height: 280px;
         }
 
         h1 {

@@ -4,15 +4,29 @@
     <div id="fieldHeaderBg" class="ngxgContent" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
 
-            <div id="fieldHeader" fxFlex fxLayout="row">
+            <div id="fieldHeader" fxFlex fxLayout="row" fxLayout.lt-md="row wrap">
 
-                <div fxFlex=25>
-                    <img src="{{field.app.thumbnail}}" alt="Photo of a Shiba Inu">
+                <div 
+                    fxFlex 
+
+                    fxFlex.lt-md 
+                    fxFlex.xs 
+
+                    fxLayoutAlign="center center" 
+
+                    style="overflow: hidden;">
+                    <img class="fieldThumb" src="{{field.app.thumbnail}}">
                 </div>
 
-                <!-- Field Information -->
 
-                <div fxLayout="column" fxFlex=20 fxFlexAlign="space-between start">
+                <!-- Field Information -->
+                <!-- style="display: flex; width: 100%; min-width: 0;" -->
+                <div 
+                    fxFlex=20 
+                    fxFlex.lt-md=70
+
+                    fxLayout="column" 
+                    fxFlexAlign="space-between start">
 
                     <div fxFlex fxLayoutGap="20px">
                         <h1>{{field.name}}</h1>
@@ -47,11 +61,11 @@
 
                 </div>
 
-                <mat-divider vertical="true"></mat-divider>
+                <mat-divider vertical="true" fxHide.lt-md></mat-divider>
 
                 <!-- Season Information -->
 
-                <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex=37 fxLayout="column" fxLayoutAlign="center center"
+                <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex=37 fxFlex.lt-md fxLayout="column" fxLayoutAlign="center center"
                     style="height: 100%;">
                     <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
                     <br>
@@ -59,10 +73,12 @@
                         (click)="$event.stopPropagation()">Criar Safra</button>
                 </div>
 
-                <!-- <div *ngIf="seasonStatus"></div> -->
+                <div *ngIf="(((field || {}).app || {}).season || {}).display" 
+                    
+                    fxFlex=37 
+                    fxFlex.lt-md=70
 
-
-                <div *ngIf="(((field || {}).app || {}).season || {}).display" fxLayout="column" fxFlex=37>
+                    fxLayout="column">
 
                     <div fxFlex="60px" fxLayout="row" fxLayoutGap="15px">
                         <span fxFlex=70>
@@ -159,7 +175,7 @@
                     <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
                 </div>
 
-                <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex=20>
+                <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex>
 
                     <div fxFlex=23>
                         <h3>Acumulado {{field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus

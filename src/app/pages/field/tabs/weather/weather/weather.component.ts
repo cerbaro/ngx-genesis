@@ -828,8 +828,8 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
 
         this.agrogisService
-            .getGeoJSON('forecast',
-                this.field.location.geoid.substr(0, 4),
+            .getGeoJSONLatLon('forecast',
+                [this.field.location.lat, this.field.location.lon],
                 moment().format('YYYYMMDD'),
                 moment().add(7, 'days').format('YYYYMMDD'), 'totR', 'gfs', 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe))

@@ -3,14 +3,14 @@
     <div fxLayout="column" fxLayoutGap="20px">
 
         <!-- Latest -->
-        <div fxFlex fxLayout="row" fxLayoutGap="20px">
+        <div fxFlex fxLayout="row" fxLayoutGap="20px"  fxLayout.xs="column">
 
             <div fxFlex=70 fxLayout="column">
                 <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Tempo Agora</h1>
                 </div>
 
-                <div fxFlex fxLayout="row" fxLayoutGap="20px">
+                <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
 
                     <div fxFlex=25 fxLayout="column" fxLayoutGap="20px">
 
@@ -128,10 +128,10 @@
 
 
         <!-- Observed & Forecast -->
-        <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="space-between start">
+        <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayout.lt-md="column" fxLayoutAlign.lt-md="space-between" fxLayoutAlign="space-between start">
 
             <!-- Observed -->
-            <div fxFlex fxLayout="column">
+            <div fxFlex fxLayout="column" fxFlexOrder.xs="2">
 
                 <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Observados diariamente</h1>
@@ -164,7 +164,7 @@
             </div>
 
             <!-- Forecast -->
-            <div fxFlex fxLayout="column">
+            <div fxFlex fxLayout="column" fxFlexOrder.xs="1">
 
                 <div class="ngxgCardSectionTitle" fxFlex>
                     <h1>Previsão</h1>

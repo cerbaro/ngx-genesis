@@ -77,7 +77,7 @@
 
                 <div fxFlex fxLayout="column">
                     <mat-error *ngIf="fieldNotDrawn" fxFlexAlign="end">Desenhe o campo no mapa.</mat-error>
-                    <div ngxgMap id="mapField" (mapInstance)="getMapInstance($event)" (drawSaved)="getDraw($event)" [options]="{latitude: -16.08, longitude:-47.78, zoom:5.4, controls: {baseMaps: true,locate: false, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
+                    <div ngxgMap id="mapField" (mapInstance)="getMapInstance($event)" (drawSaved)="getDraw($event)" [options]="{latitude: -16.08, longitude:-52.78, zoom:5, controls: {baseMaps: true,locate: true, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
                         <div ngxgGeoJson *ngIf="fieldGeoJSON" [options]="{id: fieldID, geojson: fieldGeoJSON, editable: true}"></div>
                     </div>
 

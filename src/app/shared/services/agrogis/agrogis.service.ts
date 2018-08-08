@@ -13,7 +13,7 @@ export class AgroGISService {
 
     constructor(private http: HttpClient, private datePipe: DatePipe) { }
 
-    public summary(latitude: Number, longitude: Number, variable: String,
+    public summary(latitude: Number, longitude: Number, variable: String, version: String,
         band: Number, source: String, sdate: Date, edate: Date): Observable<any> {
 
         const sdatef = this.datePipe.transform(sdate, 'yyyyMMdd');
@@ -22,7 +22,7 @@ export class AgroGISService {
         return this.http
             .get(this.spatialBaseURL +
                 '/spatial/raster/observed/summary/pixel/' + latitude + ',' + longitude + '/from/' +
-                sdatef + '/to/' + edatef + '/variable/' + variable + '/band/' + band + '/source/' + source)
+                sdatef + '/to/' + edatef + '/variable/' + variable + '/version/' + version + '/band/' + band + '/source/' + source)
             .pipe(catchError(error => throwError(error)));
     }
 
@@ -45,6 +45,15 @@ export class AgroGISService {
 
         return this.http
             .get(this.spatialBaseURL + '/spatial/raster/' + pot + '/geoid/' + geoid +
+                '/from/' + from + '/to/' + to + '/variable/' + variable + '/version/' + version + '/source/' + source)
+            .pipe(catchError(error => throwError(error)));
+    }
+
+    public getGeoJSONLatLon(pot: String, coordinates: [number, number], from: String,
+        to: String, variable: String, version: String, source: String): Observable<any> {
+
+        return this.http
+            .get(this.spatialBaseURL + '/spatial/raster/' + pot + '/pixel/' + coordinates.join(',') +
                 '/from/' + from + '/to/' + to + '/variable/' + variable + '/version/' + version + '/source/' + source)
             .pipe(catchError(error => throwError(error)));
     }
