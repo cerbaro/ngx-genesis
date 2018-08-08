@@ -67,13 +67,12 @@ export class ResetComponent extends NgxgRequest implements OnInit {
             fValues.passwd = Md5.hashStr(fValues.passwordGroup.passwd).toString();
             delete fValues.passwordGroup;
 
-            console.log(fValues);
-            // this.auth.resetPassword({ user: fValues }).subscribe(
-            //     result => {
-            //         this.result = result;
-            //     },
-            //     error => this.setError(error)
-            // );
+            this.auth.resetPassword({ user: fValues }).subscribe(
+                result => {
+                    this.result = result;
+                },
+                error => this.setError(error)
+            );
         }
 
     }

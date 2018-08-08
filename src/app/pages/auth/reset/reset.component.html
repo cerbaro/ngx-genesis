@@ -1,30 +1,40 @@
 <div [ngSwitch]="tokenValid">
 
     <div *ngSwitchCase="true">
-        <form novalidate [formGroup]="formReset" (ngSubmit)="reset()">
 
-            <div formGroupName="passwordGroup">
 
-                <mat-form-field appearance="outline">
-                    <input matInput type="password" placeholder="Nova senha" formControlName="passwd" required>
-                </mat-form-field>
+        <div *ngIf="result" style="color: #333; text-align: center; margin-bottom: 10px;">
+            <h3 class="mat-body-2">{{result.message}}</h3>
+            <br>
+            <button type="button" mat-raised-button color="primary" class=".mat-elevation-z0" routerLink="/auth/login">Entrar</button>
+        </div>
+        <div *ngIf="!result">
+            <form novalidate [formGroup]="formReset" (ngSubmit)="reset()">
 
-                <mat-form-field appearance="outline">
-                    <input matInput type="password" placeholder="Confirmação de senha" formControlName="passwdConfirm" required>
-                </mat-form-field>
+                <div formGroupName="passwordGroup">
 
-                <mat-error *ngIf="formReset.get('passwordGroup').get('passwd').invalid && formReset.get('passwordGroup').get('passwdConfirm').dirty" style="font-size: 12px;">A senha deve ter 8 ou mais caracteres.</mat-error>
-                <mat-error *ngIf="formReset.get('passwordGroup').hasError('mismatch')" style="font-size: 12px; margin-bottom: 10px;">Senhas diferentes</mat-error>
+                    <mat-form-field appearance="outline">
+                        <input matInput type="password" placeholder="Nova senha" formControlName="passwd" required>
+                    </mat-form-field>
+
+                    <mat-form-field appearance="outline">
+                        <input matInput type="password" placeholder="Confirmação de senha" formControlName="passwdConfirm" required>
+                    </mat-form-field>
+
+                    <mat-error *ngIf="formReset.get('passwordGroup').get('passwd').invalid && formReset.get('passwordGroup').get('passwdConfirm').dirty"
+                        style="font-size: 12px;">A senha deve ter 8 ou mais caracteres.</mat-error>
+                    <mat-error *ngIf="formReset.get('passwordGroup').hasError('mismatch')" style="font-size: 12px; margin-bottom: 10px;">Senhas diferentes</mat-error>
+                </div>
+
+                <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
+                    <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Alterar senha</button>
+                </div>
+
+            </form>
+
+            <div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
+                <a routerLink="../">Cancelar e ir para o login.</a>
             </div>
-
-            <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
-                <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Alterar senha</button>
-            </div>
-
-        </form>
-
-        <div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
-            <a routerLink="../">Cancelar e ir para o login.</a>
         </div>
     </div>
 
