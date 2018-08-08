@@ -176,7 +176,7 @@ export class ClimateComponent extends NgxgRequest implements OnInit {
     private loadData(): void {
 
         const variables = [
-            { variable: 'totR', source: 'ensoag', version: 'v2', band: 1 },
+            { variable: 'totR', source: 'ensoag', version: 'v4', band: 1 },
             { variable: 'maxT', source: 'ensoag', version: 'v1', band: 1 },
             { variable: 'avgT', source: 'ensoag', version: 'v1', band: 1 },
             { variable: 'minT', source: 'ensoag', version: 'v1', band: 1 }

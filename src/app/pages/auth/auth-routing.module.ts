@@ -17,7 +17,7 @@ const routes: Routes = [
             { path: 'login', component: LoginComponent },
             // { path: 'signup', component: SignupComponent },
             { path: 'recover', component: RecoverComponent },
-            { path: 'reset', component: ResetComponent },
+            { path: 'reset/email/:email/:token', component: ResetComponent },
             { path: '**', redirectTo: 'login', pathMatch: 'full' }
         ]
     }

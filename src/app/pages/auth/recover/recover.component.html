@@ -1,17 +1,27 @@
-<form novalidate [formGroup]="formRecover">
+<div *ngIf="result" style="color: #333; text-align: center; margin-bottom: 10px;">
+    <h3 class="mat-body-2">{{result.message}}</h3>
+    <br>
+    <button type="button" mat-raised-button color="primary" class=".mat-elevation-z0" routerLink="/auth/login">Entrar</button>
+</div>
 
-    <mat-form-field appearance="outline">
-        <input matInput type="email" placeholder="Email" formControlName="email" required>
-        <mat-error *ngIf="formRecover.get('email').invalid">Email inválido.</mat-error>
-    </mat-form-field>
+<div *ngIf="!result">
+    <form novalidate [formGroup]="formRecover" (ngSubmit)="recover()">
+        <mat-form-field appearance="outline">
+            <input matInput type="email" placeholder="Email" formControlName="email" required>
+            <mat-error *ngIf="formRecover.get('email').invalid">Email inválido.</mat-error>
+        </mat-form-field>
 
-    <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
-        <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Recuperar senha</button>
-        <!-- <button fxFlex mat-button class="ngxgButtonWhite" routerLink="../">Cancelar</button> -->
+        <mat-error *ngIf="error" fxLayout="row" fxLayoutAlign="center" style="margin: 10px 0 15px;">
+            {{error.message}}
+        </mat-error>
+
+        <div fxLayout="column" fxLayoutAlign="center stretch" fxLayoutGap="5px" style="margin-top: 15px;">
+            <button fxFlex type="submit" mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition">Recuperar senha</button>
+        </div>
+
+    </form>
+
+    <div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
+        <a routerLink="../">Cancelar e retornar para o login.</a>
     </div>
-
-</form>
-
-<div class="bottomLink" fxLayout="row" fxLayoutAlign="end">
-    <a routerLink="../">Cancelar e retornar para o login.</a>
 </div>
