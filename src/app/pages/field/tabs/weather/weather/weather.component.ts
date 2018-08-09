@@ -914,7 +914,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 }
             }, error => this.setError(error));
 
-        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'arid', 'v1', 1, 'ensoag')
+        this.agrogisService.getDailyValue('historical', this.field.location, this.startDate, this.endDate, 'arid', 'v2', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
             .subscribe(result => {
                 if (result === null) {
@@ -986,7 +986,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
     private aridEto() {
         this.agrogisService
             .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v1', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result === null) {
@@ -1003,7 +1003,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
             }, error => this.setError(error));
         this.agrogisService
             .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v1', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result !== null) {

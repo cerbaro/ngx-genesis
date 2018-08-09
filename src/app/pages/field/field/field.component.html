@@ -12,9 +12,6 @@
                         <img style="object-fit: cover;" src="{{field.app.thumbnail}}">
                     </div>
 
-                    <mat-divider vertical="true" fxHide.lt-md></mat-divider>
-                    <mat-divider fxHide.gt-sm></mat-divider>
-
                     <div fxFlex fxLayout="column" style="height: 280px;">
                         <!-- Field Information -->
                         <div fxFlex fxLayoutGap="20px">
@@ -51,9 +48,6 @@
                         <!-- </div> -->
                     </div>
                 </div>
-
-                <mat-divider vertical="true" fxHide.xs></mat-divider>
-                <mat-divider fxHide.gt-xs></mat-divider>
 
                 <div fxFlex=60 fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
 
@@ -156,9 +150,6 @@
                         </div>
                     </div>
 
-                    <mat-divider vertical="true" fxHide.lt-md></mat-divider>
-                    <mat-divider fxHide.gt-sm></mat-divider>
-
                     <div fxFlex fxLayout="column" style="height: 280px;">
                         <div *ngIf="climateDataLoading" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
                             <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
@@ -210,7 +201,7 @@
     </div>
 
     <div id="fieldTabs" class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row">
+        <div class="ngxgMaxWidth" style="display: flex; width: 100%; min-width: 0;" fxLayout="column">
 
             <!-- Preloader -->
             <span *ngIf="tabsLoading" style="position:absolute; left: 50%; top:50%; transform: translate(-50%, -50%);">
