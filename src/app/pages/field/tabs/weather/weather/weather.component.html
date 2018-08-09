@@ -1,16 +1,16 @@
 <span *ngIf="!tabLoading" class="mat-typography">
 
-    <div fxLayout="column" fxLayoutGap="20px">
+    <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
         <!-- Latest -->
-        <div fxFlex fxLayout="row" fxLayoutGap="20px"  fxLayout.xs="column">
+        <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
 
             <div fxFlex=70 fxLayout="column">
-                <div class="ngxgCardSectionTitle" fxFlex>
+                <div class="ngxgCardSectionTitle">
                     <h1>Tempo Agora</h1>
                 </div>
 
-                <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayout.xs="column">
+                <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayout.lt-lg="column">
 
                     <div fxFlex=25 fxLayout="column" fxLayoutGap="20px">
 
@@ -26,58 +26,60 @@
 
                     </div>
 
-                    <div fxFlex=35 fxLayout="column" fxLayoutGap="20px">
+                    <div fxFlex=70 fxLayout="row" fxLayout.xs="column" fxLayoutGap="20px">
+                        <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
-                        <!-- Humidity -->
-                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
-                            <div class="ngxgCardTitle" fxFlex>
-                                <h3>Umidade</h3>
-                            </div>
-                            <div fxFlex>
-                                <chart [options]="charts.humidity.options" (load)="saveChartInstance('humidity', $event.context)"></chart>
-                            </div>
-                        </mat-card>
+                            <!-- Humidity -->
+                            <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                                <div class="ngxgCardTitle" fxFlex>
+                                    <h3>Umidade</h3>
+                                </div>
+                                <div fxFlex>
+                                    <chart [options]="charts.humidity.options" (load)="saveChartInstance('humidity', $event.context)"></chart>
+                                </div>
+                            </mat-card>
 
-                        <!-- Dew Point -->
-                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
-                            <div class="ngxgCardTitle" fxFlex>
-                                <h3>Ponto de Orvalho</h3>
-                            </div>
-                            <div fxFlex>
-                                <span *ngIf="dewPoint != null" style="text-align: right;">
-                                    <h1>{{dewPoint}}°C</h1>
-                                </span>
-                                <span *ngIf="dewPoint === null || dewPoint === undefined" class="data-not-available">Dado não disponível</span>
-                            </div>
-                        </mat-card>
+                            <!-- Dew Point -->
+                            <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
+                                <div class="ngxgCardTitle" fxFlex>
+                                    <h3>Ponto de Orvalho</h3>
+                                </div>
+                                <div fxFlex>
+                                    <span *ngIf="dewPoint != null" style="text-align: right;">
+                                        <h1>{{dewPoint}}°C</h1>
+                                    </span>
+                                    <span *ngIf="dewPoint === null || dewPoint === undefined" class="data-not-available">Dado não disponível</span>
+                                </div>
+                            </mat-card>
 
-                    </div>
+                        </div>
 
-                    <div fxFlex=40 fxLayout="column" fxLayoutGap="20px">
+                        <div fxFlex fxLayout="column" fxLayoutGap="20px">
 
-                        <!-- Wind Direction -->
-                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
-                            <div class="ngxgCardTitle" fxFlex>
-                                <h3>Direção do Vento</h3>
-                            </div>
-                            <div fxFlex>
-                                <chart [options]="charts.windRose.options" (load)="saveChartInstance('windRose', $event.context)"></chart>
-                            </div>
-                        </mat-card>
+                            <!-- Wind Direction -->
+                            <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
+                                <div class="ngxgCardTitle" fxFlex>
+                                    <h3>Direção do Vento</h3>
+                                </div>
+                                <div fxFlex>
+                                    <chart [options]="charts.windRose.options" (load)="saveChartInstance('windRose', $event.context)"></chart>
+                                </div>
+                            </mat-card>
 
-                        <!-- Wind Speed -->
-                        <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
-                            <div class="ngxgCardTitle" fxFlex>
-                                <h3>Veloc. do Vento</h3>
-                            </div>
-                            <div fxFlex>
-                                <span *ngIf="windSpeed != null" style="text-align: right;">
-                                    <h1>{{windSpeed}} km/h</h1>
-                                </span>
-                                <span *ngIf="windSpeed === null || windSpeed === undefined" class="data-not-available">Dado não disponível</span>
-                            </div>
-                        </mat-card>
+                            <!-- Wind Speed -->
+                            <mat-card class="ngxgCard mat-elevation-z1" fxFlex fxLayout="row">
+                                <div class="ngxgCardTitle" fxFlex>
+                                    <h3>Veloc. do Vento</h3>
+                                </div>
+                                <div fxFlex>
+                                    <span *ngIf="windSpeed != null" style="text-align: right;">
+                                        <h1>{{windSpeed}} km/h</h1>
+                                    </span>
+                                    <span *ngIf="windSpeed === null || windSpeed === undefined" class="data-not-available">Dado não disponível</span>
+                                </div>
+                            </mat-card>
 
+                        </div>
                     </div>
 
 
@@ -86,11 +88,11 @@
 
             <div fxFlex fxLayout="column">
 
-                <div class="ngxgCardSectionTitle" fxFlex>
+                <div class="ngxgCardSectionTitle">
                     <h1>Registrado {{isseDate}}</h1>
                 </div>
 
-                <div fxFlex fxLayout="row" fxLayoutGap="20px">
+                <div fxFlex fxLayout="row" fxLayoutGap="20px" fxLayoutAlign="start start">
 
                     <div fxFlex fxLayout="column" fxLayoutGap="20px">
 

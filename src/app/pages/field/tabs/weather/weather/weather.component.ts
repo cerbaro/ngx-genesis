@@ -1,4 +1,4 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay, map } from 'rxjs/operators';
@@ -1026,6 +1026,13 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
         this.charts[chart].instance = instance;
         instance.showLoading('Carregando dados...');
 
+    }
+
+    @HostListener('window:resize', ['$event'])
+    private onResize(event) {
+        Object.keys(this.charts).map(key => {
+            this.charts[key].instance.reflow();
+        });
     }
 
     private formatHighChartData(data): Array<any> {
