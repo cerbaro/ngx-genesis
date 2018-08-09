@@ -1,55 +1,91 @@
-#fieldHeader {
-    // min-width: 800px;
-    // max-height: 280px;
-    padding: 0;
-    margin: 20px 0 30px 0 !important;
+// #fieldHeader {
+//     // min-width: 800px;
+//     // max-height: 280px;
+//     padding: 0;
+//     margin: 20px 0 30px 0 !important;
    
 
-    >div {
+//     >div {
+//         overflow: hidden;
+//         padding: 0 20px;
+//         margin: 12px 0;
+        
+//         img {
+//             object-fit: cover;
+//             max-height: 280px;
+//         }
+
+//         h1 {
+//             font-size: 2.1em;
+//         }
+
+//         h2, h4 {
+//             font-size: 1.2em;
+//         }
+
+//         h4 {
+//             clear: both;
+//         }
+
+//         h5 {
+//             color: #555;
+//         }
+
+//         span {
+//             white-space: nowrap;
+//             overflow: hidden;
+//             text-overflow: ellipsis;
+//         }
+        
+//         h1, h2, h3, h4, h5 {
+//             margin-bottom: -5px;
+//             white-space: nowrap;
+//             overflow: hidden;
+//             text-overflow: ellipsis;
+//         }
+        
+//     }
+
+//     >div:first-child {
+//         padding: 0;
+//         margin: 0;
+//     }
+// }
+
+
+#fieldHeader {
+
+    margin: 10px 0 30px 0;
+
+    h1 {
+        font-size: 2.1em;
+    }
+
+    h2, h4 {
+        font-size: 1.2em;
+    }
+
+    h4 {
+        clear: both;
+    }
+
+    h5 {
+        color: #555;
+    }
+
+    span {
+        white-space: nowrap;
         overflow: hidden;
-        padding: 0 20px;
-        margin: 12px 0;
-        
-        img {
-            object-fit: cover;
-            max-height: 280px;
-        }
-
-        h1 {
-            font-size: 2.1em;
-        }
-
-        h2, h4 {
-            font-size: 1.2em;
-        }
-
-        h4 {
-            clear: both;
-        }
-
-        h5 {
-            color: #555;
-        }
-
-        span {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
-        h1, h2, h3, h4, h5 {
-            margin-bottom: -5px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        
+        text-overflow: ellipsis;
+    }
+    
+    h1, h2, h3, h4, h5 {
+        margin-bottom: -5px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
     }
 
-    >div:first-child {
-        padding: 0;
-        margin: 0;
-    }
 }
 
 #fieldHeaderBg {
@@ -59,6 +95,12 @@
 .buttonEdit {
     height: 30px !important;
     line-height: 30px !important;
+}
+
+.flex {
+    display: flex;
+    flex: 1; 
+    min-width:0;
 }
 
 #fieldTabsList {

@@ -2,51 +2,21 @@
     <div class="ngxgHeaderToolbar" fxLayout="row"></div>
 
     <div id="fieldHeaderBg" class="ngxgContent" fxLayout="row">
-        <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+        <div class="ngxgMaxWidth flex" fxLayout="row" fxLayoutGap="20px">
 
-            <div
-                fxFlex 
-                fxLayout="row">
+            <div id="fieldHeader" class="flex" fxLayout="row" fxLayout.xs="column" fxLayoutGap="30px">
 
-                <div
-                    fxFlex
-                    fxLayout="row"
-                    fxLayout.md="column">
+                <div fxFlex=50 fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
 
-                    <div fxFlex style="height: 230px; background-color: red;">
-                        image
+                    <div fxFlex style="height: 280px; overflow: hidden;" fxLayoutAlign="center center">
+                        <img style="object-fit: cover;" src="{{field.app.thumbnail}}">
                     </div>
 
-                    <div fxFlex style="height: 230px;  background-color: orange;">
-                        field info
-                    </div>
-                </div>
+                    <mat-divider vertical="true" fxHide.lt-md></mat-divider>
+                    <mat-divider fxHide.gt-sm></mat-divider>
 
-                <div
-                    fxFlex
-                    fxLayout="row"
-                    fxLayout.md="column">
-
-                    <div fxFlex style="height: 230px;  background-color: blue;">
-                        season info
-                    </div>
-
-                    <div fxFlex style="height: 230px;  background-color: gray;">
-                        weather info
-                    </div>
-                </div>
-
-            </div>
-
-            <div id="fieldHeader" fxFlex fxLayout="row" fxHide>
-
-                <div fxFlex=50 fxLayout="column" fxLayou.md="column">
-                    <div fxFlex fxLayoutAlign="center center" style="overflow: hidden;">
-                        <img class="fieldThumb" src="{{field.app.thumbnail}}">
-                    </div>
-
-                    <!-- Field Information -->
-                    <div fxFlex fxLayout="column" fxFlexAlign="space-between start">
+                    <div fxFlex fxLayout="column" style="height: 280px;">
+                        <!-- Field Information -->
                         <div fxFlex fxLayoutGap="20px">
                             <h1>{{field.name}}</h1>
                             <h5 *ngIf="field.location.loc.city != null">{{field.location.loc.city.name}}, {{field.location.loc.state.name}}</h5>
@@ -58,12 +28,12 @@
                             <h5>Área</h5>
                         </div>
 
-                        <div *ngIf="((field || {}).app || {}).weather" fxFlex fxLayoutGap="20px">
-                            <h4>{{field.app.weather.temperature}} - {{field.app.weather.summary}}</h4>
+                        <div *ngIf="((field || {}).app || {}).weather" fxFlex fxLayoutGap="30px">
+                            <h4>{{field.app.weather.temperature}}ºC - {{field.app.weather.summary}}</h4>
                             <h5>Condição agora</h5>
                         </div>
 
-                        <div *ngIf="((field || {}).app || {}).weather" fxFlex fxLayout="row" fxLayoutGap="20px">
+                        <div *ngIf="((field || {}).app || {}).weather" fxFlex fxLayout="row" fxLayoutGap="30px">
                             <span>
                                 <h4>{{field.app.weather.sunrise}}</h4>
                                 <h5>Amanhecer</h5>
@@ -78,149 +48,153 @@
                             <button mat-button class="ngxgButtonEdit buttonEdit" routerLink="/field/{{field._id}}/edit">Editar campo</button>
                         </div>
 
+                        <!-- </div> -->
                     </div>
-
                 </div>
 
-                <mat-divider vertical="true" fxHide.lt-md></mat-divider>
-                <!-- Season Information -->
+                <mat-divider vertical="true" fxHide.xs></mat-divider>
+                <mat-divider fxHide.gt-xs></mat-divider>
 
-                <div fxFlex fxLayout="column" fxLayou.md="column">
-                    <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxFlex.lt-md fxLayout="column" fxLayoutAlign="center center"
-                        style="height: 100%;">
-                        <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
-                        <br>
-                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}"
-                            (click)="$event.stopPropagation()">Criar Safra</button>
+                <div fxFlex=50 fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="30px">
+
+                    <div fxFlex fxFlex.gt-sm=60 fxLayout="column" style="height: 280px;">
+
+                        <div *ngIf="!(((field || {}).app || {}).season || {}).display" fxFlex fxFlex.lt-md fxLayout="column" fxLayoutAlign="center center"
+                            style="height: 100%;">
+                            <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma safra para este campo.</h4>
+                            <br>
+                            <br>
+                            <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}"
+                                (click)="$event.stopPropagation()">Criar Safra</button>
+                        </div>
+
+                        <div *ngIf="(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column">
+
+                            <div fxFlex="60px" fxLayout="row" fxLayoutGap="15px">
+                                <span fxFlex=70>
+                                    <mat-form-field appearance="outline">
+                                        <mat-select [ngModel]="field.app.season[field.app.season.display]" (ngModelChange)="switchSeason($event)" disableOptionCentering="true">
+                                            <mat-option *ngFor="let season of field.seasons" [value]="season">
+                                                {{ season.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </span>
+                                <span fxFlex>
+                                    <button mat-raised-button color="primary" style="height: 42px;" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}">
+                                        Criar Safra
+                                    </button>
+                                </span>
+                            </div>
+
+                            <div fxFlex fxLayout="row" fxLayoutGap="20px">
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].commodity.name}}</h4>
+                                    <h5>Cultura</h5>
+                                </span>
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].variety.name}}</h4>
+                                    <h5>Variedade</h5>
+                                </span>
+                            </div>
+
+                            <div fxFlex fxLayout="row" fxLayoutGap="20px">
+                                <span>
+                                    <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
+                                    <h5>Data de plantio</h5>
+                                </span>
+                                <span *ngIf="field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                    <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
+                                        | date: 'dd/MM/yyyy'}}</h4>
+                                    <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
+                                </span>
+                            </div>
+
+                            <div fxFlex fxLayout="row" fxLayoutGap="20px" *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                <span *ngIf="(field.app.season[field.app.season.display].app || {}).currentStage">
+                                    <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
+                                    <h5>Estádio atual</h5>
+                                </span>
+
+                                <span *ngIf="(field.app.season[field.app.season.display].app || {}).nextStage">
+                                    <h4>
+                                        {{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
+                                    </h4>
+                                    <h5>Próximo estádio ({{field.app.season[field.app.season.display].app.nextStage.in}})</h5>
+                                </span>
+                            </div>
+
+                            <!-- Season not yet started -->
+                            <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 201">
+                                <h4>Preparando simulação.</h4>
+                                <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
+                            </div>
+
+                            <!-- Season Processing -->
+                            <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 202">
+                                <h4>Simulando fases de desenvolvimento.</h4>
+                                <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
+                            </div>
+
+                            <!-- Error when running model-->
+                            <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus > 400">
+                                <h4 style="color:red">Erro ao simular as fases de desenvolvimento.
+                                    <br>Por favor verifique as informações fornecidas.</h4>
+                            </div>
+
+                            <div fxFlex *ngIf="field.app.season.display === 'prev' && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                <h4>Esta safra terminou há {{field.app.season[field.app.season.display].app.endDate}} dias</h4>
+                            </div>
+
+                            <div fxFlex *ngIf="field.app.season.display === 'next' && field.app.season[field.app.season.display].app.seasonStatus === 200">
+                                <h4>Esta safra começará em {{field.app.season[field.app.season.display].app.startDate}} dias</h4>
+                            </div>
+
+                            <div fxFlex fxLayout="column" fxLayoutAlign="end stretch">
+                                <button mat-button class="ngxgButtonEdit buttonEdit" routerLink="/season/{{field.app.season[field.app.season.display]._id}}/edit">Editar safra</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <div *ngIf="(((field || {}).app || {}).season || {}).display" fxFlex fxLayout="column">
-
-                        <div fxFlex="60px" fxLayout="row" fxLayoutGap="15px">
-                            <span fxFlex=70>
-                                <mat-form-field appearance="outline">
-                                    <mat-select [ngModel]="field.app.season[field.app.season.display]" (ngModelChange)="switchSeason($event)" disableOptionCentering="true">
-                                        <mat-option *ngFor="let season of field.seasons" [value]="season">
-                                            {{ season.name }}
-                                        </mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </span>
-                            <span fxFlex>
-                                <button mat-raised-button color="primary" style="height: 42px;" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/season/new/field/{{field._id}}">
-                                    Criar Safra
-                                </button>
-                            </span>
-                        </div>
-
-                        <div fxFlex fxLayout="row" fxLayoutGap="20px">
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].commodity.name}}</h4>
-                                <h5>Cultura</h5>
-                            </span>
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].variety.name}}</h4>
-                                <h5>Variedade</h5>
-                            </span>
-                        </div>
-
-                        <div fxFlex fxLayout="row" fxLayoutGap="20px">
-                            <span>
-                                <h4>{{field.app.season[field.app.season.display].plantingDate | date: 'dd/MM/yyyy'}}</h4>
-                                <h5>Data de plantio</h5>
-                            </span>
-                            <span *ngIf="field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus === 200">
-                                <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
-                                    | date: 'dd/MM/yyyy'}}</h4>
-                                <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
-                            </span>
-                        </div>
-
-                        <div fxFlex fxLayout="row" fxLayoutGap="20px" *ngIf="field.app.season.display === 'current' && (field.app.season[field.app.season.display].app || {}).phenologyModel && field.app.season[field.app.season.display].app.seasonStatus === 200">
-                            <span *ngIf="(field.app.season[field.app.season.display].app || {}).currentStage">
-                                <h4>{{field.app.season[field.app.season.display].app.currentStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.currentStage.stage.name}}</h4>
-                                <h5>Estádio atual</h5>
-                            </span>
-
-                            <span *ngIf="(field.app.season[field.app.season.display].app || {}).nextStage">
-                                <h4>
-                                    {{field.app.season[field.app.season.display].app.nextStage.stage.abbrv}} {{field.app.season[field.app.season.display].app.nextStage.stage.name}}
-                                </h4>
-                                <h5>Próximo estádio ({{field.app.season[field.app.season.display].app.nextStage.in}})</h5>
-                            </span>
-                        </div>
-
-                        <!-- Season not yet started -->
-                        <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 201">
-                            <h4>Preparando simulação.</h4>
-                            <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
-                        </div>
-
-                        <!-- Season Processing -->
-                        <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 202">
-                            <h4>Simulando fases de desenvolvimento.</h4>
-                            <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
-                        </div>
-
-                        <!-- Error when running model-->
-                        <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus > 400">
-                            <h4 style="color:red">Erro ao simular as fases de desenvolvimento.
-                                <br>Por favor verifique as informações fornecidas.</h4>
-                        </div>
-
-                        <div fxFlex *ngIf="field.app.season.display === 'prev' && field.app.season[field.app.season.display].app.seasonStatus === 200">
-                            <h4>Esta safra terminou há {{field.app.season[field.app.season.display].app.endDate}} dias</h4>
-                        </div>
-
-                        <div fxFlex *ngIf="field.app.season.display === 'next' && field.app.season[field.app.season.display].app.seasonStatus === 200">
-                            <h4>Esta safra começará em {{field.app.season[field.app.season.display].app.startDate}} dias</h4>
-                        </div>
-
-                        <div fxFlex fxLayout="column" fxLayoutAlign="end stretch">
-                            <button mat-button class="ngxgButtonEdit buttonEdit" routerLink="/season/{{field.app.season[field.app.season.display]._id}}/edit">Editar safra</button>
-                        </div>
-
-
-
-                    </div>
-
+                    <mat-divider vertical="true" fxHide.lt-md></mat-divider>
                     <mat-divider fxHide.gt-sm></mat-divider>
-                    <mat-divider fxHide="{{!climateDataLoading && !(((field || {}).app || {}).climate || {}).sDate}}" vertical="true"></mat-divider>
-                    <!-- Season/Field Weather/Climate Information -->
 
-                    <div *ngIf="climateDataLoading" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
-                        <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
+                    <div fxFlex fxLayout="column" style="height: 280px;">
+                        <div *ngIf="climateDataLoading" fxFlex fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                            <mat-spinner [diameter]="30" [strokeWidth]="4"></mat-spinner>
+                        </div>
+
+                        <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex>
+
+                            <div fxFlex=23>
+                                <h3>Acumulado {{field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus
+                                    === 200 && field.app.season.display !== 'next' ? 'durante a safra' : 'nos últimos '+
+                                    field.app.climate.diffDate +' dias'}}</h3>
+                                <h5>
+                                    {{field.app.climate.sDate | date: 'dd/MM/yyyy'}} até {{field.app.climate.eDate | date: 'dd/MM/yyyy'}}
+                                </h5>
+                            </div>
+
+                            <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null" style="color:#2d5986">
+                                <h4>{{field.app.climate.totR.sum | round}} mm</h4>
+                                <h5>Chuva</h5>
+                            </div>
+
+                            <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).gdd != null" style="color:#ff0000">
+                                <h4>{{field.app.climate.gdd.sum | round}} GD</h4>
+                                <h5>Graus-dia</h5>
+                            </div>
+
+                            <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null" style="color: #ff6000">
+                                <h4>{{field.app.climate.arid.sum | round}} </h4>
+                                <h5>ISSE</h5>
+                            </div>
+
+
+                        </div>
                     </div>
-
-                    <div *ngIf="!climateDataLoading && (((field || {}).app || {}).climate || {}).sDate" fxLayout="column" fxFlex>
-
-                        <div fxFlex=23>
-                            <h3>Acumulado {{field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus
-                                === 200 && field.app.season.display !== 'next' ? 'durante a safra' : 'nos últimos '+ field.app.climate.diffDate
-                                +' dias'}}</h3>
-                            <h5>
-                                {{field.app.climate.sDate | date: 'dd/MM/yyyy'}} até {{field.app.climate.eDate | date: 'dd/MM/yyyy'}}
-                            </h5>
-                        </div>
-
-                        <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).totR != null" style="color:#2d5986">
-                            <h4>{{field.app.climate.totR.sum | round}} mm</h4>
-                            <h5>Chuva</h5>
-                        </div>
-
-                        <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).gdd != null" style="color:#ff0000">
-                            <h4>{{field.app.climate.gdd.sum | round}} GD</h4>
-                            <h5>Graus-dia</h5>
-                        </div>
-
-                        <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null" style="color: #ff6000">
-                            <h4>{{field.app.climate.arid.sum | round}} </h4>
-                            <h5>ISSE</h5>
-                        </div>
-
-                    </div>
-
                 </div>
+
             </div>
         </div>
 
