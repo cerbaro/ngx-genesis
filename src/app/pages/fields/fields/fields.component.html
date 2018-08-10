@@ -67,8 +67,16 @@
             <div id="fieldList" fxFlex=60 fxFlex.lt-lg=50 fxFlex.lt-md=100 fxLayout="row wrap" fxLayout.gt-md="column" fxLayout.xs="column"
                 fxLayoutAlign="start" fxLayoutGap="15px" fxLayoutGap.lt-sm="0">
 
-                <span *ngIf="!fieldsToShow" fxFlex fxLayout="row" fxLayoutAlign="center center">
+                <span *ngIf="!fieldsToShow && allFields.length > 0" fxFlex fxLayout="row" fxLayoutAlign="center center">
                     <h1>Nenhum campo encontrado para o filtro selecionado.</h1>
+                </span>
+                <span *ngIf="allFields.length === 0" fxFlex fxLayout="row" fxLayoutAlign="center center">
+                    <div fxFlex fxFlex.lt-md fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                        <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhum campo.</h4>
+                        <br>
+                        <br>
+                        <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/field/new" (click)="$event.stopPropagation()">Criar Campo</button>
+                    </div>
                 </span>
                 <!-- fxHide="field.app.hidden"  -->
                 <mat-card *ngFor="let field of allFields" fxHide="{{field.app.hidden}}" fxFlex fxFlex.md="calc(50%-15px)" fxFlex.sm="calc(50%-15px)"
@@ -76,7 +84,7 @@
                     ngClass.gt-md="fitHeight" ngClass.md="fitWidth" ngClass.sm="fitWidth" ngClass.xs="fitHeight" (mouseenter)="fieldHover(field)"
                     (mouseleave)="fieldOut(field)" (click)="openField(field)">
 
-                    <div fxFlex="130px" fxFlex.lt-lg="50px"  fxLayoutAlign="center center" style="overflow: hidden;">
+                    <div fxFlex="130px" fxFlex.lt-lg="50px" fxLayoutAlign="center center" style="overflow: hidden;">
                         <img class="fieldThumb" src="{{field.app.thumbnail}}">
                     </div>
 
@@ -207,7 +215,7 @@
         <mat-card style="max-height: 50vh; overflow: scroll; border:solid 1px #CCC">
             <mat-card-content>
                 <h3 *ngIf="filters.user.length <= 0">
-                    <br>Nenhuma Produtor</h3>
+                    <br>Nenhum Produtor</h3>
 
                 <mat-selection-list *ngIf="filters.user.length > 0" (selectionChange)="filterChange('user', user.selectedOptions)" #user>
                     <h3 matSubheader>Produtores</h3>

@@ -19,7 +19,7 @@
 
         <div class="ngxgContent" fxFlex fxLayout="row">
 
-            <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutGap="20px">
+            <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="20px">
 
                 <div fxFlex="420px" fxLayout="column">
 
@@ -35,6 +35,9 @@
                     <div fxLayout="row" fxLayoutAlign="space-between start" class="formRow">
                         <mat-form-field appearance="outline">
                             <mat-select placeholder="Fazenda (opcional)" formControlName="farm" disableOptionCentering="true">
+                                <mat-option [value]=null *ngIf="formField.get('farm').value != null">
+                                    <mat-icon>close</mat-icon>Remover fazenda</mat-option>
+                                <mat-divider></mat-divider>
                                 <mat-option *ngFor="let f of farms" [value]="f">{{f.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -52,8 +55,9 @@
                                     {{user.name}}
                                     <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
                                 </mat-chip>
-                                <input #shrdUsrInput [matAutocomplete]="auto" placeholder="Usuários com acesso (opcional)" [formControl]="sharableUserCtrl" [matChipInputFor]="chipList"
-                                    [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true" (matChipInputTokenEnd)="add($event)">
+                                <input #shrdUsrInput [matAutocomplete]="auto" placeholder="Usuários com acesso (opcional)" [formControl]="sharableUserCtrl"
+                                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes" [matChipInputAddOnBlur]="true"
+                                    (matChipInputTokenEnd)="add($event)">
                             </mat-chip-list>
                             <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
                                 <mat-option *ngFor="let user of filteredShdUsers | async" [value]="user" style="height: 58px; line-height: 20px; padding: 15px 16px;">
@@ -80,7 +84,6 @@
                     <div ngxgMap id="mapField" (mapInstance)="getMapInstance($event)" (drawSaved)="getDraw($event)" [options]="{latitude: -16.08, longitude:-52.78, zoom:5, controls: {baseMaps: true,locate: true, draw: true}, basemap: 'Hybrid', fitMapTo: 'geojson'}">
                         <div ngxgGeoJson *ngIf="fieldGeoJSON" [options]="{id: fieldID, geojson: fieldGeoJSON, editable: true}"></div>
                     </div>
-
                 </div>
 
             </div>

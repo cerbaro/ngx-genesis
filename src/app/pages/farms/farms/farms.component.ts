@@ -56,6 +56,8 @@ export class FarmsComponent extends NgxgRequest implements OnInit {
             .subscribe(result => {
                 if (result.data.length > 0) {
                     this.farmsLoaded(result.data);
+                } else {
+                    this.farmDataSource.data = [];
                 }
 
                 this.dataLoading = false;

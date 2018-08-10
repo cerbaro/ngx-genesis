@@ -3,8 +3,9 @@
     <div class="ngxgHeaderToolbar" fxLayout="row">
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="center center">
             <span fxFlex=71>
-                <p style="font-size: 1.1em;">As fazendas podem ser vinculadas aos campos para agrupá-los. <br> É possível relacionar uma fazenda com um campo
-                    no momento do cadastro do campo ou na página de edição dos campos existentes.</p>
+                <p style="font-size: 1.1em;">As fazendas podem ser vinculadas aos campos para agrupá-los.
+                    <br> É possível relacionar uma fazenda com um campo no momento do cadastro do campo ou na página de edição
+                    dos campos existentes.</p>
             </span>
             <span fxFlex="1 1 auto"></span>
             <span>
@@ -20,11 +21,15 @@
         <div class="ngxgMaxWidth" fxFlex fxLayout="row" fxLayoutAlign="start" fxLayoutGap="50px">
 
             <div fxFlex fxLayout="column">
-                <div fxFlex fxLayout="row" fxLayoutAlign="center center">
 
+                <div *ngIf="farmDataSource.data.length === 0" fxFlex fxFlex.lt-md fxLayout="column" fxLayoutAlign="center center" style="height: 100%;">
+                    <h4 style="white-space:normal; overflow:visible; text-align: center;">Você ainda não criou nenhuma fazenda.</h4>
+                    <br>
+                    <br>
+                    <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/farm/new" (click)="$event.stopPropagation()">Criar Fazenda</button>
                 </div>
 
-                <div fxFlex fxLayout="row">
+                <div fxFlex fxLayout="row" *ngIf="farmDataSource.data.length > 0">
                     <table mat-table [dataSource]="farmDataSource" matSort #farmsSort="matSort" matSortActive="name" matSortDisableClear matSortDirection="asc"
                         style="width:100%">
 
