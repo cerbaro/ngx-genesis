@@ -308,9 +308,9 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         let eDate = moment().toDate();
 
         const variables = [
-            { variable: 'totR', version: 'mergegpmv1', source: 'cptec', band: 1 },
+            { variable: 'totR', version: 'v05b', source: 'gpm', band: 1 },
             { variable: 'gdd', version: 'v1', source: 'ensoag', band: 2 },
-            { variable: 'arid', version: 'v1', source: 'ensoag', band: 1 }
+            { variable: 'arid', version: 'v3', source: 'ensoag', band: 1 }
         ];
         const display = field.app.season.display;
 
@@ -352,13 +352,13 @@ export class FieldComponent extends NgxgRequest implements OnInit {
                             if (response !== null) {
                                 field.app.climate = field.app.climate ? field.app.climate : {};
                                 field.app.climate[response[0].variable] = response[0];
+                                field.app.climate[response[0].variable].pct = this.calcDev(response[0].sum, response[0].sumhis);
+
                             }
 
                             if (reqDone++ >= variablesObservable.length - 1) {
                                 this.climateDataLoading = false;
                             }
-
-                            // console.log(response);
 
                         });
                 });
@@ -483,6 +483,17 @@ export class FieldComponent extends NgxgRequest implements OnInit {
         const localPage = (!season.commodity.phenologyModel && currentSubPage === 'phenology') ? 'weather' : currentSubPage;
 
         this.router.navigate(['/field', this.field._id, 'season', season._id, localPage]);
+    }
+
+    public calcDev(cur: number, his: number): String {
+
+        const pct = ((cur - his) / his) * 100;
+
+        if (pct < 0) {
+            return Math.round(pct * -1) + '% a menos do que a média.';
+        } else {
+            return Math.round(pct) + '% a mais do que a média.';
+        }
     }
 
 }

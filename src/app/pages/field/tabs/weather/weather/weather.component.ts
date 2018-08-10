@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgxgRequest } from 'src/app/core/comm/ngxg-request';
 import { DataExchangeService } from 'src/app/shared/services/data-exchange.service';
 import { takeUntil, delay, map } from 'rxjs/operators';
@@ -880,7 +880,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                 }
             }, error => this.setError(error));
         this.agrogisService
-            .getDailyValue('observed', this.field.location, this.startDate, this.endDate, 'arid', 'v1', 1, 'ensoag')
+            .getDailyValue('observed', this.field.location, this.startDate, this.endDate, 'arid', 'v3', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
             .subscribe(result => {
                 if (result === null) {
@@ -986,7 +986,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
     private aridEto() {
         this.agrogisService
             .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v1', 1, 'ensoag')
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'arid', 'v3', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result === null) {
@@ -1003,7 +1003,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
             }, error => this.setError(error));
         this.agrogisService
             .getDailyValue('observed', this.field.location,
-                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v1', 1, 'ensoag')
+                moment().subtract(10, 'days').format('YYYYMMDD'), moment().format('YYYYMMDD'), 'eto', 'v3', 1, 'ensoag')
             .pipe(takeUntil(this.ngxgUnsubscribe))
             .subscribe(result => {
                 if (result !== null) {
@@ -1015,7 +1015,6 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
             }, error => this.setError(error));
     }
 
-
     /**
      * Chart Utils
      *
@@ -1026,13 +1025,6 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
         this.charts[chart].instance = instance;
         instance.showLoading('Carregando dados...');
 
-    }
-
-    @HostListener('window:resize', ['$event'])
-    private onResize(event) {
-        Object.keys(this.charts).map(key => {
-            this.charts[key].instance.reflow();
-        });
     }
 
     private formatHighChartData(data): Array<any> {

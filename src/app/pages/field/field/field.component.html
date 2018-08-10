@@ -177,8 +177,8 @@
                             </div>
 
                             <div fxFlex=18 *ngIf="(((field || {}).app || {}).climate || {}).arid != null" style="color: #ff6000">
-                                <h4>{{field.app.climate.arid.sum | round}} </h4>
-                                <h5>ISSE</h5>
+                                <h4>{{field.app.climate.arid.sum | round}} ISSE</h4>
+                                <h5>{{field.app.climate.arid.pct}}</h5>
                             </div>
 
 
