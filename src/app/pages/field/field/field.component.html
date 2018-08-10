@@ -100,7 +100,7 @@
                                 <span *ngIf="field.app.season.display && field.app.season[field.app.season.display].app.seasonStatus === 200">
                                     <h4>{{field.app.season[field.app.season.display].harvestingDate || field.app.season[field.app.season.display].modelHarvestingDate
                                         | date: 'dd/MM/yyyy'}}</h4>
-                                    <h5>{{ field.app.season.display !== 'prev'? 'Previsão de colheita' : 'Data de colheita' }}</h5>
+                                    <h5>{{ field.app.season.display !== 'prev' && field.app.season[field.app.season.display].harvestingDate == null ? 'Previsão de colheita' : 'Data de colheita' }}</h5>
                                 </span>
                             </div>
 
@@ -120,13 +120,13 @@
 
                             <!-- Season not yet started -->
                             <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 201">
-                                <h4>Preparando simulação.</h4>
+                                <h4 style="color: #009FF2">Preparando simulação.</h4>
                                 <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
                             </div>
 
                             <!-- Season Processing -->
                             <div fxFlex *ngIf="field.app.season[field.app.season.display].app.seasonStatus === 202">
-                                <h4>Simulando fases de desenvolvimento.</h4>
+                                <h4 style="color: #36B774">Simulando fases de desenvolvimento.</h4>
                                 <mat-progress-bar mode="indeterminate" style="margin-top:3px; height: 2px;"></mat-progress-bar>
                             </div>
 

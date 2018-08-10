@@ -27,6 +27,7 @@ export class ManageComponent extends NgxgRequest implements OnInit {
     public allVarieties: any;
     public varieties: any;
 
+    private originalSeason: any;
     public editing: Boolean = false;
 
     public dataLoading: Boolean = true;
@@ -156,9 +157,28 @@ export class ManageComponent extends NgxgRequest implements OnInit {
                 });
 
                 this.fieldID = season.field._id;
+                this.formSeason.get('field').setValue(this.fieldID);
+
+                this.originalSeason = this.formatSeasonForm(this.formSeason.value);
+
 
                 this.pageLoaded();
             });
+    }
+
+    private formatSeasonForm(season: any): any {
+        season.name = season.name ? season.name :
+            moment(season.plantingDate).format('YYYY') + '/' +
+            moment(season.plantingDate).clone().add(1, 'year').format('YYYY') + ' ' +
+            season.commodity.name + ' #' + moment().format('DDMMHHmmSS');
+
+        season.plantingDate = moment(season.plantingDate).format('YYYY-MM-DD');
+        season.harvestingDate = season.harvestingDate ? moment(season.harvestingDate).format('YYYY-MM-DD') : null;
+
+        season.commodity = season.commodity._id;
+        season.variety = season.variety._id;
+
+        return season;
     }
 
     public submit(): void {
@@ -167,26 +187,28 @@ export class ManageComponent extends NgxgRequest implements OnInit {
 
         if (this.formSeason.valid) {
 
-            const season = this.formSeason.value;
-
-            season.name = season.name ? season.name :
-                moment(season.plantingDate).format('YYYY') + '/' +
-                moment(season.plantingDate).clone().add(1, 'year').format('YYYY') + ' ' +
-                season.commodity.name + ' #' + moment().format('DDMMHHmmSS');
-
-            season.plantingDate = moment(season.plantingDate).format('YYYY-MM-DD');
-            season.harvestingDate = season.harvestingDate ? moment(season.harvestingDate).format('YYYY-MM-DD') : null;
-
-            season.commodity = season.commodity._id;
-            season.variety = season.variety._id;
+            const season = this.formatSeasonForm(this.formSeason.value);
 
             if (this.editing) {
 
-                this.seasonService.updateSeason(this.seasonID, { season: season }).subscribe(
-                    result => {
-                        this.router.navigate(['/field', this.fieldID, 'season', result.data['_id']]);
-                    },
-                    error => this.setError(error));
+                const seasonToSave = {};
+
+                Object.keys(season).forEach(key => {
+                    if (this.originalSeason[key] !== season[key]) {
+                        seasonToSave[key] = season[key];
+                    }
+                });
+
+                if (Object.keys(seasonToSave).length > 0) {
+                    this.seasonService.updateSeason(this.seasonID, { season: seasonToSave }).subscribe(
+                        result => {
+                            this.router.navigate(['/field', this.fieldID, 'season', result.data['_id']]);
+                        },
+                        error => this.setError(error));
+                } else {
+                    this.cancel(null);
+                }
+
 
             } else {
 
