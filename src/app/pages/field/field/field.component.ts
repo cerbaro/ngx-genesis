@@ -489,7 +489,9 @@ export class FieldComponent extends NgxgRequest implements OnInit {
 
         const pct = ((cur - his) / his) * 100;
 
-        if (pct < 0) {
+        if (Number.isNaN(pct)) {
+            return 'Semelhante à média histórica.';
+        } else if (pct < 0) {
             return Math.round(pct * -1) + '% a menos do que a média.';
         } else {
             return Math.round(pct) + '% a mais do que a média.';
