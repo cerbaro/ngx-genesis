@@ -152,8 +152,9 @@ export class PhenologyComponent extends NgxgRequest implements OnInit {
             currentLabel += this.field.app.season[display].app.currentStage.stage.name;
 
             if (this.field.app.season[display].app.nextStage != null) {
-                currentLabel += '<br><br>Próxima fase <br>' +
-                    this.field.app.season[display].app.currentStage.stage.name + '<br>' +
+                currentLabel += '<br><br> <br>' +
+                    this.field.app.season[display].app.nextStage.stage.name + ' (' +
+                    this.field.app.season[display].app.nextStage.stage.abbrv + ') <br>' +
                     this.field.app.season[display].app.nextStage.in;
             }
 
@@ -166,7 +167,7 @@ export class PhenologyComponent extends NgxgRequest implements OnInit {
                 label: {
                     useHTML: true,
                     text: currentLabel,
-                    align: 'right',
+                    align: 'center',
                     style: {
                         color: 'green'
                     },
@@ -178,7 +179,7 @@ export class PhenologyComponent extends NgxgRequest implements OnInit {
             });
         }
 
-        //console.log(this.field.app.season[display].phenology.current.stages);
+        // console.log(this.field.app.season[display].phenology.current.stages);
 
         this.charts.phenology.instance.series[0].setData(
             this.field.app.season[display].phenology.current.stages
