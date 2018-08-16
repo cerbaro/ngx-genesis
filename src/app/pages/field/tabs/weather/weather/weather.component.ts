@@ -97,7 +97,7 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
 
         const display = this.field.app.season.display;
 
-        if (display != null && display !== 'next') {
+        if (display != null && display !== 'next' && this.field.app.season[display].app.seasonStatus === 200) {
 
             if (moment(this.field.app.season[display].plantingDate as Date).isSameOrBefore(moment().startOf('day'))) {
                 this.startDate = moment(this.field.app.season[display].plantingDate as Date).format('YYYYMMDD');
@@ -864,8 +864,6 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
         const fstDate = moment(this.startDate.toString(), 'YYYYMMDD').valueOf() < moment(this.past1Year.toString(), 'YYYYMMDD').valueOf() ?
             this.startDate : this.past1Year;
 
-        console.log(fstDate, this.startDate.toString(), this.todayDate);
-
         this.agrogisService
             .getDailyValue('observed', this.field.location, fstDate, this.todayDate, 'totR', 'v05b', 1, 'gpm')
             .pipe(takeUntil(this.ngxgUnsubscribe), map(result => this.formatHighChartData(result)))
@@ -885,12 +883,11 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                     result = result.filter(res => res[0] >= moment(this.startDate.toString(), 'YYYYMMDD').valueOf() &&
                         res[0] <= moment(this.endDate.toString(), 'YYYYMMDD').valueOf());
 
-
-
                     this.charts.dailyAccumulated.instance.series[0].setData(this.getAccumulation(result));
                     this.charts.dailyAccumulated.instance.series[0]
                         .update({
-                            name: (!this.field.app.season.display || this.field.app.season.display === 'next') ?
+                            name: (!this.field.app.season.display || this.field.app.season.display === 'next' ||
+                                this.field.app.season[this.field.app.season.display].app.seasonStatus !== 200) ?
                                 'Desde 1º de Janeiro' : 'Esta safra'
                         });
                 }
@@ -910,7 +907,8 @@ export class WeatherComponent extends NgxgRequest implements OnInit {
                     this.charts.dailyAccumulated.instance.series[1].setData(this.getAccumulation(result));
                     this.charts.dailyAccumulated.instance.series[1]
                         .update({
-                            name: (!this.field.app.season.display || this.field.app.season.display === 'next') ?
+                            name: (!this.field.app.season.display || this.field.app.season.display === 'next' ||
+                                this.field.app.season[this.field.app.season.display].app.seasonStatus !== 200) ?
                                 'Desde 1º de Janeiro' : 'Esta safra'
                         });
                     this.charts.dailyAccumulated.instance.hideLoading();

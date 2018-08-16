@@ -68,10 +68,6 @@ export class AgroGISService {
     public getDailyValue(pot: String, location: any, from: String, to: String,
         variable: String, version: String, band: Number, source: String): Observable<any> {
 
-        console.log(this.spatialBaseURL + '/spatial/raster/' + pot + '/pixel/' +
-            location.lat + ',' + location.lon + '/from/' + from + '/to/' +
-            to + '/variable/' + variable + '/version/' + version + '/band/' + band + '/source/' + source);
-
         return this.http
             .get(this.spatialBaseURL + '/spatial/raster/' + pot + '/pixel/' +
                 location.lat + ',' + location.lon + '/from/' + from + '/to/' +
