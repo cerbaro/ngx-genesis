@@ -29,7 +29,7 @@ export class LeafletService {
 
 
     private tileMap = 'https://api.tiles.mapbox.com/v4/';
-    private accessToken = 'pk.eyJ1IjoiZG9yaXNsaXUyMTciLCJhIjoiY2oybHdydzRpMDBpZzMzdGp5ODJkamJlYiJ9.FwtouO3HW1pn5gsg7nKC5g';
+    private accessToken = 'pk.eyJ1IjoiY2VyYmFybyIsImEiOiJxNnJWR3NjIn0.-Q1Gn37Y4nX_dHhHCE2vaQ';
 
     constructor() { }
 
@@ -130,6 +130,9 @@ export class LeafletService {
                 L.control.layers(this.baseMaps, null, { position: 'topright' }).addTo(this.map);
             }
 
+            // if (controls.zoom === false || controls.zoom === undefined) {
+            // }
+
             if (controls.draw) {
                 this.lldraw = new LeafletDraw(this.map);
                 this.lldraw.initializeControls(true);
@@ -151,9 +154,17 @@ export class LeafletService {
             Hybrid: new L.TileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + this.accessToken, {
                 id: 'mapbox.streets-satellite'
             }),
+            // Hybrid: L.tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
+            //     maxZoom: 20,
+            //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            // }),
             Streets: new L.TileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=' + this.accessToken, {
                 id: 'mapbox.streets'
             }),
+            // Streets: L.tileLayer('http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+            //     maxZoom: 20,
+            //     subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+            // }),
             // Dark: new L.TileLayer('https://api.mapbox.com/styles/v1/mapbox/{id}/tiles/{z}/{x}/{y}?access_token=' + this.accessToken, {
             //     id: 'dark-v9'
             // }),
