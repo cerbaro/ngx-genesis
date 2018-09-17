@@ -1,24 +1,13 @@
 <span *ngIf="!tabLoading" class="mat-typography">
 
-    <div fxLayout="column" fxLayoutGap="20px">
-
-        <div fxFlex fxLayout="row" fxLayoutGap="20px">
-
-            <div fxFlex fxLayout="column">
-                <div class="ngxgCardSectionTitle" fxFlex>
-                    <h1>Fases de desenvolvimento</h1>
-                </div>
-
-                <div fxFlex fxLayout="row" fxLayoutGap="20px">
-
-                    <mat-card class="ngxgCard mat-elevation-z1" fxFlex>
-                        <chart [options]="charts.phenology.options" (load)="saveChartInstance('phenology', $event.context)" style="display:block; width:100% !important; height:100% !important"></chart>
-                    </mat-card>
-
-                </div>
-            </div>
-
+    <div fxLayout="column">
+        <div class="ngxgCardSectionTitle">
+            <h1>Fases de desenvolvimento</h1>
         </div>
+
+        <mat-card class="ngxgCard mat-elevation-z1">
+            <chart [options]="charts.phenology.options" (load)="saveChartInstance('phenology', $event.context)" style="display:block; width:100% !important; height:100% !important"></chart>
+        </mat-card>
 
     </div>
 

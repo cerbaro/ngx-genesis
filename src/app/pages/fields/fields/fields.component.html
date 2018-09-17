@@ -78,8 +78,10 @@
                         <button mat-raised-button color="primary" class="mat-elevation-z0 ngxgHoverTransition" routerLink="/field/new" (click)="$event.stopPropagation()">Criar Campo</button>
                     </div>
                 </span>
+
                 <!-- fxHide="field.app.hidden"  -->
-                <mat-card *ngFor="let field of allFields" fxHide="{{field.app.hidden}}" fxFlex fxFlex.md="calc(50%-15px)" fxFlex.sm="calc(50%-15px)"
+
+                <mat-card *ngFor="let field of allFields" fxHide="{{field.app.hidden}}" fxFlex="1" fxFlex.md="calc(50%-15px)" fxFlex.sm="calc(50%-15px)"
                     fxLayout="column" fxLayout.gt-md="row" fxLayout.xs="row" class="fieldCard mat-elevation-z0 ngxgHoverTransition"
                     ngClass.gt-md="fitHeight" ngClass.md="fitWidth" ngClass.sm="fitWidth" ngClass.xs="fitHeight" (mouseenter)="fieldHover(field)"
                     (mouseleave)="fieldOut(field)" (click)="openField(field)">
